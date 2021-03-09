@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Silver Bay Campus Map</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="https://kit.fontawesome.com/5894bd7752.js" crossorigin="anonymous"></script>
+    <script src="location-marker.js"></script>
+</head>
+
+<body>
+
+    <header class="fixed-header">
+
+        <h1>Silver Bay Campus Map</h1>
+
+        <div class="dropdown">
+            <button onclick="dropdownClick('ddMeetingSpaces')" class="dropbtn">Meeting Spaces</button>
+            <div id="ddMeetingSpaces" class="dropdown-content">
+                <button onclick="setMapMarker('marker1', '590px', '590px')">William Boyd Center</button>
+                <button onclick="setMapMarker('marker1', '690px', '690px')">Auditorium</button>
+                <button onclick="setMapMarker('marker1', '790px', '790px')">Morse Hall</button>
+                <button onclick="setMapMarker('marker1', '890px', '890px')">Nature Center</button>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button onclick="dropdownClick('ddActivities')" class="dropbtn">Activities</button>
+            <div id="ddActivities" class="dropdown-content">
+                <button onclick="setMapMarker('marker2', '590px', '590px')">Tennis</button>
+                <button onclick="setMapMarker('marker2', '690px', '690px')">Boathouse</button>
+                <button onclick="setMapMarker('marker2', '790px', '790px')">Archery</button>
+                <button onclick="setMapMarker('marker2', '890px', '890px')">Slim Point Beach</button>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button onclick="dropdownClick('ddAccomodations')" class="dropbtn">Accomodations</button>
+            <div id="ddAccomodations" class="dropdown-content">
+                <button onclick="setMapMarker('marker3', '590px', '590px')">William Boyd Center</button>
+                <button onclick="setMapMarker('marker3', '690px', '690px')">The Inn</button>
+                <button onclick="setMapMarker('marker3', '790px', '790px')">Hemlock</button>
+                <button onclick="setMapMarker('marker3', '890px', '890px')">Paine Hall</button>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button onclick="dropdownClick('ddCabins')" class="dropbtn">Cabins</button>
+            <div id="ddCabins" class="dropdown-content">
+                <button onclick="setMapMarker('marker4', '590px', '590px')">Charter Oak</button>
+                <button onclick="setMapMarker('marker4', '690px', '690px')">Willow</button>
+                <button onclick="setMapMarker('marker4', '790px', '790px')">Hartford</button>
+                <button onclick="setMapMarker('marker4', '890px', '890px')">Nassau</button>
+            </div>
+        </div>
+
+        <!-- <h3>Campus Locations</h3>
+        <h3>Campus Locations</h3>
+        <h3>Campus Locations</h3>
+        <h3>Campus Locations</h3> -->
+    </header>
+
+    <main>
+        <img src="silver-bay-map_final.jpg" alt="Campus Map">
+        <!-- <div id="a">
+        </div> -->
+        <span id="marker1" class="marker1 map-marker">
+            <i class="fas fa-map-marker-alt fa-3x"></i>
+        </span>
+        <span id="marker2" class="marker2 map-marker">
+            <i class="fas fa-map-marker-alt fa-3x"></i>
+        </span>
+        <span id="marker3" class="marker3 map-marker">
+            <i class="fas fa-map-marker-alt fa-3x"></i>
+        </span>
+        <span id="marker4" class="marker4 map-marker">
+            <i class="fas fa-map-marker-alt fa-3x"></i>
+        </span>
+    </main>
+
+</body>
+
+</html>
