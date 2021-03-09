@@ -1,0 +1,369 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+
+/* HTML5 display-role reset for older browsers */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/*
+  ========================================
+  Custom styles
+  ========================================
+*/
+
+body {
+    background: #293f50;
+    color: #888;
+    font: 300 16px/22px "Lato", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+/*
+  ========================================
+  Typography
+  ========================================
+*/
+
+h1,
+h2,
+h3,
+h4 {
+    color: #648880;
+}
+
+h1,
+h3,
+h4,
+h5,
+p {
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-size: 36px;
+    line-height: 44px;
+}
+
+h2 {
+    font-size: 24px;
+    line-height: 44px;
+}
+
+h3 {
+    font-size: 21px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+h5 {
+    color: #a9b2b9;
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+strong {
+    font-weight: 400;
+}
+
+cite,
+em {
+    font-style: italic;
+}
+
+
+/*
+  ========================================
+  SB Map
+  ========================================
+*/
+
+#a {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: 2px;
+    left: 2px;
+    background: rgba(255, 0, 0, .5);
+    border: 1;
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 40px;
+    padding: 10px;
+    font-size: 30px;
+}
+
+main {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    margin-top: 117px;
+    z-index: -1;
+}
+
+.map-marker {
+    /* font-size: 24px; */
+    /* color: rgba(30, 144, 255, .80); */
+    position: absolute;
+    top: 65px;
+    left: 85px;
+    display: none;
+}
+
+.marker1 {
+    /* font-size: 24px; */
+    color: rgba(30, 144, 255, .80);
+}
+
+.marker2 {
+    /* font-size: 24px; */
+    color: rgba(255, 0, 0, .80);
+}
+
+.marker3 {
+    /* font-size: 24px; */
+    color: rgba(0, 255, 0, .80);
+}
+
+.marker4 {
+    /* font-size: 24px; */
+    color: rgba(255, 0, 242, 0.8);
+}
+
+
+/* The navigation bar */
+
+.fixed-header {
+    /* overflow: hidden; */
+    background-color: #333;
+    position: fixed;
+    /* Set the navbar to fixed position */
+    top: 0;
+    /* Position the navbar at the top of the page */
+    width: 100%;
+    /* Full width */
+}
+
+
+/* Links inside the navbar */
+
+.fixed-header button {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    background: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+
+/* Change background on mouse-over */
+
+.fixed-header button:hover {
+    background: #ddd;
+    color: black;
+}
+
+
+/* Dropdown buttons */
+
+.dropbtn {
+    /* background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none; */
+    cursor: pointer;
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+    background: #ddd;
+    color: black;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    /* margin-top: 10; */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    margin-top: 50px;
+    background-color: #f1f1f1;
+    width: 140px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+/* .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {
+    background-color: #ddd;
+} */
+
+.dropdown-content button {
+    color: black;
+    background-color: #f1f1f1;
+    padding: 5px;
+    text-decoration: none;
+    text-align: left;
+    display: block;
+    border: none;
+    width: 140px;
+}
+
+.dropdown button:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}
