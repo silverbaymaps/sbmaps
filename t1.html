@@ -35,13 +35,37 @@
             display: block;
         }
         
-        .topnav a.icon {
+        .topnav a.icon1 {
+            background: black;
+            display: block;
+            position: absolute;
+            right: 20%;
+            top: 0;
+            width: 10%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .topnav a.icon2 {
+            background: black;
+            display: block;
+            position: absolute;
+            right: 10%;
+            top: 0;
+            width: 10%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .topnav a.icon3 {
             background: black;
             display: block;
             position: absolute;
             right: 0;
             top: 0;
             width: 10%;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .topnav a:hover {
@@ -52,15 +76,29 @@
         .active {
             background-color: #4CAF50;
             color: white;
-            width: 90%;
+            width: 80%;
         }
         
-        .map {
+        .map-div {
             margin-top: 40px;
-            width: 1024;
-            /* 2048px; */
-            height: 662;
-            /* 1325px; */
+            /* width: 1024; */
+            width: 2048px;
+            /*  height: 662; */
+            height: 1325px;
+        }
+        
+        .map-img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .zoom-btn {
+            background: black;
+            display: block;
+            position: absolute;
+            right: 10%;
+            top: 0;
+            width: 10%;
         }
         /* Heres an example that targets browser widths between 320px and 480px, common sizes for smartphones.
         @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
@@ -79,20 +117,28 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <a href="#home" class="active">Logo5</a>
+            <a href="#home" class="active">Logo6</a>
+            <button class="zoom-btn" onclick="zoomOutClick()">+</button>
+            <button class="zoom-btn" onclick="zoomInClick()">-</button>
             <div id="myLinks">
                 <a href="#news">News</a>
                 <a href="#contact">Contact</a>
                 <a href="#about">About</a>
             </div>
-            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <a href="javascript:void(0);" class="icon1" onclick="zoomOutClick()">
+                <i class="fas fa-plus"></i>
+            </a>
+            <a href="javascript:void(0);" class="icon2" onclick="zoomInClick()">
+                <i class="fas fa-minus"></i>
+            </a>
+            <a href="javascript:void(0);" class="icon3" onclick="myFunction()">
                 <i class="fa fa-bars"></i>
             </a>
         </div>
     </nav>
 
     <main>
-        <div class="map-div">
+        <div id="mapdiv" class="map-div">
             <img class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map">
         </div>
     </main>
@@ -108,6 +154,20 @@
             } else {
                 x.style.display = "block";
             }
+        }
+
+        //When the user clicks the zoom put button, double the image size
+        function zoomOutClick() {
+            var x = document.getElementById("mapdiv");
+            x.style.width = "816px"; // x.style.width * 2;
+            x.style.height = "528px"; // x.style.height * 2;
+        }
+
+        //When the user clicks the zoom put button, double the image size
+        function zoomInClick() {
+            var x = document.getElementById("mapdiv");
+            x.style.width = "408px"; // x.style.width / 2;
+            x.style.height = "264px"; // x.style.height / 2;
         }
     </script>
 
