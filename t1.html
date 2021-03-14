@@ -102,9 +102,17 @@
             display: none;
         }
         
-        .marker1 {
-            /* font-size: 24px; */
-            color: rgba(30, 144, 255, .80);
+        .center-marker {
+            font-size: 4px;
+            color: tan;
+            background-color: tan;
+            width: 1px;
+            height: 1px;
+            position: absolute;
+            top: 65px;
+            left: 85px;
+            display: none;
+            /* z-index: 2; */
         }
         
         .zoom-btn {
@@ -132,7 +140,7 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <a href="#home" class="active">Logo9</a>
+            <a href="#home" class="active">Logo11</a>
             <button class="zoom-btn" onclick="zoomOutClick()">+</button>
             <button class="zoom-btn" onclick="zoomInClick()">-</button>
             <div id="myLinks">
@@ -155,8 +163,8 @@
     <main>
         <div id="mapdiv" class="map-div">
             <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map">
-            <span id="marker1" class="marker1 map-marker">
-                <i class="fas fa-map-marker-alt fa-3x"></i>
+            <span id="center-marker" class="center-marker">&nbsp
+                <!-- <i class="fas fa-map-marker-alt fa-3x"></i> -->
             </span>
         </div>
     </main>
@@ -214,7 +222,7 @@
         }
 
         window.addEventListener('load', function() {
-            setMapMarker("marker1", '690px', '690px')
+            setMapMarker("center-marker", '690px', '690px')
                 // var map = document.getElementById("mapdiv");
                 // map.scrollIntoView({
                 //     behavior: 'auto',
