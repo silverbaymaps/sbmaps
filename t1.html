@@ -140,7 +140,7 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <a href="#home" class="active">Logo15</a>
+            <a href="#home" class="active">Logo16</a>
             <button class="zoom-btn" onclick="zoomOutClick()">+</button>
             <button class="zoom-btn" onclick="zoomInClick()">-</button>
             <div id="myLinks">
@@ -186,18 +186,33 @@
         function zoomOutClick() {
             getLocation();
             var x = document.getElementById("mapdiv");
-            x.style.width = "816px"; // x.style.width * 2;
-            x.style.height = "528px"; // x.style.height * 2;
+            var numwidth = removePx(x.style.width);
+            var numheight = removePx(x.style.height);
+            var newwidth = Math.floor(numwidth * 1.5);
+            var newheight = Math.floor(numheight * 1.5);
+            x.style.width = newwidth + "px";
+            x.style.height = newheight + "px";
         }
 
         //When the user clicks the zoom put button, double the image size
         function zoomInClick() {
             var x = document.getElementById("mapdiv");
-            window.alert(x.style.width + " - " + x.style.height);
-            x.style.width = "408px"; // x.style.width / 2;
-            x.style.height = "264px"; // x.style.height / 2;
-            // var txt = "Height including padding and border: " + elmnt.offsetHeight + "px<br>";
-            // txt += "Width including padding and border: " + elmnt.offsetWidth + "px";
+            var numwidth = removePx(x.style.width);
+            var numheight = removePx(x.style.height);
+            var newwidth = Math.floor(numwidth / 1.5);
+            var newheight = Math.floor(numheight / 1.5);
+            if (newwidth < 408) {
+                newwidth = 408;
+                newheight = 264;
+            }
+            x.style.width = newwidth + "px";
+            x.style.height = newheight + "px";
+        }
+
+        function removePx(strWithPx) {
+            var idx = strWithPx.indexOf("px")
+            var numwidth = strWithPx.substr(0, idx);
+            return numwidth;
         }
 
         function setMapMarker(markerId, top, left) {
@@ -238,7 +253,7 @@
         }
 
         window.addEventListener('load', function() {
-            window.alert(window.innerWidth)
+            // window.alert(window.innerWidth)
             setMapMarker("center-marker", '690px', '690px');
             var x = document.getElementById("mapdiv");
             if (window.innerWidth < 550) {
