@@ -140,7 +140,7 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <a href="#home" class="active">Logo11</a>
+            <a href="#home" class="active">Logo12</a>
             <button class="zoom-btn" onclick="zoomOutClick()">+</button>
             <button class="zoom-btn" onclick="zoomInClick()">-</button>
             <div id="myLinks">
@@ -192,6 +192,7 @@
         //When the user clicks the zoom put button, double the image size
         function zoomInClick() {
             var x = document.getElementById("mapdiv");
+            window.alert(x.style.width + " - " + x.style.height);
             x.style.width = "408px"; // x.style.width / 2;
             x.style.height = "264px"; // x.style.height / 2;
             // var txt = "Height including padding and border: " + elmnt.offsetHeight + "px<br>";
@@ -222,13 +223,16 @@
         }
 
         window.addEventListener('load', function() {
-            setMapMarker("center-marker", '690px', '690px')
-                // var map = document.getElementById("mapdiv");
-                // map.scrollIntoView({
-                //     behavior: 'auto',
-                //     block: 'center',
-                //     inline: 'center'
-                // });
+            window.alert(window.innerWidth)
+            setMapMarker("center-marker", '690px', '690px');
+            var x = document.getElementById("mapdiv");
+            if (window.innerWidth < 400) {
+                x.style.width = "1632";
+                x.style.height = "1056px";
+            } else {
+                x.style.width = "2048px";
+                x.style.height = "1325px";
+            }
         })
     </script>
 
