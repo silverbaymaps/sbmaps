@@ -140,7 +140,7 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <a href="#home" class="active">Logo13</a>
+            <a href="#home" class="active">Logo14</a>
             <button class="zoom-btn" onclick="zoomOutClick()">+</button>
             <button class="zoom-btn" onclick="zoomInClick()">-</button>
             <div id="myLinks">
@@ -184,6 +184,7 @@
 
         //When the user clicks the zoom put button, double the image size
         function zoomOutClick() {
+            getLocation();
             var x = document.getElementById("mapdiv");
             x.style.width = "816px"; // x.style.width * 2;
             x.style.height = "528px"; // x.style.height * 2;
@@ -220,6 +221,20 @@
                 block: 'center',
                 inline: 'center'
             });
+        }
+
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                window.alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            window.alert("Latitude: " + position.coords.latitude + "  -  " +
+                "Longitude: " + position.coords.longitude);
         }
 
         window.addEventListener('load', function() {
