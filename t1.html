@@ -90,6 +90,21 @@
         .map-img {
             width: 100%;
             height: 100%;
+            z-index: -1;
+        }
+        
+        .map-marker {
+            /* font-size: 24px; */
+            /* color: rgba(30, 144, 255, .80); */
+            position: absolute;
+            top: 65px;
+            left: 85px;
+            display: none;
+        }
+        
+        .marker1 {
+            /* font-size: 24px; */
+            color: rgba(30, 144, 255, .80);
         }
         
         .zoom-btn {
@@ -117,7 +132,7 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <a href="#home" class="active">Logo8</a>
+            <a href="#home" class="active">Logo9</a>
             <button class="zoom-btn" onclick="zoomOutClick()">+</button>
             <button class="zoom-btn" onclick="zoomInClick()">-</button>
             <div id="myLinks">
@@ -140,6 +155,9 @@
     <main>
         <div id="mapdiv" class="map-div">
             <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map">
+            <span id="marker1" class="marker1 map-marker">
+                <i class="fas fa-map-marker-alt fa-3x"></i>
+            </span>
         </div>
     </main>
 
@@ -172,13 +190,37 @@
             // txt += "Width including padding and border: " + elmnt.offsetWidth + "px";
         }
 
-        window.addEventListener('load', function() {
-            var map = document.getElementById("mapdiv");
-            map.scrollIntoView({
+        function setMapMarker(markerId, top, left) {
+            var marker = document.getElementById(markerId);
+            marker.style.top = top;
+            marker.style.left = left;
+            marker.style.display = 'inline';
+
+            // element.scrollIntoView(options)
+            // The options object has the following properties:
+
+            // behavior property defines the transition animation. 
+            // The behavior property accepts two values: auto or smooth. It defaults to auto.
+            // block property defines the vertical alignment. 
+            // It accepts one of four values: start, center, endor nearest. By default, it is start.
+            // inline property defines horizontal alignment. 
+            // It also accepts one of four values: start, center, endor nearest. It defaults to nearest.
+
+            marker.scrollIntoView({
                 behavior: 'auto',
                 block: 'center',
                 inline: 'center'
             });
+        }
+
+        window.addEventListener('load', function() {
+            setMapMarker("marker1", '690px', '690px')
+                // var map = document.getElementById("mapdiv");
+                // map.scrollIntoView({
+                //     behavior: 'auto',
+                //     block: 'center',
+                //     inline: 'center'
+                // });
         })
     </script>
 
