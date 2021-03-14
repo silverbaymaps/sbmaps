@@ -168,7 +168,18 @@
             var x = document.getElementById("mapdiv");
             x.style.width = "408px"; // x.style.width / 2;
             x.style.height = "264px"; // x.style.height / 2;
+            // var txt = "Height including padding and border: " + elmnt.offsetHeight + "px<br>";
+            // txt += "Width including padding and border: " + elmnt.offsetWidth + "px";
         }
+
+        window.addEventListener('load', function() {
+            var map = document.getElementById("mapdiv");
+            map.scrollIntoView({
+                behavior: 'auto',
+                block: 'center',
+                inline: 'center'
+            });
+        })
     </script>
 
 </body>
