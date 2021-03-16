@@ -137,106 +137,130 @@ table {
 }
 
 
-/*
-  ========================================
-  Custom styles
-  ========================================
+/* 
+    ========================================
+     Custom Styles 
+    ========================================
 */
 
 body {
-    background: #293f50;
-    color: #888;
-    font: 300 16px/22px "Lato", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
 }
 
 
-/*
-  ========================================
-  Typography
-  ========================================
+/* 
+    ========================================
+     Nav Bar
+    ========================================
 */
 
-h1,
-h2,
-h3,
-h4 {
-    color: #648880;
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+    position: fixed;
+    width: 100%;
+    top: 0;
 }
 
-h1,
-h3,
-h4,
-h5,
-p {
-    margin-bottom: 22px;
+.topnav #myLinks {
+    display: none;
 }
 
-h1 {
-    font-size: 36px;
-    line-height: 44px;
+.topnav a {
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
 }
 
-h2 {
-    font-size: 24px;
-    line-height: 44px;
-}
-
-h3 {
-    font-size: 21px;
-}
-
-h4 {
-    font-size: 18px;
-}
-
-h5 {
-    color: #a9b2b9;
-    font-size: 14px;
-    font-weight: 400;
-    text-transform: uppercase;
-}
-
-strong {
-    font-weight: 400;
-}
-
-cite,
-em {
-    font-style: italic;
-}
-
-
-/*
-  ========================================
-  SB Map
-  ========================================
-*/
-
-#a {
+.topnav a.zoomout-icon {
+    background: black;
+    display: block;
     position: absolute;
-    width: 150px;
-    height: 150px;
-    top: 2px;
-    left: 2px;
-    background: rgba(255, 0, 0, .5);
-    border: 1;
+    right: 20%;
+    top: 0;
+    width: 10%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-h1 {
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 40px;
-    padding: 10px;
-    font-size: 30px;
+.topnav a.zoomin-icon {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 10%;
+    top: 0;
+    width: 10%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-main {
-    position: relative;
-    left: 0px;
-    top: 0px;
-    margin-top: 117px;
+.topnav a.hamburger-icon {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 10%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.pageheader {
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    display: block;
+    /* background-color: #4CAF50;
+    color: white; */
+    background: #333;
+    color: #648880;
+    width: 80%;
+}
+
+.zoom-btn {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 10%;
+    top: 0;
+    width: 10%;
+}
+
+
+/* 
+    ========================================
+     Map section
+    ========================================
+*/
+
+.map-div {
+    margin-top: 40px;
+    /* width: 1024; */
+    width: 2048px;
+    /*  height: 662; */
+    height: 1325px;
+}
+
+.map-img {
+    width: 100%;
+    height: 100%;
     z-index: -1;
 }
+
+
+/* 
+    ========================================
+     Map markers
+    ========================================
+*/
 
 .map-marker {
     /* font-size: 24px; */
@@ -259,111 +283,37 @@ main {
 
 .marker3 {
     /* font-size: 24px; */
-    color: rgba(0, 255, 0, .80);
+    color: rgba(255, 255, 0, 0.80);
 }
 
 .marker4 {
     /* font-size: 24px; */
-    color: rgba(255, 0, 242, 0.8);
+    color: rgba(255, 0, 255, 0.8);
 }
 
-
-/* The navigation bar */
-
-.fixed-header {
-    /* overflow: hidden; */
-    background-color: #333;
-    position: fixed;
-    /* Set the navbar to fixed position */
-    top: 0;
-    /* Position the navbar at the top of the page */
-    width: 100%;
-    /* Full width */
+.location-marker {
+    color: rgba(0, 255, 0, .80);
 }
 
-
-/* Links inside the navbar */
-
-.fixed-header button {
-    float: left;
-    display: block;
-    color: #f2f2f2;
-    background: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-
-/* Change background on mouse-over */
-
-.fixed-header button:hover {
-    background: #ddd;
-    color: black;
-}
-
-
-/* Dropdown buttons */
-
-.dropbtn {
-    /* background-color: #3498DB;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none; */
-    cursor: pointer;
-}
-
-.dropbtn:hover,
-.dropbtn:focus {
-    background: #ddd;
-    color: black;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-    /* margin-top: 10; */
-}
-
-.dropdown-content {
-    display: none;
+.center-marker {
+    font-size: 4px;
+    color: tan;
+    background-color: red;
+    width: 4px;
+    height: 4px;
     position: absolute;
-    margin-top: 50px;
-    background-color: #f1f1f1;
-    width: 140px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    top: 65px;
+    left: 85px;
+    display: none;
+    /* z-index: 2; */
 }
 
 
-/* .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+/* Heres an example that targets browser widths between 320px and 480px, common sizes for smartphones.
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+    body {
+       background: #999;
+       width: 100%;
+    }
 }
-
-.dropdown a:hover {
-    background-color: #ddd;
-} */
-
-.dropdown-content button {
-    color: black;
-    background-color: #f1f1f1;
-    padding: 5px;
-    text-decoration: none;
-    text-align: left;
-    display: block;
-    border: none;
-    width: 140px;
-}
-
-.dropdown button:hover {
-    background-color: #ddd;
-}
-
-.show {
-    display: block;
-}
+You can find more examples here: http://css-tricks.com/snippets/css/media-queries-for-standard-devices/ */
