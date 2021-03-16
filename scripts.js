@@ -29,9 +29,9 @@ window.addEventListener('load', function() {
     }
     scaleMap();
     //Center on the Inn
-    setMapMarker("center-marker", sbMapsVars.startTop, sbMapsVars.startLeft);
+    setMapMarker("center-marker", sbMapsVars.startTop, sbMapsVars.startLeft, true);
     //Change to try to get location.  If not availible, go to center
-    setMapMarker("location-marker", sbMapsVars.mapViewCenterT, sbMapsVars.mapViewCenterL);
+    setMapMarker("location-marker", sbMapsVars.mapViewCenterT, sbMapsVars.mapViewCenterL, false);
 })
 
 
@@ -132,7 +132,7 @@ function scaleMap() {
 //  =============================
 
 
-function setMapMarker(markerId, top, left) {
+function setMapMarker(markerId, top, left, isCenter) {
     var marker = document.getElementById(markerId);
     marker.style.top = top + "px";
     marker.style.left = left + "px";
@@ -147,28 +147,30 @@ function setMapMarker(markerId, top, left) {
     // It accepts one of four values: start, center, endor nearest. By default, it is start.
     // inline property defines horizontal alignment. 
     // It also accepts one of four values: start, center, endor nearest. It defaults to nearest.
+    if (isCenter) {
+        marker.scrollIntoView({
+            behavior: 'auto',
+            block: 'center',
+            inline: 'center'
+        });
+    }
 
-    marker.scrollIntoView({
-        behavior: 'auto',
-        block: 'center',
-        inline: 'center'
-    });
 }
 
 function resetMarkers() {
     //Position so old view center is the new center
     setMapMarker("center-marker", Math.floor(sbMapsVars.mapViewCenterT * sbMapsVars.zoomFactor),
-        Math.floor(sbMapsVars.mapViewCenterL * sbMapsVars.zoomFactor));
-    resetMarker("location-marker");
+        Math.floor(sbMapsVars.mapViewCenterL * sbMapsVars.zoomFactor), true);
+    resetMarker("location-marker", false);
 }
 
-function resetMarker(markerId) {
+function resetMarker(markerId, isCenter) {
     var marker = document.getElementById(markerId);
     var top = stripPx(marker.style.top);
     var left = stripPx(marker.style.left);
     top = Math.floor((top / sbMapsVars.prevZoomFactor) * sbMapsVars.zoomFactor);
     left = Math.floor((left / sbMapsVars.prevZoomFactor) * sbMapsVars.zoomFactor);
-    setMapMarker(markerId, top, left);
+    setMapMarker(markerId, top, left, isCenter);
 }
 
 function stripPx(pxStr) {
