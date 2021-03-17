@@ -180,7 +180,7 @@ body {
     position: fixed;
     margin: 0;
     right: 50px;
-    top: 100px;
+    bottom: 100px;
     width: 30px;
     background: white;
     /* rgba(187, 186, 186, 0.2); */
