@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Location Trail</title>
+    <link rel="stylesheet" href="main.css">
+    <script src="scripts.js"></script>
+</head>
+
+<body>
+
+    <nav>
+        <h1>Record Locations</h1>
+        <button onclick="startRecording()">Start Recording</button>
+        <button onclick="endRecording()">End Recording</button>
+        <button onclick="getMyLocation()">Show My Coordinates</button>
+        <button onclick="fillTextArea()">Fill Text Area</button>
+    </nav>
+
+    <main>
+        <textarea id="txtBox" rows="25" cols="50"></textarea>
+        <br><br>
+        <p id="demo2"></p>
+        <p id="demo"></p>
+    </main>
+
+
+    <script>
+        vars = {};
+        vars.position;
+        vars.isGPSOK = false;
+        vars.isPositionOK = false;
+        var x = document.getElementById("demo");
+        var y = document.getElementById("demo2");
+
+        async function getMyLocation() {
+            x.innerHTML = "";
+            y.innerHTML = "start";
+            getLocation();
+            if (vars.isGPSOK) {
+                // Wait up to 5 seconds for position to be returned
+                var i = 0;
+                while (i < 20 && !vars.isPositionOK) {
+                    y.innerHTML = "999" + i;
+                    await sleep(250);
+                    i++;
+                }
+                if (vars.isPositionOK) {
+                    x.innerHTML = "Latitude: " + vars.position.coords.latitude +
+                        "<br>Longitude: " + vars.position.coords.longitude;
+                } else {
+                    x.innerHTML = "Position not returned.";
+                }
+            } else {
+                x.innerHTML = "Geolocation is not supported.  "
+            }
+        }
+
+        function fillTextArea() {
+            var i;
+            var text = "";
+            for (i = 0; i < 100; i++) {
+                var m = new Date();
+                text += m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate() + " " +
+                    m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds() + "   " +
+                    "Lat: " + vars.position.coords.latitude +
+                    "  Lon: " + vars.position.coords.longitude + "&#10;";
+            }
+            var tb = document.getElementById("txtBox");
+            tb.innerHTML = text;
+        }
+
+
+
+
+        function getLocation() {
+            y.innerHTML = "111";
+            vars.isPositionOK = false;
+            vars.isGPSOK = false;
+            if (navigator.geolocation) {
+                y.innerHTML = "222";
+                vars.isGPSOK = true;
+                navigator.geolocation.getCurrentPosition(savePosition);
+            }
+        }
+
+        function savePosition(position) {
+            vars.isPositionOK = true;
+            vars.position = position;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+
+</body>
+
+</html>
