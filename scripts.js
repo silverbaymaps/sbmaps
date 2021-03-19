@@ -5,8 +5,8 @@ sbMapsVars.campusMapWidth = 2048;
 sbMapsVars.campusMapHeight = 1325;
 sbMapsVars.startTop = 685;
 sbMapsVars.startLeft = 865;
-sbMapsVars.mapViewCenterT = 685;
-sbMapsVars.mapViewCenterL = 865;
+sbMapsVars.mapViewCenterT = 692;
+sbMapsVars.mapViewCenterL = 944;
 
 
 
@@ -40,7 +40,7 @@ window.addEventListener('load', function() {
 //  =============================
 
 function hamburgerClick() {
-    var x = document.getElementById("myLinks");
+    var x = document.getElementById("menu");
     if (x.style.display === "block") {
         x.style.display = "none";
     } else {
@@ -53,7 +53,7 @@ window.onclick = function(event) {
         // inside  alert('inside');
     } else {
         // outside  alert('outside');
-        var x = document.getElementById("myLinks");
+        var x = document.getElementById("menu");
         if (x.style.display === "block") {
             x.style.display = "none";
         }

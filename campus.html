@@ -17,7 +17,7 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <span class="pageheader">5 Silver Bay YMCA Campus</span>
+            <span class="pageheader">Silver Bay YMCA Campus</span>
             <div class="zoom-btns">
                 <a href="javascript:void(0);" class="zoomout-btn" onclick="zoomOutClick()">
                     <i class="fas fa-plus fa-1x"></i>
@@ -25,17 +25,36 @@
                 <a href="javascript:void(0);" class="zoomin-btn" onclick="zoomInClick()">
                     <i class="fas fa-minus  fa-1x"></i>
                 </a>
-                <!-- <a class="zoomout-btn" onclick="zoomOutClick()">
-                    <span>+</span>
-                </a>
-                <a class="zoomin-btn" onclick="zoomInClick()">
-                    <span>-</span>
-                </a> -->
             </div>
-            <div id="myLinks">
-                <a class="dropdown-content" href="#news">News</a>
-                <a class="dropdown-content" href="#contact">Contact</a>
-                <a class="dropdown-content" href="#about">About</a>
+            <div id="menu" class="menu-div">
+                <table class="menu-table">
+                    <tbody class="menu-tbody">
+                        <tr>
+                            <td><a>+ Meeting Places</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Jill</a></td>
+                                        <td><a>Smith</a></td>
+                                        <td><a>50</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Eve</a></td>
+                                        <td><a>Jackson</a></td>
+                                        <td><a>94</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>John</a></td>
+                                        <td><a>Doe</a></td>
+                                        <td><a>80</a></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <!-- <a href="javascript:void(0);" class="zoomout-icon" onclick="zoomOutClick()">
                 <i class="fas fa-plus"></i>
@@ -44,14 +63,14 @@
                 <i class="fas fa-minus"></i>
             </a> -->
             <a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerClick()">
-                <i class="fa fa-bars"></i>
+                <i class="fa fa-bars fa-2x"></i>
             </a>
         </div>
     </nav>
 
     <main>
         <div id="mapdiv" class="map-div">
-            <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map">
+            <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map" onclick="clickMapImage(event);">
             <span id="center-marker" class="center-marker">&nbsp</span>
             <span id="location-marker" class="location-marker map-marker">
                 <i class="fas fa-map-marker-alt fa-3x"></i>
@@ -73,6 +92,11 @@
 
 
     <script>
+        function clickMapImage(event) {
+            var xCoordinate = event.offsetX;
+            var yCoordinate = event.offsetY;
+            window.alert("x,y" + xCoordinate + ',' + yCoordinate);
+        }
     </script>
 
 </body>

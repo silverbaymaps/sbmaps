@@ -155,15 +155,39 @@ body {
     ========================================
 */
 
+.pageheader {
+    padding: 24px 16px;
+    text-decoration: none;
+    font-size: 24px;
+    display: block;
+    /* background-color: #4CAF50;
+    color: white; */
+    background: rgb(115, 118, 125);
+    color: white;
+    width: 80%;
+    text-align: center;
+}
+
+.topnav a.hamburger-icon {
+    /* background: black; */
+    display: block;
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    /* width: 50px; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .topnav {
     overflow: hidden;
-    background-color: #333;
+    background: rgb(115, 118, 125);
     position: fixed;
     width: 100%;
     top: 0;
 }
 
-.topnav #myLinks {
+.topnav #menu {
     display: none;
 }
 
@@ -173,6 +197,50 @@ body {
     text-decoration: none;
     font-size: 17px;
     display: block;
+}
+
+.menu-div a {
+    color: white;
+    text-decoration: none;
+    padding: 6px 14px;
+    font-size: 18px;
+    display: block;
+}
+
+.menu-div {
+    width: 100%;
+    padding-top: 12px;
+    border-top: 4px solid rgb(59, 173, 139);
+}
+
+.menu-table {
+    width: 90%;
+    padding-left: 5px;
+    padding-right: 30px;
+    margin-left: 25px;
+    margin-left: 25px;
+}
+
+.menu-tbody {
+    color: white;
+}
+
+.menu-div tr {
+    width: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 30px;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+
+.menu-div td {
+    width: auto;
+}
+
+.menu-div td.submenu-leftitem {
+    padding-left: 30px;
 }
 
 .zoom-btns {
@@ -251,32 +319,8 @@ body {
     margin-right: auto;
 } */
 
-.topnav a.hamburger-icon {
-    background: black;
-    display: block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 10%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .topnav a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-.pageheader {
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 20px;
-    display: block;
-    /* background-color: #4CAF50;
-    color: white; */
-    background: #333;
-    color: #648880;
-    width: 80%;
+    background-color: rgba(106, 109, 116);
 }
 
 
@@ -287,7 +331,7 @@ body {
 */
 
 .map-div {
-    margin-top: 40px;
+    margin-top: 60px;
     /* width: 1024; */
     width: 2048px;
     /*  height: 662; */
