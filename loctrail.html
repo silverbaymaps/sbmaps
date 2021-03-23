@@ -13,14 +13,17 @@
 
     <nav>
         <h1>Record Locations</h1>
-        <button style="height: 40px" onclick="startRecording()">Start Recording</button>
-        <button style="height: 40px" onclick="endRecording()">End Recording</button>
+        <!-- <button style="height: 40px" onclick="startRecording()">Start Recording</button>
+        <button style="height: 40px" onclick="endRecording()">End Recording</button> -->
         <button style="height: 40px" onclick="getMyLocation()">Show My Coordinates</button>
-        <button style="height: 40px" onclick="fillTextArea()">Fill Text Area</button>
+        <!-- <button style="height: 40px" onclick="fillTextArea()">Fill Text Area</button>
+        <button style="height: 40px" onclick="calcDistances()">Calculate Distances</button> -->
+        <span>   Id: </span>
+        <input type="text" id="idTx"><br><br>
     </nav>
 
     <main>
-        <textarea id="txtBox" rows="25" cols="50"></textarea>
+        <textarea id="txtBox" rows="25" cols="75"></textarea>
         <br><br>
         <p id="demo2"></p>
         <p id="demo"></p>
@@ -36,6 +39,7 @@
         var x = document.getElementById("demo");
         var y = document.getElementById("demo2");
         var tb = document.getElementById("txtBox");
+        var idTx = document.getElementById("idTx");
 
 
         async function startRecording() {
@@ -84,8 +88,8 @@
 
 
         async function getMyLocation() {
-            x.innerHTML = "";
-            y.innerHTML = "start";
+            //x.innerHTML = "";
+            //y.innerHTML = "start";
             getLocation();
             if (vars.isGPSOK) {
                 // Wait up to 5 seconds for position to be returned
@@ -96,13 +100,13 @@
                     i++;
                 }
                 if (vars.isPositionOK) {
-                    x.innerHTML = "Latitude: " + vars.position.coords.latitude +
-                        "<br>Longitude: " + vars.position.coords.longitude;
+                    tb.innerHTML += "Lat: " + vars.position.coords.latitude +
+                        "  -  Lon: " + vars.position.coords.longitude + "    ID: " + idTx.value + "&#10;";
                 } else {
-                    x.innerHTML = "Position not returned.";
+                    x.innerHTML = "Position not returned. &#10;";
                 }
             } else {
-                x.innerHTML = "Geolocation is not supported.  "
+                x.innerHTML = "Geolocation is not supported.  &#10;"
             }
         }
 
@@ -140,6 +144,107 @@
 
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+
+        var campusPointsArray = [{
+            name: "Archery Shack by rd",
+            lat: 43.6978813,
+            lon: -73.5027607,
+            top: 391,
+            left: 323
+        }, {
+            name: "Boltz N",
+            lat: 43.6991145,
+            lon: -73.50270361,
+            top: 773,
+            left: 88
+        }, {
+            name: "Gym NE",
+            lat: 43.6929426,
+            lon: -73.5056323,
+            top: 503,
+            left: 1576
+        }, {
+            name: "Brooks Pavilion SW",
+            lat: 43.6917651,
+            lon: -73.502765,
+            top: 117,
+            left: 1751
+        }, {
+            name: "Service Rd NE",
+            lat: 43.6917445,
+            lon: -73.5044234,
+            top: 1013,
+            left: 1751
+        }, {
+            name: "Hillcrest SE",
+            lat: 43.6958738,
+            lon: -73.5069874,
+            top: 953,
+            left: 771
+        }, {
+            name: "Morris in road",
+            lat: 43.6972132,
+            lon: -73.5059005,
+            top: 706,
+            left: 716
+        }, {
+            name: "Collins Door",
+            lat: 43.6949791,
+            lon: -73.5053355,
+            top: 574,
+            left: 1068
+        }];
+
+        var ourHouse = {
+            name: "Our Housw",
+            lat: 43.697905,
+            lon: -73.502727,
+            top: 274,
+            left: 402
+        }
+
+
+
+        function calcDistances() {
+            tb.innerHTML = "";
+            for (i = 0; i < (campusPointsArray.length - 1); i++) {
+                tb.innerHTML += campusPointsArray[i].name + "&#10;";
+                for (j = i + 1; j < campusPointsArray.length; j++) {
+                    var locDist = calcDist(i, j);
+                    var ptDist = calcPtDist(i, j);
+                    var ftPerPx = (locDist / ptDist);
+                    ftPerPx = ftPerPx.toFixed(3);
+                    tb.innerHTML += "     " + ftPerPx + "ftPerPx    " + locDist + "ft   " + ptDist + "pts   " + campusPointsArray[j].name + "&#10;";
+                }
+            }
+        }
+
+        function calcDist(i, j) {
+            //alertPoint(i);
+            //alertPoint(j);
+            var latDist = (Math.abs(campusPointsArray[i].lat - campusPointsArray[j].lat)) * 364521.24;
+            var lonDist = (Math.abs(campusPointsArray[i].lon - campusPointsArray[j].lon)) * 264478.52;
+            var locDist = Math.floor(Math.sqrt((latDist * latDist) + (lonDist * lonDist)));
+            //window.alert("latDist: " + latDist + ' - ' + "lonDist: " + lonDist + ' - ' + "locDist: " + locDist);
+            return locDist;
+        }
+
+        function calcPtDist(i, j) {
+            //alertPoint(i);
+            //alertPoint(j);
+            var topDist = (Math.abs(campusPointsArray[i].top - campusPointsArray[j].top));
+            var leftDist = (Math.abs(campusPointsArray[i].left - campusPointsArray[j].left));
+            var ptDist = Math.floor(Math.sqrt((topDist * topDist) + (leftDist * leftDist)));
+            //window.alert("topDist: " + topDist + ' - ' + "leftDist: " + leftDist + ' - ' + "ptDist: " + ptDist);
+            return ptDist;
+        }
+
+        function alertPoint(i) {
+            window.alert("Name: " + campusPointsArray[i].name + " - Latitude: " + campusPointsArray[i].lat +
+                "  -  Longitude: " + campusPointsArray[i].lon + "  -  Top: " + campusPointsArray[i].top +
+                "  -  Left: " + campusPointsArray[i].left);
         }
     </script>
 

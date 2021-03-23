@@ -8,6 +8,7 @@
     <title>Silver Bay Campus Map</title>
     <link rel="stylesheet" href="main.css">
     <script src="https://kit.fontawesome.com/5894bd7752.js" crossorigin="anonymous"></script>
+    <script src="campusLocs.js"></script>
     <script src="scripts.js"></script>
 </head>
 
@@ -18,6 +19,9 @@
         <!-- Top Navigation Menu -->
         <div class="topnav">
             <span class="pageheader">Silver Bay YMCA Campus</span>
+            <a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerClick()">
+                <i class="fa fa-bars fa-2x"></i>
+            </a>
             <div class="zoom-btns">
                 <a href="javascript:void(0);" class="zoomout-btn" onclick="zoomOutClick()">
                     <i class="fas fa-plus fa-1x"></i>
@@ -30,52 +34,94 @@
                 <table class="menu-table">
                     <tbody class="menu-tbody">
                         <tr>
-                            <td><a>+ Meeting Places</a></td>
+                            <td><a id="meeting-toggle" class="submenu-toggle" onclick="toggleSubmenu('meeting-toggle', 'meeting-submenu');">+ Meeting Places</a></td>
                         </tr>
                         <tr>
                             <td>
-                                <table>
+                                <table id="meeting-submenu" class="submenu">
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Jill</a></td>
-                                        <td><a>Smith</a></td>
-                                        <td><a>50</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boyd')">Boyd Center</a></td>
                                     </tr>
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Eve</a></td>
-                                        <td><a>Jackson</a></td>
-                                        <td><a>94</a></td>
+                                        <td class="submenu-leftitem"><a>Morse Hall</a></td>
                                     </tr>
                                     <tr>
-                                        <td class="submenu-leftitem"><a>John</a></td>
-                                        <td><a>Doe</a></td>
-                                        <td><a>80</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('SpiritualLife')">Spiritual Life Tent</a></td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
+                        <tr>
+                            <td><a id="actvs-toggle" class="submenu-toggle" onclick="toggleSubmenu('actvs-toggle', 'actvs-submenu');">+ Activities</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table id="actvs-submenu" class="submenu">
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Archery</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Boat House</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Slim Point Beach</a></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a id="accm-toggle" class="submenu-toggle" onclick="toggleSubmenu('accm-toggle', 'accm-submenu');">+ Accomodations</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table id="accm-submenu" class="submenu">
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Boyd Center</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>The Inn</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Bayview</a></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a id="cabins-toggle" class="submenu-toggle" onclick="toggleSubmenu('cabins-toggle', 'cabins-submenu');">+ Cabins</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table id="cabins-submenu" class="submenu">
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Oak</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Nassau</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a>Maple</a></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a>Trail Map</a></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <!-- <a href="javascript:void(0);" class="zoomout-icon" onclick="zoomOutClick()">
-                <i class="fas fa-plus"></i>
-            </a>
-            <a href="javascript:void(0);" class="zoomin-icon" onclick="zoomInClick()">
-                <i class="fas fa-minus"></i>
-            </a> -->
-            <a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerClick()">
-                <i class="fa fa-bars fa-2x"></i>
-            </a>
         </div>
     </nav>
 
     <main>
         <div id="mapdiv" class="map-div">
-            <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map" onclick="clickMapImage(event);">
+            <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map" ondblclick="doubleClickMapImage(event);">
             <span id="center-marker" class="center-marker">&nbsp</span>
             <span id="location-marker" class="location-marker map-marker">
                 <i class="fas fa-map-marker-alt fa-3x"></i>
             </span>
-            <span id="marker1" class="marker1 map-marker">
+            <span id="place-marker" class="place-marker map-marker">
                 <i class="fas fa-map-marker-alt fa-3x"></i>
             </span>
             <span id="marker2" class="marker2 map-marker">
@@ -88,15 +134,20 @@
                 <i class="fas fa-map-marker-alt fa-3x"></i>
             </span>
         </div>
+        <div id="tools" class="marker-tool">
+            <h3>Marker Location Tool</h3>
+            <br>
+            <span>Top:</span>
+            <input type="text" id="locY" class="tool-input"><br><br>
+            <span>Left:</span>
+            <input type="text" id="locX" class="tool-input"><br><br>
+            <button type="button" class="tool-button" onclick="placeMarkerClick()">Place Marker</button>
+            <button type="button" class="tool-button" onclick="placeMarkerAdjust()">Adjust</button>
+        </div>
     </main>
 
 
     <script>
-        function clickMapImage(event) {
-            var xCoordinate = event.offsetX;
-            var yCoordinate = event.offsetY;
-            window.alert("x,y" + xCoordinate + ',' + yCoordinate);
-        }
     </script>
 
 </body>

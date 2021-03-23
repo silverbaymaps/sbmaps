@@ -30,41 +30,23 @@ window.addEventListener('load', function() {
     scaleMap();
     //Center on the Inn
     setMapMarker("center-marker", sbMapsVars.startTop, sbMapsVars.startLeft, true);
-    //Change to try to get location.  If not availible, go to center
-    setMapMarker("location-marker", sbMapsVars.mapViewCenterT, sbMapsVars.mapViewCenterL, false);
+
+    //Check if marker tool should be rendered
+    var url = new URL(window.location.href);
+    var toolparm = url.searchParams.get("tool");
+    if (toolparm === "1") {
+        //window.alert("Marker Tool is availible");
+    } else {
+        var x = document.getElementById("tools");
+        x.style.display = "none";
+    }
 })
 
-
-//  =============================
-//  Dropdown functions
-//  =============================
-
-function hamburgerClick() {
-    var x = document.getElementById("menu");
-    if (x.style.display === "block") {
-        x.style.display = "none";
-    } else {
-        x.style.display = "block";
-    }
-}
-
-window.onclick = function(event) {
-    if (document.getElementsByClassName('hamburger-icon')[0].contains(event.target)) {
-        // inside  alert('inside');
-    } else {
-        // outside  alert('outside');
-        var x = document.getElementById("menu");
-        if (x.style.display === "block") {
-            x.style.display = "none";
-        }
-    }
-}
 
 
 //  =============================
 //  Zoom functions
 //  =============================
-
 
 
 
@@ -131,6 +113,20 @@ function scaleMap() {
 //  Map Marker functions
 //  =============================
 
+function placeMarker(locName) {
+    var top = -1;
+    var left = -1;
+    for (i = 0; i < campusPlaces.length; i++) {
+        if (campusPlaces[i][0] === locName) {
+            top = campusPlaces[i][1];
+            left = campusPlaces[i][2];
+            break;
+        }
+    }
+    if (top != -1) {
+        setMapMarker("place-marker", top, left, true)
+    }
+}
 
 function setMapMarker(markerId, top, left, isCenter) {
     var marker = document.getElementById(markerId);
@@ -196,3 +192,101 @@ function showPosition(position) {
     window.alert("Latitude: " + position.coords.latitude + "  -  " +
         "Longitude: " + position.coords.longitude);
 }
+
+
+//  =============================
+//  Menu functions
+//  =============================
+
+function hamburgerClick() {
+    var x = document.getElementById("menu");
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        x.style.display = "block";
+        //close all the submenus
+        var submenus = document.getElementsByClassName('submenu');
+        for (i = 0; i < submenus.length; i++) {
+            submenus[i].style.display = "none";
+        }
+        //Put '+' in front of each menu toggle button
+        var toggles = document.getElementsByClassName('submenu-toggle');
+        for (i = 0; i < toggles.length; i++) {
+            toggles[i].innerHTML = "+" + toggles[i].innerHTML.substring(1);
+        }
+    }
+}
+
+
+function toggleSubmenu(toggleId, submenuId) {
+    var toggleBtn = document.getElementById(toggleId);
+    var submenu = document.getElementById(submenuId);
+    var toggleStr = toggleBtn.innerHTML;
+    var char1 = toggleStr.substring(0, 1);
+    if (char1 === "+") {
+        //Expand the submenu
+        char1 = "-";
+        submenu.style.display = "block";
+    } else {
+        //Contract the submenu
+        char1 = "+";
+        submenu.style.display = "none";
+    }
+    toggleBtn.innerHTML = char1 + toggleStr.substring(1);
+}
+
+
+window.onclick = function(event) {
+    var inSubmenuToggle = false;
+    var submenuToggles = document.getElementsByClassName('submenu-toggle');
+    for (i = 0; i < submenuToggles.length; i++) {
+        if (submenuToggles[i].contains(event.target)) {
+            inSubmenuToggle = true;
+        }
+    }
+    if (inSubmenuToggle || document.getElementsByClassName('hamburger-icon')[0].contains(event.target)) {
+        // inside  alert('inside');
+    } else {
+        // outside  alert('outside');
+        var x = document.getElementById("menu");
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        }
+    }
+}
+
+
+//  =============================
+//  Development Tools
+//  =============================
+
+
+function doubleClickMapImage(event) {
+    var xCoordinate = event.offsetX;
+    var yCoordinate = event.offsetY;
+    //window.alert("x,y" + xCoordinate + ',' + yCoordinate);
+    var x = document.getElementById("locX");
+    var y = document.getElementById("locY");
+    x.value = event.offsetX;
+    y.value = event.offsetY;
+}
+
+
+function placeMarkerClick() {
+    var x = document.getElementById("locX");
+    var y = document.getElementById("locY");
+    setMapMarker("location-marker", y.value, x.value, false);
+}
+
+function placeMarkerAdjust() {
+    var x = document.getElementById("locX");
+    var y = document.getElementById("locY");
+    x.value = Math.floor(x.value) - 17;
+    y.value = Math.floor(y.value) + 13;
+}
+
+//At Silver Bay road in front of Morse: 43.697288770406516, -73.50558769802814
+//At latitude 43.697 (Silver Bay)
+//     Length Of A Degree Of Latitude In Feet  equals 364521.24 feet
+//     Length Of A Degree Of Longitude In Feet equals 264478.52 feet
+//
