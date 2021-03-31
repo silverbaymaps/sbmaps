@@ -7,7 +7,9 @@ sbMapsVars.startTop = 685;
 sbMapsVars.startLeft = 865;
 sbMapsVars.mapViewCenterT = 692;
 sbMapsVars.mapViewCenterL = 944;
-
+sbMapsVars.locMarkerId = "loc-img"; //If changing this, change boolean below  -  loc_marker or loc-img
+sbMapsVars.islocImage = true;
+sbMapsVars.campusTopMargin = 60;
 
 
 //  =============================
@@ -40,6 +42,28 @@ window.addEventListener('load', function() {
         var x = document.getElementById("tools");
         x.style.display = "none";
     }
+
+    //Adjust the campus points for the top margin
+    for (i = 0; i < quadrantArray.length; i++) {
+        var quadrant = quadrantArray[i];
+        for (j = 0; j < quadrant.points.length; j++) {
+            var point = quadrant.points[j];
+            point.top += sbMapsVars.campusTopMargin;
+        }
+    }
+
+    // var canvas = document.getElementById("loc-canvas");
+    // var ctx = canvas.getContext("2d");
+
+    // draw rectangle
+    // context.beginPath();
+    // context.rect(5, 10, 20, 50);
+    // context.fillStyle = "blue";
+    // context.fill();
+    // ctx.lineWidth = "4";
+    // ctx.strokeStyle = "green";
+    // ctx.rect(20, 20, 50, 50);
+    // ctx.stroke();
 })
 
 
@@ -124,8 +148,34 @@ function placeMarker(locName) {
         }
     }
     if (top != -1) {
+        top = adjustMarkerTop("place-marker", top);
+        left = adjustMarkerLeft("place-marker", left);
+        top *= sbMapsVars.zoomFactor;
+        left *= sbMapsVars.zoomFactor;
         setMapMarker("place-marker", top, left, true)
     }
+}
+
+function adjustMarkerTop(markerId, top) {
+    var marker = document.getElementById(markerId);
+    //window.alert("11top1=" + top);
+    top += sbMapsVars.campusTopMargin;
+    //window.alert("11top2=" + top);
+    //window.alert("offsetHeight=" + marker.offsetHeight);
+    //var offset = parseInt(marker.offsetHeight);
+    top -= parseInt(marker.offsetHeight);
+    //window.alert("11top4=" + top);
+    return top;
+}
+
+function adjustMarkerLeft(markerId, left) {
+    var marker = document.getElementById(markerId);
+    //window.alert("11top1=" + top);
+    //window.alert("offsetHeight=" + marker.offsetHeight);
+    //var offset = parseInt(marker.offsetHeight);
+    left -= Math.floor(parseInt(marker.offsetWidth) / 2);
+    //window.alert("11top4=" + top);
+    return left;
 }
 
 function setMapMarker(markerId, top, left, isCenter) {
@@ -157,7 +207,9 @@ function resetMarkers() {
     //Position so old view center is the new center
     setMapMarker("center-marker", Math.floor(sbMapsVars.mapViewCenterT * sbMapsVars.zoomFactor),
         Math.floor(sbMapsVars.mapViewCenterL * sbMapsVars.zoomFactor), true);
-    resetMarker("location-marker", false);
+    resetMarker("place-marker", false);
+    resetMarker("loc-marker2", false);
+    resetMarker(sbMapsVars.locMarkerId, false);
 }
 
 function resetMarker(markerId, isCenter) {
@@ -267,24 +319,126 @@ function doubleClickMapImage(event) {
     //window.alert("x,y" + xCoordinate + ',' + yCoordinate);
     var x = document.getElementById("locX");
     var y = document.getElementById("locY");
-    x.value = event.offsetX;
-    y.value = event.offsetY;
+    var z = document.getElementById("LocTL");
+    x.value = Math.floor(event.offsetX);
+    y.value = Math.floor(event.offsetY);
+    z.value = "top=" + event.offsetY + ", left=" + event.offsetX
 }
 
 
 function placeMarkerClick() {
     var x = document.getElementById("locX");
     var y = document.getElementById("locY");
-    setMapMarker("location-marker", y.value, x.value, false);
+    setMapMarker("center-marker", y.value, x.value, false);
+    var top = parseInt(y.value);
+    top = adjustMarkerTop("place-marker", top);
+    var left = parseInt(x.value);
+    left = adjustMarkerLeft("place-marker", left);
+    setMapMarker("place-marker", top, left, false);
 }
 
 function placeMarkerAdjust() {
     var x = document.getElementById("locX");
     var y = document.getElementById("locY");
+    var z = document.getElementById("LocTL");
     x.value = Math.floor(x.value) - 17;
     y.value = Math.floor(y.value) + 13;
 }
 
+function showLocation() {
+    var str = document.getElementById("LocTL").value;
+    var idx = str.indexOf(",");
+    var lat = str.substring(0, idx);
+    var idx = str.indexOf("-");
+    var lon = str.substring(idx);
+    //window.alert("Latitude: '" + lat + "'  -  " + "Longitude: '" + lon + "'");
+
+
+    //Find the quadrant for this location
+    var quadrant = null;
+    for (i = 0; i < quadrantArray.length; i++) {
+        var q = quadrantArray[i];
+        if (lat <= q.nBorder && lat >= q.sBorder &&
+            lon >= q.wBorder && lon <= q.eBorder) {
+            quadrant = q;
+            break;
+        }
+    }
+    if (quadrant === null) {
+        window.alert("Your location is not on this map.");
+    }
+    //window.alert("Quadrant = " + quadrant.id);
+
+    //Find the closest point in the quadrant
+    var dist = 99999;
+    var closestPoint;
+    for (i = 0; i < quadrant.points.length; i++) {
+        var point = quadrant.points[i];
+        var pointDist = computeDistanceBetweenPts(quadrant, lat, lon, point.lat, point.lon);
+        if (dist > pointDist) {
+            dist = pointDist;
+            closestPoint = point;
+        }
+        //window.alert("Point = " + point.id + ", dist = " + pointDist);
+    }
+    //window.alert("Closest Point = " + closestPoint.id);
+    setMapMarker("center-marker", closestPoint.top, closestPoint.left, true);
+
+    var locTop = closestPoint.top + computeTopDiffFromPoint(quadrant, closestPoint.lon, lon);
+    var locLeft = closestPoint.left + computeLeftDiffFromPoint(quadrant, closestPoint.lat, lat);
+    setMapMarker("loc-marker2", locTop, locLeft, false);
+    locTop = adjustLocTop(sbMapsVars.locMarkerId, locTop);
+    locLeft = adjustLocLeft(sbMapsVars.locMarkerId, locLeft);
+    locTop *= sbMapsVars.zoomFactor;
+    locLeft *= sbMapsVars.zoomFactor;
+    //window.alert("aaa");  
+    //window.alert("bbb");
+    setMapMarker(sbMapsVars.locMarkerId, locTop, locLeft, false);
+    //window.alert("ccc");
+}
+
+function computeDistanceBetweenPts(quadrant, lat1, lon1, lat2, lon2) {
+    var latPx = Math.abs(lat1 - lat2) * quadrant.pxPerLat;
+    var lonPx = Math.abs(lon1 - lon2) * quadrant.pxPerLon;
+    var pxDist = Math.sqrt((latPx * latPx) + (lonPx * lonPx));
+    return pxDist;
+}
+
+function computeTopDiffFromPoint(quadrant, ptLon, locLon) {
+    return (ptLon - locLon) * quadrant.pxPerLon;
+}
+
+function computeLeftDiffFromPoint(quadrant, ptLat, locLat) {
+    return (ptLat - locLat) * quadrant.pxPerLat;
+}
+
+function adjustLocTop(markerId, top) {
+    var marker = document.getElementById(markerId);
+    //window.alert("11top1=" + top);
+    //top += sbMapsVars.campusTopMargin;
+    //window.alert("11top2=" + top);
+    //window.alert("offsetHeight=" + marker.offsetHeight);
+    //var offset = parseInt(marker.offsetHeight);
+    if (sbMapsVars.islocImage) {
+        //Using an image, center it
+        top -= Math.floor(parseInt(marker.offsetHeight) / 2);
+    } else {
+        //Using a marker icon, point should be the bottom
+        top -= parseInt(marker.offsetHeight);
+    }
+    //window.alert("11top4=" + top);
+    return top;
+}
+
+function adjustLocLeft(markerId, left) {
+    var marker = document.getElementById(markerId);
+    //window.alert("11top1=" + top);
+    //window.alert("offsetHeight=" + marker.offsetHeight);
+    //var offset = parseInt(marker.offsetHeight);
+    left -= Math.floor(parseInt(marker.offsetWidth) / 2);
+    //window.alert("11top4=" + top);
+    return left;
+}
 //At Silver Bay road in front of Morse: 43.697288770406516, -73.50558769802814
 //At latitude 43.697 (Silver Bay)
 //     Length Of A Degree Of Latitude In Feet  equals 364521.24 feet

@@ -324,29 +324,26 @@ body {
 
 .map-marker {
     position: absolute;
-    top: 65px;
-    left: 85px;
-    display: none;
-}
-
-.location-marker {
-    color: rgba(30, 144, 255, .80);
+    top: 0px;
+    left: 0px;
+    /* display: none; */
 }
 
 .place-marker {
     color: rgba(255, 0, 0, .80);
 }
 
-.marker2 {
-    color: rgba(0, 255, 0, .80);
+.loc_marker {
+    color: rgba(0, 140, 255, 0.80);
 }
 
-.marker3 {
-    color: rgba(255, 255, 0, 0.80);
-}
-
-.marker4 {
-    color: rgba(255, 0, 255, 0.8);
+.loc-img {
+    position: absolute;
+    /* display: none; */
+    top: 0px;
+    left: 0px;
+    width: 25px;
+    height: 25px;
 }
 
 .center-marker {
@@ -362,6 +359,17 @@ body {
     /* z-index: 2; */
 }
 
+.loc-marker2 {
+    font-size: 4px;
+    color: tan;
+    background-color: blue;
+    width: 4px;
+    height: 4px;
+    position: absolute;
+    display: none;
+    /* z-index: 2; */
+}
+
 .marker-tool {
     padding: 5px;
     margin: 5px;
@@ -370,7 +378,7 @@ body {
     margin: 0;
     right: 100px;
     bottom: 100px;
-    width: 150px;
+    width: 200px;
     background: white;
     font-size: 12px;
     /* rgba(187, 186, 186, 0.2); */
@@ -382,8 +390,13 @@ body {
     width: 40px;
 }
 
+.tool-input2 {
+    width: 175px;
+}
+
 .tool-button {
     padding: 5px;
+    margin: 5px;
 }
 
 

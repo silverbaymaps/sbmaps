@@ -8,7 +8,7 @@
     <title>Silver Bay Campus Map</title>
     <link rel="stylesheet" href="main.css">
     <script src="https://kit.fontawesome.com/5894bd7752.js" crossorigin="anonymous"></script>
-    <script src="campusLocs.js"></script>
+    <script src="campusPoints.js"></script>
     <script src="scripts.js"></script>
 </head>
 
@@ -58,7 +58,7 @@
                             <td>
                                 <table id="actvs-submenu" class="submenu">
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Archery</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Archery')">Archery</a></td>
                                     </tr>
                                     <tr>
                                         <td class="submenu-leftitem"><a>Boat House</a></td>
@@ -94,13 +94,19 @@
                             <td>
                                 <table id="cabins-submenu" class="submenu">
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Oak</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boltz')">Boltz</a></td>
                                     </tr>
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Nassau</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('CharterOak')">Charter Oak</a></td>
                                     </tr>
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Maple</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Hartford')">Hartford</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Nassau')">Nassau</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Willow')">Willow</a></td>
                                     </tr>
                                 </table>
                             </td>
@@ -116,23 +122,20 @@
 
     <main>
         <div id="mapdiv" class="map-div">
-            <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map" ondblclick="doubleClickMapImage(event);">
+            <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map" onclick="doubleClickMapImage(event);">
             <span id="center-marker" class="center-marker">&nbsp</span>
-            <span id="location-marker" class="location-marker map-marker">
-                <i class="fas fa-map-marker-alt fa-3x"></i>
-            </span>
+            <span id="loc-marker2" class="loc-marker2">&nbsp</span>
             <span id="place-marker" class="place-marker map-marker">
-                <i class="fas fa-map-marker-alt fa-3x"></i>
+                <i id="place-icon" class="fas fa-map-marker-alt fa-3x"></i>
             </span>
-            <span id="marker2" class="marker2 map-marker">
-                <i class="fas fa-map-marker-alt fa-3x"></i>
+            <span id="loc_marker" class="loc_marker map-marker">
+                <i id="loc-icon" class="fas fa-map-marker-alt fa-3x"></i>
             </span>
-            <span id="marker3" class="marker3 map-marker">
-                <i class="fas fa-map-marker-alt fa-3x"></i>
-            </span>
-            <span id="marker4" class="marker4 map-marker">
-                <i class="fas fa-map-marker-alt fa-3x"></i>
-            </span>
+            <div>
+                <img id="loc-img" class="loc-img" src="BlueDot.gif" alt="location marker">
+            </div>
+
+
         </div>
         <div id="tools" class="marker-tool">
             <h3>Marker Location Tool</h3>
@@ -141,8 +144,11 @@
             <input type="text" id="locY" class="tool-input"><br><br>
             <span>Left:</span>
             <input type="text" id="locX" class="tool-input"><br><br>
+            <span>Loc:</span>
+            <input type="text" id="LocTL" class="tool-input2"><br><br>
             <button type="button" class="tool-button" onclick="placeMarkerClick()">Place Marker</button>
             <button type="button" class="tool-button" onclick="placeMarkerAdjust()">Adjust</button>
+            <button type="button" class="tool-button" onclick="showLocation()">Show Location</button>
         </div>
     </main>
 

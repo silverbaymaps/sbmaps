@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>Location Trail</title>
     <link rel="stylesheet" href="main.css">
+    <script src="campusPoints.js"></script>
     <script src="scripts.js"></script>
 </head>
 
@@ -15,9 +16,9 @@
         <h1>Record Locations</h1>
         <!-- <button style="height: 40px" onclick="startRecording()">Start Recording</button>
         <button style="height: 40px" onclick="endRecording()">End Recording</button> -->
-        <button style="height: 40px" onclick="getMyLocation()">Show My Coordinates</button>
-        <!-- <button style="height: 40px" onclick="fillTextArea()">Fill Text Area</button>
-        <button style="height: 40px" onclick="calcDistances()">Calculate Distances</button> -->
+        <button style="height: 40px" onclick="getMyLocation()">My Coordinates</button>
+        <button style="height: 40px" onclick="calcLatitudeDistances()">Latitude Distances</button>
+        <button style="height: 40px" onclick="calcLongitudeDistances()">Longitude Distances</button>
         <span>   Id: </span>
         <input type="text" id="idTx"><br><br>
     </nav>
@@ -110,21 +111,6 @@
             }
         }
 
-        function fillTextArea() {
-            var i;
-            var text = "";
-            for (i = 0; i < 100; i++) {
-                var m = new Date();
-                text += m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate() + " " +
-                    m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds() + "   " +
-                    "Lat: " + vars.position.coords.latitude +
-                    "  Lon: " + vars.position.coords.longitude + "&#10;";
-            }
-            tb.innerHTML = text;
-        }
-
-
-
 
         function getLocation() {
             y.innerHTML = "111";
@@ -147,106 +133,95 @@
         }
 
 
-        var campusPointsArray = [{
-            name: "Archery Shack by rd",
-            lat: 43.6978813,
-            lon: -73.5027607,
-            top: 391,
-            left: 323
-        }, {
-            name: "Boltz N",
-            lat: 43.6991145,
-            lon: -73.50270361,
-            top: 773,
-            left: 88
-        }, {
-            name: "Gym NE",
-            lat: 43.6929426,
-            lon: -73.5056323,
-            top: 503,
-            left: 1576
-        }, {
-            name: "Brooks Pavilion SW",
-            lat: 43.6917651,
-            lon: -73.502765,
-            top: 117,
-            left: 1751
-        }, {
-            name: "Service Rd NE",
-            lat: 43.6917445,
-            lon: -73.5044234,
-            top: 1013,
-            left: 1751
-        }, {
-            name: "Hillcrest SE",
-            lat: 43.6958738,
-            lon: -73.5069874,
-            top: 953,
-            left: 771
-        }, {
-            name: "Morris in road",
-            lat: 43.6972132,
-            lon: -73.5059005,
-            top: 706,
-            left: 716
-        }, {
-            name: "Collins Door",
-            lat: 43.6949791,
-            lon: -73.5053355,
-            top: 574,
-            left: 1068
-        }];
 
-        var ourHouse = {
-            name: "Our Housw",
-            lat: 43.697905,
-            lon: -73.502727,
-            top: 274,
-            left: 402
-        }
-
-
-
-        function calcDistances() {
-            tb.innerHTML = "";
-            for (i = 0; i < (campusPointsArray.length - 1); i++) {
-                tb.innerHTML += campusPointsArray[i].name + "&#10;";
-                for (j = i + 1; j < campusPointsArray.length; j++) {
-                    var locDist = calcDist(i, j);
-                    var ptDist = calcPtDist(i, j);
-                    var ftPerPx = (locDist / ptDist);
-                    ftPerPx = ftPerPx.toFixed(3);
-                    tb.innerHTML += "     " + ftPerPx + "ftPerPx    " + locDist + "ft   " + ptDist + "pts   " + campusPointsArray[j].name + "&#10;";
+        function calcLongitudeDistances() {
+            var quadrant = quadrant1;
+            tb.innerHTML = "Longitude Distances &#10;&#10;";
+            var totPtsPerLon = 0;
+            var numPstPerLon = 0;
+            var pointArray = quadrant.points;
+            for (i = 0; i < (pointArray.length - 1); i++) {
+                tb.innerHTML += pointArray[i].id + "&#10;";
+                for (j = i + 1; j < pointArray.length; j++) {
+                    tb.innerHTML += "    " + pointArray[j].id + "&#10;";
+                    var lonDif = Math.abs(pointArray[i].lon - pointArray[j].lon);
+                    tb.innerHTML += "        lon: " + pointArray[i].lon + " - " + pointArray[j].lon + " = " + lonDif.toFixed(5) + "&#10;";
+                    var topDif = Math.abs(pointArray[i].top - pointArray[j].top);
+                    tb.innerHTML += "        Top: " + pointArray[i].top + " - " + pointArray[j].top + " = " + topDif + "&#10;";
+                    var pxPerlon = topDif / lonDif;
+                    if (topDif > 25) {
+                        totPtsPerLon += pxPerlon;
+                        numPstPerLon += 1;
+                    }
+                    tb.innerHTML += "        pxPerlon= " + pxPerlon + "&#10;";
+                    var computedTopFromI = computeTop(pointArray[i].lon, pointArray[j].lon, pointArray[i].top, pxPerlon);
+                    var computedTopFromJ = computeTop(pointArray[j].lon, pointArray[i].lon, pointArray[j].top, pxPerlon);
+                    tb.innerHTML += "        computedTopFromI= " + computedTopFromI + ", computedTopFromJ=" + computedTopFromJ + "&#10;";
+                    var computedTopFromI2 = computeTop(pointArray[i].lon, pointArray[j].lon, pointArray[i].top, quadrant.pxPerlon);
+                    var computedTopFromJ2 = computeTop(pointArray[j].lon, pointArray[i].lon, pointArray[j].top, quadrant.pxPerlon);
+                    tb.innerHTML += "        computedTopFromI= " + computedTopFromI2 + ", computedTopFromJ=" + computedTopFromJ2 + "&#10;";
+                    tb.innerHTML += " " + Math.abs(computedTopFromI - computedTopFromI2);
+                    tb.innerHTML += " " + Math.abs(computedTopFromJ - computedTopFromJ2) + "&#10;";
                 }
             }
+            tb.innerHTML += "Average Px per Lon=" + (totPtsPerLon / numPstPerLon).toFixed(0);
         }
 
-        function calcDist(i, j) {
-            //alertPoint(i);
-            //alertPoint(j);
-            var latDist = (Math.abs(campusPointsArray[i].lat - campusPointsArray[j].lat)) * 364521.24;
-            var lonDist = (Math.abs(campusPointsArray[i].lon - campusPointsArray[j].lon)) * 264478.52;
-            var locDist = Math.floor(Math.sqrt((latDist * latDist) + (lonDist * lonDist)));
-            //window.alert("latDist: " + latDist + ' - ' + "lonDist: " + lonDist + ' - ' + "locDist: " + locDist);
-            return locDist;
+        function calcLatitudeDistances() {
+            var quadrant = quadrant1;
+            tb.innerHTML = "Latitude Distances&#10;&#10;";
+            var totPtsPerLat = 0;
+            var numPstPerLat = 0;
+            var pointArray = quadrant.points;
+            for (i = 0; i < (pointArray.length - 1); i++) {
+                tb.innerHTML += pointArray[i].id + "&#10;";
+                for (j = i + 1; j < pointArray.length; j++) {
+                    tb.innerHTML += "    " + pointArray[j].id + "&#10;";
+                    var latDif = Math.abs(pointArray[i].lat - pointArray[j].lat);
+                    tb.innerHTML += "        lat: " + pointArray[i].lat + " - " + pointArray[j].lat + " = " + latDif.toFixed(5) + "&#10;";
+                    var leftDif = Math.abs(pointArray[i].left - pointArray[j].left);
+                    tb.innerHTML += "        Left: " + pointArray[i].left + " - " + pointArray[j].left + " = " + leftDif + "&#10;";
+                    var pxPerLat = leftDif / latDif;
+                    if (leftDif > 25) {
+                        totPtsPerLat += pxPerLat;
+                        numPstPerLat += 1;
+                    }
+                    tb.innerHTML += "        pxPerLat= " + pxPerLat + "&#10;";
+                    var computedLeftFromI = computeLeft(pointArray[i].lat, pointArray[j].lat, pointArray[i].left, pxPerLat);
+                    var computedLeftFromJ = computeLeft(pointArray[j].lat, pointArray[i].lat, pointArray[j].left, pxPerLat);
+                    tb.innerHTML += "        computedLeftFromI= " + computedLeftFromI + ", computedLeftFromJ=" + computedLeftFromJ + "&#10;";
+                    var computedLeftFromI2 = computeLeft(pointArray[i].lat, pointArray[j].lat, pointArray[i].left, quadrant.pxPerLat);
+                    var computedLeftFromJ2 = computeLeft(pointArray[j].lat, pointArray[i].lat, pointArray[j].left, quadrant.pxPerLat);
+                    tb.innerHTML += "        computedLeftFromI= " + computedLeftFromI2 + ", computedLeftFromJ=" + computedLeftFromJ2 + "&#10;";
+                    tb.innerHTML += " " + Math.abs(computedLeftFromI - computedLeftFromI2);
+                    tb.innerHTML += " " + Math.abs(computedLeftFromJ - computedLeftFromJ2) + "&#10;";
+                }
+            }
+            tb.innerHTML += "Average Px per Lat=" + (totPtsPerLat / numPstPerLat).toFixed(0);
         }
 
-        function calcPtDist(i, j) {
-            //alertPoint(i);
-            //alertPoint(j);
-            var topDist = (Math.abs(campusPointsArray[i].top - campusPointsArray[j].top));
-            var leftDist = (Math.abs(campusPointsArray[i].left - campusPointsArray[j].left));
-            var ptDist = Math.floor(Math.sqrt((topDist * topDist) + (leftDist * leftDist)));
-            //window.alert("topDist: " + topDist + ' - ' + "leftDist: " + leftDist + ' - ' + "ptDist: " + ptDist);
-            return ptDist;
+        function computeTop(lon1, lon2, top1, pxPerlon) {
+            if (lon1 > lon2) {
+                //lon1 is above lon2
+                computedTop = top1 + ((lon1 - lon2) * pxPerlon);
+            } else {
+                computedTop = top1 - ((lon2 - lon1) * pxPerlon);
+            }
+            return computedTop.toFixed(0);
         }
 
-        function alertPoint(i) {
-            window.alert("Name: " + campusPointsArray[i].name + " - Latitude: " + campusPointsArray[i].lat +
-                "  -  Longitude: " + campusPointsArray[i].lon + "  -  Top: " + campusPointsArray[i].top +
-                "  -  Left: " + campusPointsArray[i].left);
+        function computeLeft(lat1, lat2, left1, pxPerLat) {
+            if (lat1 > lat2) {
+                //lat1 is left of lat2
+                computedLeft = left1 + ((lat1 - lat2) * pxPerLat);
+            } else {
+                computedLeft = left1 - ((lat2 - lat1) * pxPerLat);
+            }
+            return computedLeft.toFixed(0);
         }
     </script>
+
+
 
 </body>
 
