@@ -21,11 +21,11 @@ window.addEventListener('load', function() {
 
     var x = document.getElementById("mapdiv");
     if (window.innerWidth < 550) {
-        sbMapsVars.zoomFactor = .5;
-        sbMapsVars.startTop = Math.floor(sbMapsVars.startTop * .5);
-        sbMapsVars.startLeft = Math.floor(sbMapsVars.startLeft * .5);
-        sbMapsVars.mapViewCenterT = Math.floor(sbMapsVars.mapViewCenterT * .5);
-        sbMapsVars.mapViewCenterL = Math.floor(sbMapsVars.mapViewCenterL * .5);
+        sbMapsVars.zoomFactor = .65;
+        sbMapsVars.startTop = Math.floor(sbMapsVars.startTop * .65);
+        sbMapsVars.startLeft = Math.floor(sbMapsVars.startLeft * .65);
+        sbMapsVars.mapViewCenterT = Math.floor(sbMapsVars.mapViewCenterT * .65);
+        sbMapsVars.mapViewCenterL = Math.floor(sbMapsVars.mapViewCenterL * .65);
     } else {
         sbMapsVars.zoomFactor = 1;
     }
