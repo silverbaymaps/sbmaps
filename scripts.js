@@ -19,13 +19,17 @@ sbMapsVars.campusTopMargin = 60;
 window.addEventListener('load', function() {
     // window.alert(window.innerWidth)
 
-    var x = document.getElementById("mapdiv");
     if (window.innerWidth < 550) {
         sbMapsVars.zoomFactor = .65;
         sbMapsVars.startTop = Math.floor(sbMapsVars.startTop * .65);
         sbMapsVars.startLeft = Math.floor(sbMapsVars.startLeft * .65);
         sbMapsVars.mapViewCenterT = Math.floor(sbMapsVars.mapViewCenterT * .65);
         sbMapsVars.mapViewCenterL = Math.floor(sbMapsVars.mapViewCenterL * .65);
+
+        //Move the Zoom buttons a bit
+        var div = document.getElementById("zooom-div");
+        div.style.right = "25px";
+        div.style.bottom = "40px";
     } else {
         sbMapsVars.zoomFactor = 1;
     }
@@ -141,6 +145,7 @@ function placeMarker(locName) {
     var top = -1;
     var left = -1;
     for (i = 0; i < campusPlaces.length; i++) {
+        //window.alert(locName + "  " + campusPlaces[i][0]);
         if (campusPlaces[i][0] === locName) {
             top = campusPlaces[i][1];
             left = campusPlaces[i][2];
@@ -322,7 +327,7 @@ function doubleClickMapImage(event) {
     var z = document.getElementById("LocTL");
     x.value = Math.floor(event.offsetX);
     y.value = Math.floor(event.offsetY);
-    z.value = "top=" + event.offsetY + ", left=" + event.offsetX
+    z.value = "top: " + Math.floor(event.offsetY) + ", left: " + Math.floor(event.offsetX);
 }
 
 

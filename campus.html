@@ -22,7 +22,7 @@
             <a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerClick()">
                 <i class="fa fa-bars fa-2x"></i>
             </a>
-            <div class="zoom-btns">
+            <div id="zoom-div" class="zoom-btns">
                 <a href="javascript:void(0);" class="zoomout-btn" onclick="zoomOutClick()">
                     <i class="fas fa-plus fa-1x"></i>
                 </a>
@@ -40,13 +40,31 @@
                             <td>
                                 <table id="meeting-submenu" class="submenu">
                                     <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boyd')">Boyd Center</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Admin')">Administration Building</a></td>
                                     </tr>
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Morse Hall</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('ChildrensPav')">Childrens Pavilion</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Morse')">Morse Hall</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('NatureCenter')">Nature Center</a></td>
                                     </tr>
                                     <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('SpiritualLife')">Spiritual Life Tent</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Store')">Store</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('TrinityCenter')">Trinity Spiritual Life Center</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Watson')">Watson Arts Center</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boyd')">William Boyd Center</a></td>
                                     </tr>
                                 </table>
                             </td>
@@ -61,11 +79,14 @@
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Archery')">Archery</a></td>
                                     </tr>
                                     <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Craft')">Craft Shop</a></td>
+                                    </tr>
+                                    <!-- <tr>
                                         <td class="submenu-leftitem"><a>Boat House</a></td>
                                     </tr>
                                     <tr>
                                         <td class="submenu-leftitem"><a>Slim Point Beach</a></td>
-                                    </tr>
+                                    </tr> -->
                                 </table>
                             </td>
                         </tr>
@@ -76,13 +97,13 @@
                             <td>
                                 <table id="accm-submenu" class="submenu">
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Boyd Center</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Brookside')">Brookside Community House</a></td>
                                     </tr>
                                     <tr>
-                                        <td class="submenu-leftitem"><a>The Inn</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('TrinityHouse')">Trinity House</a></td>
                                     </tr>
                                     <tr>
-                                        <td class="submenu-leftitem"><a>Bayview</a></td>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boyd')">William Boyd Center</a></td>
                                     </tr>
                                 </table>
                             </td>
@@ -100,7 +121,16 @@
                                         <td class="submenu-leftitem"><a onclick="placeMarker('CharterOak')">Charter Oak</a></td>
                                     </tr>
                                     <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Elm')">Elm</a></td>
+                                    </tr>
+                                    <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Hartford')">Hartford</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Hillcrest')">Hillcrest</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Juniper')">Juniper</a></td>
                                     </tr>
                                     <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Nassau')">Nassau</a></td>

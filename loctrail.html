@@ -135,7 +135,7 @@
 
 
         function calcLongitudeDistances() {
-            var quadrant = quadrant1;
+            var quadrant = quadrant3;
             tb.innerHTML = "Longitude Distances &#10;&#10;";
             var totPtsPerLon = 0;
             var numPstPerLon = 0;
@@ -157,8 +157,8 @@
                     var computedTopFromI = computeTop(pointArray[i].lon, pointArray[j].lon, pointArray[i].top, pxPerlon);
                     var computedTopFromJ = computeTop(pointArray[j].lon, pointArray[i].lon, pointArray[j].top, pxPerlon);
                     tb.innerHTML += "        computedTopFromI= " + computedTopFromI + ", computedTopFromJ=" + computedTopFromJ + "&#10;";
-                    var computedTopFromI2 = computeTop(pointArray[i].lon, pointArray[j].lon, pointArray[i].top, quadrant.pxPerlon);
-                    var computedTopFromJ2 = computeTop(pointArray[j].lon, pointArray[i].lon, pointArray[j].top, quadrant.pxPerlon);
+                    var computedTopFromI2 = computeTop(pointArray[i].lon, pointArray[j].lon, pointArray[i].top, quadrant.pxPerLon);
+                    var computedTopFromJ2 = computeTop(pointArray[j].lon, pointArray[i].lon, pointArray[j].top, quadrant.pxPerLon);
                     tb.innerHTML += "        computedTopFromI= " + computedTopFromI2 + ", computedTopFromJ=" + computedTopFromJ2 + "&#10;";
                     tb.innerHTML += " " + Math.abs(computedTopFromI - computedTopFromI2);
                     tb.innerHTML += " " + Math.abs(computedTopFromJ - computedTopFromJ2) + "&#10;";
@@ -168,7 +168,7 @@
         }
 
         function calcLatitudeDistances() {
-            var quadrant = quadrant1;
+            var quadrant = quadrant3;
             tb.innerHTML = "Latitude Distances&#10;&#10;";
             var totPtsPerLat = 0;
             var numPstPerLat = 0;
