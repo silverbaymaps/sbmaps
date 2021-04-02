@@ -28,11 +28,8 @@ window.addEventListener('load', function() {
 
         //Move the Zoom buttons a bit
         var div = document.getElementById("zoom-div");
-        window.alert("xxx");
         div.style.right = "25px";
-        window.alert("yyy");
         div.style.bottom = "40px";
-        window.alert("zzz");
     } else {
         sbMapsVars.zoomFactor = 1;
     }
