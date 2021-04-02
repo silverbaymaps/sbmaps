@@ -27,9 +27,12 @@ window.addEventListener('load', function() {
         sbMapsVars.mapViewCenterL = Math.floor(sbMapsVars.mapViewCenterL * .65);
 
         //Move the Zoom buttons a bit
-        var div = document.getElementById("zooom-div");
+        var div = document.getElementById("zoom-div");
+        window.alert("xxx");
         div.style.right = "25px";
+        window.alert("yyy");
         div.style.bottom = "40px";
+        window.alert("zzz");
     } else {
         sbMapsVars.zoomFactor = 1;
     }
