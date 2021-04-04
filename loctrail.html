@@ -14,8 +14,8 @@
 
     <nav>
         <h1>Record Locations</h1>
-        <!-- <button style="height: 40px" onclick="startRecording()">Start Recording</button>
-        <button style="height: 40px" onclick="endRecording()">End Recording</button> -->
+        <button style="height: 40px" onclick="startRecording()">Start Recording</button>
+        <button style="height: 40px" onclick="endRecording()">End Recording</button>
         <button style="height: 40px" onclick="getMyLocation()">My Coordinates</button>
         <button style="height: 40px" onclick="calcLatitudeDistances()">Latitude Distances</button>
         <button style="height: 40px" onclick="calcLongitudeDistances()">Longitude Distances</button>
@@ -42,48 +42,91 @@
         var tb = document.getElementById("txtBox");
         var idTx = document.getElementById("idTx");
 
+        var watchID;
+        var geoLoc;
 
-        async function startRecording() {
-            y.innerHTML = "111";
-            tb.innerHTML = "";
-            vars.isRecording = true;
-            while (vars.isRecording) {
-                y.innerHTML = "222";
-                getLocation();
-                y.innerHTML = "333";
-                var m = new Date();
-                var text;
-                text = m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate() + " " +
-                    m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds() + "   "
-                if (vars.isGPSOK) {
-                    // Wait up to 5 seconds for position to be returned
-                    var i = 0;
-                    while (i < 20 && !vars.isPositionOK) {
-                        y.innerHTML = "999" + i;
-                        await sleep(250);
-                        i++;
-                    }
+        function showLocation(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var d = new Date();
+            tb.innerHTML += d.toLocaleTimeString() + " - Lat: " + lat + "  Lon: " + lon + "&#10;";
+        }
 
-                    if (vars.isPositionOK) {
-                        text += "Lat: " + vars.position.coords.latitude +
-                            "  Lon: " + vars.position.coords.longitude + "&#10;";
-                    } else {
-                        text += "Position not returned.&#10;";
-                    }
-                } else {
-                    text += "Geolocation is not supported.&#10;"
-                }
-                tb.innerHTML += text;
+        function errorHandler(err) {
+            var d = new Date();
+            tb.innerHTML += d.toLo
+            if (err.code == 1) {
+                tb.innerHTML += d.toLocaleTimeString() + "Error: Access is denied!";
+            } else if (err.code == 2) {
+                tb.innerHTML += d.toLocaleTimeString() + "Error: Position is unavailable!";
+            }
+        }
 
-                //wait 15 seconds
-                await sleep(15000);
+
+        function startRecording() {
+            tb.innerHTML = "11";
+            if (navigator.geolocation) {
+                tb.innerHTML = "22";
+                // timeout at 30000 milliseconds (30 seconds)
+                var options = {
+                    timeout: 30000
+                };
+                geoLoc = navigator.geolocation;
+                watchID = geoLoc.watchPosition(showLocation, errorHandler, options);
+                tb.innerHTML = "33";
+            } else {
+                var d = new Date();
+                tb.innerHTML += d.toLo
+                tb.innerHTML += d.toLocaleTimeString() + "Sorry, browser does not support geolocation!";
             }
         }
 
         function endRecording() {
-            vars.isRecording = false;
-            //text += "Recording is ending."
+            navigator.geolocation.clearWatch(watchID);
         }
+
+
+        // async function startRecording() {
+        //     y.innerHTML = "111";
+        //     tb.innerHTML = "";
+        //     vars.isRecording = true;
+        //     while (vars.isRecording) {
+        //         y.innerHTML = "222";
+        //         getLocation();
+        //         y.innerHTML = "333";
+        //         var m = new Date();
+        //         var text;
+        //         text = m.getUTCFullYear() + "/" + (m.getUTCMonth() + 1) + "/" + m.getUTCDate() + " " +
+        //             m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds() + "   "
+        //         if (vars.isGPSOK) {
+        //             // Wait up to 5 seconds for position to be returned
+        //             var i = 0;
+        //             while (i < 20 && !vars.isPositionOK) {
+        //                 y.innerHTML = "999" + i;
+        //                 await sleep(250);
+        //                 i++;
+        //             }
+
+        //             if (vars.isPositionOK) {
+        //                 text += "Lat: " + vars.position.coords.latitude +
+        //                     "  Lon: " + vars.position.coords.longitude + "&#10;";
+        //             } else {
+        //                 text += "Position not returned.&#10;";
+        //             }
+        //         } else {
+        //             text += "Geolocation is not supported.&#10;"
+        //         }
+        //         tb.innerHTML += text;
+
+        //         //wait 15 seconds
+        //         await sleep(15000);
+        //     }
+        // }
+
+        // function endRecording() {
+        //     vars.isRecording = false;
+        //     //text += "Recording is ending."
+        // }
 
 
 
