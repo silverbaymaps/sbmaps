@@ -246,7 +246,7 @@ body {
     margin: 0;
     right: 50px;
     bottom: 100px;
-    width: 40px;
+    width: 50px;
     background: white;
     /* rgba(187, 186, 186, 0.2); */
     border-radius: 10px;
@@ -256,25 +256,35 @@ body {
 .zoom-btns a {
     color: rgba(53, 52, 52);
     text-decoration: none;
-    font-size: 20px;
+    font-size: 24px;
     height: 32px;
     /*width: 34px; */
     display: block;
     position: relative;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255);
 }
 
 .zoom-btns a.zoomout-btn {
     padding-top: 12px;
-    padding-bottom: 0px;
-    padding-left: 8px;
+    padding-bottom: 1px;
+    padding-left: 12px;
     padding-right: 8px;
 }
 
 .zoom-btns a.zoomin-btn {
-    padding-top: 3px;
+    padding-top: 8px;
     padding-bottom: 0px;
-    padding-left: 8px;
+    padding-left: 12px;
     padding-right: 8px;
+}
+
+.zoom-btns hr {
+    width: 80%;
+    /* text-align: center; */
+    margin: 0 0 0 5px;
+    padding: 0px;
+    /* border: 1px; */
 }
 
 .topnav a:hover {
@@ -361,7 +371,7 @@ body {
     display: block;
     position: fixed;
     margin: 0;
-    right: 100px;
+    right: 125px;
     bottom: 100px;
     width: 200px;
     background: white;
