@@ -246,33 +246,18 @@ body {
     margin: 0;
     right: 50px;
     bottom: 100px;
-    width: 30px;
+    width: 40px;
     background: white;
     /* rgba(187, 186, 186, 0.2); */
     border-radius: 10px;
     border: 2px solid rgba(200, 200, 200);
 }
 
-
-/* .zoom-btns a.zoomout-btn {
-    right: 100px;
-    top: 100px;
-    width: 100px;
-    height: 100px;
-}
-
-.zoom-btns a.zoomin-btn {
-    right: 100px;
-    top: 200px;
-    width: 100px;
-    height: 100px;
-} */
-
 .zoom-btns a {
     color: rgba(53, 52, 52);
     text-decoration: none;
-    font-size: 16px;
-    height: 28px;
+    font-size: 20px;
+    height: 32px;
     /*width: 34px; */
     display: block;
     position: relative;
