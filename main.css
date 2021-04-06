@@ -244,9 +244,9 @@ body {
     display: block;
     position: fixed;
     margin: 0;
-    right: 50px;
-    bottom: 100px;
-    width: 50px;
+    right: 45px;
+    bottom: 75px;
+    width: 46px;
     background: white;
     /* rgba(187, 186, 186, 0.2); */
     border-radius: 10px;
@@ -268,21 +268,21 @@ body {
 .zoom-btns a.zoomout-btn {
     padding-top: 12px;
     padding-bottom: 1px;
-    padding-left: 12px;
+    padding-left: 10px;
     padding-right: 8px;
 }
 
 .zoom-btns a.zoomin-btn {
     padding-top: 8px;
     padding-bottom: 0px;
-    padding-left: 12px;
+    padding-left: 10px;
     padding-right: 8px;
 }
 
 .zoom-btns hr {
     width: 80%;
     /* text-align: center; */
-    margin: 0 0 0 5px;
+    margin: 0 0 0 3px;
     padding: 0px;
     /* border: 1px; */
 }
