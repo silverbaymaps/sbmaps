@@ -16,7 +16,7 @@
         <h1>Record Locations</h1>
         <button style="height: 40px" onclick="startRecording()">Start Recording</button>
         <button style="height: 40px" onclick="endRecording()">End Recording</button>
-        <button style="height: 40px" onclick="getMyLocation()">My Coordinates</button>
+        <button style="height: 40px" onclick="recordId()">Record ID</button>
         <button style="height: 40px" onclick="calcLatitudeDistances()">Latitude Distances</button>
         <button style="height: 40px" onclick="calcLongitudeDistances()">Longitude Distances</button>
         <span>   Id: </span>
@@ -44,12 +44,17 @@
 
         var watchID;
         var geoLoc;
+        var recordingMinutes = 0;
 
         function showLocation(position) {
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
             var d = new Date();
-            tb.innerHTML += d.toLocaleTimeString() + " - Lat: " + lat + "  Lon: " + lon + "&#10;";
+            var nowMinutes = (d.getHours() * 60) + d.getMinutes();
+            if (nowMinutes > recordingMinutes) {
+                tb.innerHTML += d.toLocaleTimeString() + " - Lat: " + lat + "  Lon: " + lon + "&#10;";
+                recordingMinutes = nowMinutes;
+            }
         }
 
         function errorHandler(err) {
@@ -84,6 +89,11 @@
         function endRecording() {
             navigator.geolocation.clearWatch(watchID);
         }
+
+        function recordId() {
+            tb.innerHTML += "ID: " + idTx.value + "&#10;";
+        }
+
 
 
         // async function startRecording() {
