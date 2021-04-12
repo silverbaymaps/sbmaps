@@ -50,6 +50,9 @@
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Boathouse')">Boathouse</a></td>
                                     </tr>
                                     <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Chapel')">Chapel</a></td>
+                                    </tr>
+                                    <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('ChildrensPav')">Childrens Pavilion</a></td>
                                     </tr>
                                     <tr>
@@ -68,7 +71,13 @@
                                         <td class="submenu-leftitem"><a onclick="placeMarker('NatureCenter')">Nature Center</a></td>
                                     </tr>
                                     <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('See')">See Memorial</a></td>
+                                    </tr>
+                                    <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('SpiritualLife')">Spiritual Life Tent</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Sproul')">Sproul Pavilion</a></td>
                                     </tr>
                                     <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Store')">Store</a></td>
@@ -140,6 +149,9 @@
                             <td>
                                 <table id="accm-submenu" class="submenu">
                                     <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Bayview')">Bayview</a></td>
+                                    </tr>
+                                    <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Brookside')">Brookside Community House</a></td>
                                     </tr>
                                     <tr>
@@ -167,7 +179,16 @@
                             <td>
                                 <table id="cabins-submenu" class="submenu">
                                     <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Birch')">Birch</a></td>
+                                    </tr>
+                                    <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Boltz')">Boltz</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Butternut')">Butternut</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Cedar')">Cedar</a></td>
                                     </tr>
                                     <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('CharterOak')">Charter Oak</a></td>
@@ -182,13 +203,25 @@
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Hillcrest')">Hillcrest</a></td>
                                     </tr>
                                     <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Hilltop')">Hilltop</a></td>
+                                    </tr>
+                                    <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Juniper')">Juniper</a></td>
                                     </tr>
                                     <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Locust')">Locust</a></td>
                                     </tr>
                                     <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Maple')">Maple</a></td>
+                                    </tr>
+                                    <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Nassau')">Nassau</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Oak')">Oak</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="submenu-leftitem"><a onclick="placeMarker('Summit')">Summit</a></td>
                                     </tr>
                                     <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Sycamore')">Sycamore</a></td>
@@ -236,12 +269,48 @@
             <input type="text" id="LocTL" class="tool-input2"><br><br>
             <button type="button" class="tool-button" onclick="placeMarkerClick()">Place Marker</button>
             <button type="button" class="tool-button" onclick="placeMarkerAdjust()">Adjust</button>
-            <button type="button" class="tool-button" onclick="showLocation()">Show Location</button>
+            <button type="button" class="tool-button" onclick="showEnteredLocation()">Show Location</button>
+            <button type="button" class="tool-button" onclick="startRecording()">Start Location</button>
         </div>
     </main>
 
 
     <script>
+        var watchID;
+        var geoLoc;
+
+        function getLocation(position) {
+            showLocation(position.coords.latitude, position.coords.longitude)
+        }
+
+        function errorHandler(err) {
+            if (err.code == 1) {
+                window.alert("Error: Access is denied!");
+            } else if (err.code == 2) {
+                window.alert("Error: Position is unavailable!");
+            } else {
+                window.alert("Unknown Error: Code = " + err.code);
+            }
+        }
+
+
+        function startRecording() {
+            if (navigator.geolocation) {
+                // timeout at 30000 milliseconds (30 seconds)
+                var options = {
+                    timeout: 30000
+                };
+                geoLoc = navigator.geolocation;
+                watchID = geoLoc.watchPosition(getLocation, errorHandler, options);
+
+            } else {
+                window.alert("Sorry, browser does not support geolocation!");
+            }
+        }
+
+        function endRecording() {
+            navigator.geolocation.clearWatch(watchID);
+        }
     </script>
 
 </body>

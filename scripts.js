@@ -350,15 +350,17 @@ function placeMarkerAdjust() {
     y.value = Math.floor(y.value) + 13;
 }
 
-function showLocation() {
+function showEnteredLocation() {
     var str = document.getElementById("LocTL").value;
     var idx = str.indexOf(",");
     var lat = str.substring(0, idx);
     var idx = str.indexOf("-");
     var lon = str.substring(idx);
+    showLocation(lat, lon);
     //window.alert("Latitude: '" + lat + "'  -  " + "Longitude: '" + lon + "'");
+}
 
-
+function showLocation(lat, lon) {
     //Find the quadrant for this location
     var quadrant = null;
     for (i = 0; i < quadrantArray.length; i++) {
