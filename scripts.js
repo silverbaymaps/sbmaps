@@ -128,6 +128,11 @@ function scaleMap() {
     var h = Math.floor(sbMapConst.mapHeight * sbMapsVars.zoomFactor);
     x.style.width = w + "px";
     x.style.height = h + "px";
+    var x = document.getElementById("mapimg");
+    var w = Math.floor(sbMapConst.mapWidth * sbMapsVars.zoomFactor);
+    var h = Math.floor(sbMapConst.mapHeight * sbMapsVars.zoomFactor);
+    x.style.width = w + "px";
+    x.style.height = h + "px";
 }
 
 
