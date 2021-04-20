@@ -1,3 +1,15 @@
+//Constants for the Campus Map
+sbMapConst = {};
+sbMapConst.mapWidth = 2048;
+sbMapConst.mapHeight = 1325;
+sbMapConst.startTop = 685;
+sbMapConst.startLeft = 865;
+sbMapConst.mapViewCenterT = 692;
+sbMapConst.mapViewCenterL = 944;
+sbMapConst.topMargin = 60;
+
+
+
 var quadrant1  = //North Quadrant
     {
         id: "quadrant1",
@@ -123,13 +135,37 @@ var quadrant6  = {
 };
 
 
+var quadrant7  = {
+    id: "quadrant7",
+    nBorder: 43.693990485955375,
+    sBorder: 43.692543272140895,
+    eBorder: -73.50513708631262,
+    wBorder: -73.50961101065408,
+    pxPerLat: 212514,
+    pxPerLon: 152016,
+    points: [
+        { id: "Maple", lat: 43.69350618255944, lon: -73.50589781503426, top: 746, left: 1325 },
+        { id: "Bayview", lat: 43.69288946322645, lon: -73.50583210091031, top: 737, left: 1460 },
+        { id: "ChapelE", lat: 43.693741814218704, lon: -73.50628539422034, top: 802, left: 1282 },
+        { id: "ChapleW", lat: 43.69379611603201, lon: -73.5065884838288, top: 861, left: 1267 },
+        { id: "Butternut", lat: 43.69359927172531, lon: -73.50698545076732, top: 911, left: 1315 },
+        { id: "See", lat: 43.69366811882245, lon: -73.50730195142037, top: 978, left: 1295 },
+        { id: "Oak", lat: 43.69324533821552, lon: -73.5071463833043, top: 936, left: 1387 },
+        { id: "Cedar", lat: 43.69279249420446, lon: -73.5071289489546, top: 937, left: 1488 },
+        { id: "Hilltop", lat: 43.692714918871836, lon: -73.50627600648478, top: 848, left: 1503 },
+        { id: "BB-NE", lat: 43.693633684332696, lon: -73.50489300537224, top: 593, left: 1305 },
+        { id: "Backboard", lat: 43.69306642035332, lon: -73.50533422874054, top: 643, left: 1422 }
+    ]
+};
+
 var quadrantArray = [
     quadrant1,
     quadrant2,
     quadrant3,
     quadrant4,
     quadrant5,
-    quadrant6
+    quadrant6,
+    quadrant7
 ]
 
 
@@ -175,8 +211,18 @@ var campusPlaces = [
     ["FirePit", 515, 1433],
     ["Basketball", 594, 1328],
     ["Volleyball", 632, 1360],
-    ["TennisBackboard", 616, 1412]
-    //["", ],
+    ["TennisBackboard", 616, 1412],
+    ["Chapel", 792, 1280],
+    ["Sproul", 735, 1403],
+    ["See", 957, 1287],
+    ["Bayview", 701, 1492],
+    ["Maple", 744, 1350],
+    ["Hilltop", 857, 1492],
+    ["Butternut", 891, 1317],
+    ["Birch", 881, 1374],
+    ["Oak", 916, 1413],
+    ["Summit", 936, 1466],
+    ["Cedar", 912, 1500],
     // ["",  ],
     // ["",  ],
 ];

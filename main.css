@@ -240,13 +240,35 @@ body {
     display: none;
 }
 
-.zoom-btns {
+.zoom-loc-btns {
     display: block;
     position: fixed;
     margin: 0;
     right: 45px;
     bottom: 75px;
     width: 46px;
+}
+
+.loc-btn {
+    background: white;
+    /* rgba(187, 186, 186, 0.2); */
+    border-radius: 10px;
+    border: 2px solid rgba(200, 200, 200);
+    color: rgba(53, 52, 52);
+    text-decoration: none;
+    font-size: 32px;
+    height: 36px;
+    /*width: 34px; */
+    display: block;
+    position: relative;
+    padding-top: 7px;
+    padding-bottom: 2px;
+    padding-left: 6px;
+    padding-right: 10px;
+    margin-bottom: 5px;
+}
+
+.zoom-btns {
     background: white;
     /* rgba(187, 186, 186, 0.2); */
     border-radius: 10px;
@@ -287,7 +309,7 @@ body {
     /* border: 1px; */
 }
 
-.topnav a:hover {
+.zoom-loc-btns a:hover {
     background-color: rgba(106, 109, 116);
 }
 
@@ -305,6 +327,25 @@ body {
 }
 
 .map-img {
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+
+/* 
+    ========================================
+     Trail Map section
+    ========================================
+*/
+
+.trail-map-div {
+    margin-top: 60px;
+    width: 980px;
+    height: 992px;
+}
+
+.trail-map-img {
     width: 100%;
     height: 100%;
     z-index: -1;
@@ -350,17 +391,6 @@ body {
     position: absolute;
     top: 65px;
     left: 85px;
-    display: none;
-    /* z-index: 2; */
-}
-
-.loc-marker2 {
-    font-size: 4px;
-    color: tan;
-    background-color: blue;
-    width: 4px;
-    height: 4px;
-    position: absolute;
     display: none;
     /* z-index: 2; */
 }

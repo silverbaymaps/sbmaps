@@ -1,15 +1,12 @@
+//Common variables for both Campus and Trails Maps
 sbMapsVars = {};
+sbMapsVars.isCampusPage;
 sbMapsVars.zoomFactor = 1;
 sbMapsVars.prevZoomFactor = 1;
-sbMapsVars.campusMapWidth = 2048;
-sbMapsVars.campusMapHeight = 1325;
-sbMapsVars.startTop = 685;
-sbMapsVars.startLeft = 865;
-sbMapsVars.mapViewCenterT = 692;
-sbMapsVars.mapViewCenterL = 944;
+sbMapsVars.mapViewCenterT;
+sbMapsVars.mapViewCenterL;
 sbMapsVars.locMarkerId = "loc-img"; //If changing this, change boolean below  -  loc_marker or loc-img
 sbMapsVars.islocImage = true;
-sbMapsVars.campusTopMargin = 60;
 
 
 //  =============================
@@ -17,25 +14,36 @@ sbMapsVars.campusTopMargin = 60;
 //  =============================
 
 window.addEventListener('load', function() {
-    // window.alert(window.innerWidth)
+    var startTop = sbMapConst.startTop;
+    var startLeft = sbMapConst.startLeft;
+    var elemArray = document.getElementsByClassName("trail-map-div");
+    if (elemArray.length != 0) {
+        // Trails page
+        sbMapsVars.isCampusPage = false;
+    } else {
+        // Campus page
+        sbMapsVars.isCampusPage = true;
+    }
+    sbMapsVars.mapViewCenterT = sbMapConst.mapViewCenterT;
+    sbMapsVars.mapViewCenterL = sbMapConst.mapViewCenterL;
 
     if (window.innerWidth < 550) {
         sbMapsVars.zoomFactor = .65;
-        sbMapsVars.startTop = Math.floor(sbMapsVars.startTop * .65);
-        sbMapsVars.startLeft = Math.floor(sbMapsVars.startLeft * .65);
+        startTop = Math.floor(startTop * .65);
+        startLeft = Math.floor(startLeft * .65);
         sbMapsVars.mapViewCenterT = Math.floor(sbMapsVars.mapViewCenterT * .65);
         sbMapsVars.mapViewCenterL = Math.floor(sbMapsVars.mapViewCenterL * .65);
 
         //Move the Zoom buttons a bit
-        var div = document.getElementById("zoom-div");
+        var div = document.getElementById("zoom-loc-div");
         div.style.right = "25px";
         div.style.bottom = "40px";
     } else {
         sbMapsVars.zoomFactor = 1;
     }
     scaleMap();
-    //Center on the Inn
-    setMapMarker("center-marker", sbMapsVars.startTop, sbMapsVars.startLeft, true);
+
+    setMapMarker("center-marker", startTop, startLeft, true);
 
     //Check if marker tool should be rendered
     var url = new URL(window.location.href);
@@ -46,28 +54,15 @@ window.addEventListener('load', function() {
         var x = document.getElementById("tools");
         x.style.display = "none";
     }
-
+    //window.alert("Load5");
     //Adjust the campus points for the top margin
     for (i = 0; i < quadrantArray.length; i++) {
         var quadrant = quadrantArray[i];
         for (j = 0; j < quadrant.points.length; j++) {
             var point = quadrant.points[j];
-            point.top += sbMapsVars.campusTopMargin;
+            point.top += sbMapConst.topMargin;
         }
     }
-
-    // var canvas = document.getElementById("loc-canvas");
-    // var ctx = canvas.getContext("2d");
-
-    // draw rectangle
-    // context.beginPath();
-    // context.rect(5, 10, 20, 50);
-    // context.fillStyle = "blue";
-    // context.fill();
-    // ctx.lineWidth = "4";
-    // ctx.strokeStyle = "green";
-    // ctx.rect(20, 20, 50, 50);
-    // ctx.stroke();
 })
 
 
@@ -129,8 +124,8 @@ function getMapViewCenter() {
 
 function scaleMap() {
     var x = document.getElementById("mapdiv");
-    var w = Math.floor(sbMapsVars.campusMapWidth * sbMapsVars.zoomFactor);
-    var h = Math.floor(sbMapsVars.campusMapHeight * sbMapsVars.zoomFactor);
+    var w = Math.floor(sbMapConst.mapWidth * sbMapsVars.zoomFactor);
+    var h = Math.floor(sbMapConst.mapHeight * sbMapsVars.zoomFactor);
     x.style.width = w + "px";
     x.style.height = h + "px";
 }
@@ -164,7 +159,7 @@ function placeMarker(locName) {
 function adjustMarkerTop(markerId, top) {
     var marker = document.getElementById(markerId);
     //window.alert("11top1=" + top);
-    top += sbMapsVars.campusTopMargin;
+    top += sbMapConst.topMargin;
     //window.alert("11top2=" + top);
     //window.alert("offsetHeight=" + marker.offsetHeight);
     //var offset = parseInt(marker.offsetHeight);
@@ -213,7 +208,6 @@ function resetMarkers() {
     setMapMarker("center-marker", Math.floor(sbMapsVars.mapViewCenterT * sbMapsVars.zoomFactor),
         Math.floor(sbMapsVars.mapViewCenterL * sbMapsVars.zoomFactor), true);
     resetMarker("place-marker", false);
-    resetMarker("loc-marker2", false);
     resetMarker(sbMapsVars.locMarkerId, false);
 }
 
@@ -391,16 +385,17 @@ function showLocation(lat, lon) {
     //window.alert("Closest Point = " + closestPoint.id);
     setMapMarker("center-marker", closestPoint.top, closestPoint.left, true);
 
-    var locTop = closestPoint.top + computeTopDiffFromPoint(quadrant, closestPoint.lon, lon);
-    var locLeft = closestPoint.left + computeLeftDiffFromPoint(quadrant, closestPoint.lat, lat);
-    setMapMarker("loc-marker2", locTop, locLeft, false);
+    var locTop = closestPoint.top + computeTopDiffFromPoint(quadrant, closestPoint.lat, lat);
+    var locLeft = closestPoint.left + computeLeftDiffFromPoint(quadrant, closestPoint.lon, lon);
+    // window.alert("locTop = " + locTop);
+    // window.alert("locLeft = " + locLeft);
     locTop = adjustLocTop(sbMapsVars.locMarkerId, locTop);
     locLeft = adjustLocLeft(sbMapsVars.locMarkerId, locLeft);
     locTop *= sbMapsVars.zoomFactor;
     locLeft *= sbMapsVars.zoomFactor;
     //window.alert("aaa");  
     //window.alert("bbb");
-    setMapMarker(sbMapsVars.locMarkerId, locTop, locLeft, false);
+    setMapMarker(sbMapsVars.locMarkerId, locTop, locLeft, true);
     //window.alert("ccc");
 }
 
@@ -411,18 +406,24 @@ function computeDistanceBetweenPts(quadrant, lat1, lon1, lat2, lon2) {
     return pxDist;
 }
 
-function computeTopDiffFromPoint(quadrant, ptLon, locLon) {
-    return (ptLon - locLon) * quadrant.pxPerLon;
+function computeTopDiffFromPoint(quadrant, ptLat, locLat) {
+    // window.alert("ptLat = " + ptLat);
+    // window.alert("locLat = " + locLat);
+    // window.alert("quadrant.pxPerLat = " + quadrant.pxPerLat);
+    return (ptLat - locLat) * quadrant.pxPerLat;
 }
 
-function computeLeftDiffFromPoint(quadrant, ptLat, locLat) {
-    return (ptLat - locLat) * quadrant.pxPerLat;
+function computeLeftDiffFromPoint(quadrant, ptLon, locLon) {
+    // window.alert("ptLon = " + ptLon);
+    // window.alert("locLon = " + locLon);
+    // window.alert("quadrant.pxPerLon = " + quadrant.pxPerLon);
+    return (locLon - ptLon) * quadrant.pxPerLon;
 }
 
 function adjustLocTop(markerId, top) {
     var marker = document.getElementById(markerId);
     //window.alert("11top1=" + top);
-    //top += sbMapsVars.campusTopMargin;
+    //top += sbMapConst.topMargin;
     //window.alert("11top2=" + top);
     //window.alert("offsetHeight=" + marker.offsetHeight);
     //var offset = parseInt(marker.offsetHeight);

@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta charset="utf-8">
-    <title>Silver Bay Campus Map</title>
+    <title>Silver Bay Trail Map</title>
     <link rel="stylesheet" href="main.css">
     <script src="https://kit.fontawesome.com/5894bd7752.js" crossorigin="anonymous"></script>
-    <script src="campusPoints.js"></script>
+    <script src="trailPoints.js"></script>
     <script src="scripts.js"></script>
 </head>
 
@@ -18,7 +18,7 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <span class="pageheader">Silver Bay YMCA Campus</span>
+            <span class="pageheader">Silver Bay Trails</span>
             <a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerClick()">
                 <i class="fa fa-bars fa-2x"></i>
             </a>
@@ -233,10 +233,9 @@
     </nav>
 
     <main>
-        <div id="mapdiv" class="map-div">
-            <img id="mapimg" class="map-img" src="silver-bay-map_final.jpg" alt="Campus Map" onclick="doubleClickMapImage(event);">
+        <div id="mapdiv" class="trail-map-div">
+            <img id="mapimg" class="trail-map-img" src="silver-bay-trailmap.jpg" alt="Trail Map" onclick="doubleClickMapImage(event);">
             <span id="center-marker" class="center-marker">&nbsp</span>
-            <span id="loc-marker2" class="loc-marker2">&nbsp</span>
             <span id="place-marker" class="place-marker map-marker">
                 <i id="place-icon" class="fas fa-map-marker-alt fa-3x"></i>
             </span>
@@ -248,11 +247,11 @@
             </div>
         </div>
         <div id="zoom-loc-div" class="zoom-loc-btns">
-            <div>
+            <!-- <div>
                 <a href="javascript:void(0);" class="loc-btn" onclick="locationClick()">
                     <i class="fab fa-empire fa-1x"></i>
                 </a>
-            </div>
+            </div> -->
             <div id="zoom-div" class="zoom-btns">
                 <a href="javascript:void(0);" class="zoomout-btn" onclick="zoomOutClick()">
                     <i class="fas fa-plus fa-1x"></i>
@@ -309,7 +308,7 @@
                 watchID = geoLoc.watchPosition(getLocation, errorHandler, options);
 
             } else {
-                window.alert("Sorry, browser does not support geolocation!");
+                window.alert("Sorry, the browser does not support geolocation!");
             }
         }
 
