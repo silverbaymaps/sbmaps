@@ -28,15 +28,15 @@ window.addEventListener('load', function() {
     sbMapsVars.mapViewCenterL = sbMapConst.mapViewCenterL;
 
     if (window.innerWidth < 550) {
-        //if (sbMapsVars.isCampusPage) {
-        sbMapsVars.zoomFactor = .65;
+        if (sbMapsVars.isCampusPage) {
+            sbMapsVars.zoomFactor = .65;
+        } else {
+            sbMapsVars.zoomFactor = .85;
+        }
         startTop = Math.floor(startTop * sbMapsVars.zoomFactor);
         startLeft = Math.floor(startLeft * sbMapsVars.zoomFactor);
         sbMapsVars.mapViewCenterT = Math.floor(sbMapsVars.mapViewCenterT * sbMapsVars.zoomFactor);
         sbMapsVars.mapViewCenterL = Math.floor(sbMapsVars.mapViewCenterL * sbMapsVars.zoomFactor);
-        // } else {
-        //     sbMapsVars.zoomFactor = 1;
-        // }
 
         //Move the Zoom buttons a bit
         var div = document.getElementById("zoom-loc-div");
