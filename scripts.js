@@ -127,6 +127,7 @@ function getMapViewCenter() {
 }
 
 function scaleMap() {
+    window.alert("zoomFactor=" + sbMapsVars.zoomFactor);
     var x = document.getElementById("mapdiv");
     var w = Math.floor(sbMapConst.mapWidth * sbMapsVars.zoomFactor);
     var h = Math.floor(sbMapConst.mapHeight * sbMapsVars.zoomFactor);
