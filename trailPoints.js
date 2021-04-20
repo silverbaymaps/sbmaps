@@ -2,7 +2,7 @@
 sbMapConst = {};
 sbMapConst.mapWidth = 980;
 sbMapConst.mapHeight = 992;
-sbMapConst.startTop = 500;
+sbMapConst.startTop = 800;
 sbMapConst.startLeft = 800;
 sbMapConst.mapViewCenterT = 500;
 sbMapConst.mapViewCenterL = 500;
