@@ -54,9 +54,8 @@ window.addEventListener('load', function() {
     var toolparm = url.searchParams.get("tool");
     if (toolparm === "1") {
         //window.alert("Marker Tool is availible");
-    } else {
         var x = document.getElementById("tools");
-        x.style.display = "none";
+        x.style.display = "block";
     }
     //window.alert("Load5");
     //Adjust the campus points for the top margin
@@ -127,7 +126,7 @@ function getMapViewCenter() {
 }
 
 function scaleMap() {
-    window.alert("zoomFactor=" + sbMapsVars.zoomFactor);
+    //window.alert("zoomFactor=" + sbMapsVars.zoomFactor);
     var x = document.getElementById("mapdiv");
     var w = Math.floor(sbMapConst.mapWidth * sbMapsVars.zoomFactor);
     var h = Math.floor(sbMapConst.mapHeight * sbMapsVars.zoomFactor);

@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <title>Silver Bay Trail Map</title>
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="trails.css">
     <script src="https://kit.fontawesome.com/5894bd7752.js" crossorigin="anonymous"></script>
     <script src="trailPoints.js"></script>
     <script src="scripts.js"></script>
@@ -18,11 +19,16 @@
 
         <!-- Top Navigation Menu -->
         <div class="topnav">
-            <span class="pageheader">Silver Bay Trails</span>
+            <div class="pageheader">
+                <span class="pageheaderline">Silver Bay</span>
+                <span class="pageheaderline">Trails</span>
+            </div>
+            <a href="javascript:void(0);" class="map-dest-toggle" onclick="placeMarker('Admin')">Destinations</a>
+            <a href="javascript:void(0);" class="trailhead-btn" onclick="placeMarker('Admin')">Trailheads</a>
             <a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerClick()">
                 <i class="fa fa-bars fa-2x"></i>
             </a>
-            <div id="menu" class="menu-div">
+            <!-- <div id="menu" class="menu-div">
                 <table class="menu-table">
                     <tbody class="menu-tbody">
                         <tr>
@@ -33,54 +39,6 @@
                                 <table id="meeting-submenu" class="submenu">
                                     <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Admin')">Administration Building</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Auditorium')">Auditorium</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boathouse')">Boathouse</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Chapel')">Chapel</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('ChildrensPav')">Childrens Pavilion</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Field')">Field Memorial</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Inn')">Inn</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Morse')">Morse Hall</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Munn Hall')">Munn</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('NatureCenter')">Nature Center</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('See')">See Memorial</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('SpiritualLife')">Spiritual Life Tent</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Sproul')">Sproul Pavilion</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Store')">Store</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('TrinityCenter')">Trinity Spiritual Life Center</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Watson')">Watson Arts Center</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boyd')">William Boyd Center</a></td>
                                     </tr>
                                 </table>
                             </td>
@@ -94,141 +52,12 @@
                                     <tr>
                                         <td class="submenu-leftitem"><a onclick="placeMarker('Archery')">Archery</a></td>
                                     </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Baseball')">Baseball</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Basketball')">Basketball</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('BayBeach')">Bay Beach</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boathouse')">Boathouse</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Craft')">Craft Shop</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Collins')">Collins Equipment Center</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('DiscGolf')">Disc Golf</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Shuffleboard')">Shuffleboard</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('FirePit')">Fire Pit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Tennis')">Tennis</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('TennisBackboard')">Tennis Backboard</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Volleyball')">Volleyball</a></td>
-                                    </tr>
                                 </table>
                             </td>
-                        </tr>
-                        <tr>
-                            <td><a id="accm-toggle" class="submenu-toggle" onclick="toggleSubmenu('accm-toggle', 'accm-submenu');">+ Accomodations</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <table id="accm-submenu" class="submenu">
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Bayview')">Bayview</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Brookside')">Brookside Community House</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Hemlock')">Hemlock</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Hepbron')">Hepbron</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Overlook')">Overlook</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('TrinityHouse')">Trinity House</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boyd')">William Boyd Center</a></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a id="cabins-toggle" class="submenu-toggle" onclick="toggleSubmenu('cabins-toggle', 'cabins-submenu');">+ Cabins</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <table id="cabins-submenu" class="submenu">
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Birch')">Birch</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Boltz')">Boltz</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Butternut')">Butternut</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Cedar')">Cedar</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('CharterOak')">Charter Oak</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Elm')">Elm</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Hartford')">Hartford</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Hillcrest')">Hillcrest</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Hilltop')">Hilltop</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Juniper')">Juniper</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Locust')">Locust</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Maple')">Maple</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Nassau')">Nassau</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Oak')">Oak</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Summit')">Summit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Sycamore')">Sycamore</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="submenu-leftitem"><a onclick="placeMarker('Willow')">Willow</a></td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a>Trail Map</a></td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> -->
         </div>
     </nav>
 
@@ -260,6 +89,25 @@
                 <a href="javascript:void(0);" class="zoomin-btn" onclick="zoomInClick()">
                     <i class="fas fa-minus  fa-1x"></i>
                 </a>
+            </div>
+        </div>
+        <div id="gallery" class="gallery">
+            <div id="pic-Left" class="pic-next">
+                <a href="javascript:void(0);" id="pic-left-btn" class="pic-next-btn" onclick="placeMarker('Admin')">&lt;</a>
+                <!-- <a href="javascript:void(0);" class="pic-next-btn" onclick="zoomInClickX()">
+                    <i class="fas fa-minus  fa-1x"></i>
+                </a> -->
+            </div>
+            <div id="pic-frame" class="pic-frame">
+                <div id="dest-pic" class="dest-pic">
+                    <img id="dist-img" class="dist-img" src="InspirationPt.jpg" alt="Inspiration Point">
+                </div>
+            </div>
+            <div id="pic-right" class="pic-next">
+                <a href="javascript:void(0);" id="pic-right-btn" class="pic-next-btn" onclick="placeMarker('Admin')">&gt;</a>
+                <!-- <a href="javascript:void(0);" class="pic-next-btn" onclick="zoomInClickX()">
+                    <i class="fas fa-plus  fa-1x"></i>
+                </a> -->
             </div>
         </div>
         <div id="tools" class="marker-tool">
