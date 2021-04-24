@@ -38,3 +38,247 @@ var trailPlaces = [
     ["Boyd", 698, 850],
     ["SpiritualLife", 394, 624]
 ];
+
+var dest1  = {
+    // <img id="dest-img-0" class="dest-img" src="InspirationPt.jpg" alt="Inspiration Pt">
+    imgSrc: "InspirationPt.jpg",
+    imgAlt: "Inspiration Pt",
+    id1: "InspirationPt",
+    name1: "Inspiration Point",
+    data1: "Strenuous; Dist=1.4 miles",
+    id2: "none"
+};
+
+var dest2  = {
+    imgSrc: "JabezPond.jpg",
+    imgAlt: "Jabez Pond",
+    id1: "JabezPondViaAdams",
+    name1: "Jabez Pond Via Adams Brook TH",
+    data1: "Moderate; Dist=2 miles",
+    id2: "JabezPondViaAdams",
+    name2: "Jabez Pond Via Brookside TH",
+    data2: "Moderate; Dist=3 miles"
+};
+var dest3  = {
+    imgSrc: "Sunrise.jpg",
+    imgAlt: "Sunrise Mountain",
+    id1: "Sunrise",
+    name1: "Sunrise Mountain",
+    data1: "Strenuous; Dist=1 mile",
+    id2: "none"
+};
+var dest4  = {
+    imgSrc: "UncasWaterfall.jpg",
+    imgAlt: "Uncas Waterfall",
+    id1: "UncasWaterfall",
+    name1: "Uncas Waterfall",
+    data1: "Moderate; Dist=2.4 miles",
+    id2: "none"
+};
+
+
+
+var galleryDestArray = [
+    dest1, dest2, dest3, dest4 
+]
+
+
+
+
+
+
+//Variables for the Trails Map
+sbMapVars = {};
+sbMapVars.isMapMode = false;
+
+
+function toggleMapMode() {
+    if (sbMapVars.isMapMode == true) {
+        setupTrailsGallery();
+    } else {
+        setupTrailMap();
+    }
+}
+
+
+function buildTrailsGallery() {
+    var tr = document.getElementById("gallery-image-row");
+    // <td class="gallery-dest">
+    //   <img id="dest-img-0" class="dest-img" src="InspirationPt.jpg" alt="Inspiration Pt"> </img> 
+    // </td>
+    for (i = 0; i < galleryDestArray.length; i++) {
+        var dest = galleryDestArray[i];
+        var td = document.createElement('td');
+        td.classList.add("gallery-dest");
+
+        var img = document.createElement('img');
+        img.src = dest.imgSrc;
+        img.alt = dest.imgAlt;
+        img.classList.add("dest-img");
+
+        td.appendChild(img);
+        tr.appendChild(td);
+    }
+
+    //<td class="gallery-dest">
+    //    <span class="dest-name">Inspiration Point</span>
+    //    <button class="show-route-btn">Show Route</button>
+    //</td> 
+    tr = document.getElementById("gallery-name1-row");
+    for (i = 0; i < galleryDestArray.length; i++) {
+        var dest = galleryDestArray[i];
+        var td = document.createElement('td');
+        td.classList.add("gallery-dest");
+
+        var span = document.createElement('span');
+        span.innerHTML = dest.name1;
+        span.classList.add("dest-name");
+        td.appendChild(span);
+
+        var button = document.createElement('button');
+        button.id = "RT-" + dest.id1;
+        button.innerHTML = "Show Route";
+        button.onclick = function() {
+            showRoute(this.id);
+            return false;
+        };
+        button.classList.add("show-route-btn");
+        td.appendChild(button);
+        tr.appendChild(td);
+    }
+
+    //<td class="gallery-data">
+    //    <span class="dest-data">Strenuous; Dist=1.4 miles</span>
+    //    <button class="dest-desc-btn">Description</button>
+    //</td>
+    tr = document.getElementById("gallery-data1-row");
+    for (i = 0; i < galleryDestArray.length; i++) {
+        dest = galleryDestArray[i];
+        td = document.createElement('td');
+        td.classList.add("gallery-data");
+
+        span = document.createElement('span');
+        span.innerHTML = dest.data1;
+        span.classList.add("dest-data");
+        td.appendChild(span);
+
+        var button = document.createElement('button');
+        button.id = "DS-" + dest.id1;
+        button.innerHTML = "Description";
+        button.onclick = function() {
+            showRouteDesc(this.id);
+            return false;
+        };
+        button.classList.add("dest-desc-btn");
+        td.appendChild(button);
+        tr.appendChild(td);
+    }
+
+    //<td class="gallery-dest">
+    //    <span class="dest-name">Inspiration Point</span>
+    //    <button class="show-route-btn">Show Route</button>
+    //</td> 
+    tr = document.getElementById("gallery-name2-row");
+    for (i = 0; i < galleryDestArray.length; i++) {
+        dest = galleryDestArray[i];
+        td = document.createElement('td');
+        td.classList.add("gallery-dest");
+
+        if (dest.id2 === "none") {
+            span = document.createElement('span');
+            span.innerHTML = "&nbsp;";
+            span.classList.add("dest-name");
+            td.appendChild(span);
+        } else {
+            span = document.createElement('span');
+            span.innerHTML = dest.name2;
+            span.classList.add("dest-name");
+            td.appendChild(span);
+
+            button = document.createElement('button');
+            button.id = "RT-" + dest.id2;
+            button.innerHTML = "Show Route";
+            button.onclick = function() {
+                showRoute(this.id);
+                return false;
+            };
+            button.classList.add("show-route-btn");
+            td.appendChild(button);
+        }
+        tr.appendChild(td);
+    }
+
+    //<td class="gallery-data">
+    //    <span class="dest-data">Strenuous; Dist=1.4 miles</span>
+    //    <button class="dest-desc-btn">Description</button>
+    //</td>
+    tr = document.getElementById("gallery-data2-row");
+    for (i = 0; i < galleryDestArray.length; i++) {
+        dest = galleryDestArray[i];
+        td = document.createElement('td');
+        td.classList.add("gallery-data");
+
+        if (dest.id2 === "none") {
+            span = document.createElement('span');
+            span.innerHTML = "&nbsp;";
+            span.classList.add("dest-data");
+            td.appendChild(span);
+        } else {
+            span = document.createElement('span');
+            span.innerHTML = dest.data2;
+            span.classList.add("dest-data");
+            td.appendChild(span);
+
+            var button = document.createElement('button');
+            button.id = "DS-" + dest.id2;
+            button.innerHTML = "Description";
+            button.onclick = function() {
+                showRouteDesc(this.id);
+                return false;
+            };
+            button.classList.add("dest-desc-btn");
+            td.appendChild(button);
+        }
+        tr.appendChild(td);
+    }
+
+    setupTrailsGallery();
+}
+
+function showRoute(id) {
+    alert("showRoute: " + id);
+}
+
+function showRouteDesc(id) {
+    alert("showRouteDesc: " + id);
+}
+
+function setupTrailsGallery() {
+    var x = document.getElementById("mapdiv");
+    x.style.display = "none";
+    var x = document.getElementById("zoom-loc-div");
+    x.style.display = "none";
+    var x = document.getElementById("gallery");
+    x.style.display = "block";
+    var x = document.getElementById("map-dest-toggle");
+    x.innerHTML = "Map&nbsp;&nbsp;"
+
+    // var imgs = document.getElementsByClassName('gallery-img');
+    // for (i = 0; i < imgs.length; i++) {
+    //     imgs[i].style.width = "325px";
+    // }
+
+    sbMapVars.isMapMode = false;
+}
+
+function setupTrailMap() {
+    var x = document.getElementById("mapdiv");
+    x.style.display = "block";
+    var x = document.getElementById("zoom-loc-div");
+    x.style.display = "block";
+    var x = document.getElementById("gallery");
+    x.style.display = "none";
+    var x = document.getElementById("map-dest-toggle");
+    x.innerHTML = "Destinations"
+    sbMapVars.isMapMode = true;
+}

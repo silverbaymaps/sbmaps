@@ -20,6 +20,7 @@ window.addEventListener('load', function() {
     if (elemArray.length != 0) {
         // Trails page
         sbMapsVars.isCampusPage = false;
+        buildTrailsGallery();
     } else {
         // Campus page
         sbMapsVars.isCampusPage = true;

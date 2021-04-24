@@ -23,9 +23,9 @@
                 <span class="pageheaderline">Silver Bay</span>
                 <span class="pageheaderline">Trails</span>
             </div>
-            <a href="javascript:void(0);" class="map-dest-toggle" onclick="placeMarker('Admin')">Destinations</a>
-            <a href="javascript:void(0);" class="trailhead-btn" onclick="placeMarker('Admin')">Trailheads</a>
-            <a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerClick()">
+            <a id="map-dest-toggle" href="javascript:void(0);" class="map-dest-toggle" onclick="toggleMapMode();">Destinations</a>
+            <a href="javascript:void(0);" class="trailhead-btn" onclick="setupTrailMap();">Trailheads</a>
+            <a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerClick();">
                 <i class="fa fa-bars fa-2x"></i>
             </a>
             <!-- <div id="menu" class="menu-div">
@@ -63,7 +63,9 @@
 
     <main>
         <div id="mapdiv" class="trail-map-div">
-            <img id="mapimg" class="trail-map-img" src="silver-bay-trailmap.jpg" alt="Trail Map" onclick="doubleClickMapImage(event);">
+            <div>
+                <img id="mapimg" class="trail-map-img" src="silver-bay-trailmap.jpg" alt="Trail Map" onclick="doubleClickMapImage(event);">
+            </div>
             <span id="center-marker" class="center-marker">&nbsp</span>
             <span id="place-marker" class="place-marker map-marker">
                 <i id="place-icon" class="fas fa-map-marker-alt fa-3x"></i>
@@ -74,6 +76,48 @@
             <div>
                 <img id="loc-img" class="loc-img" src="BlueDot.gif" alt="location marker">
             </div>
+        </div>
+        <div id="gallery" class="gallery">
+            <table>
+                <tr id="gallery-image-row">
+                    <!-- <td class="gallery-dest">
+                        <img id="dest-img-0" class="dest-img" src="InspirationPt.jpg" alt="Inspiration Pt">
+                    </td>
+                    <td class="gallery-dest">
+                        <img id="gallery-img-1" class="dest-img" src="JabezPond.jpg" alt="Jabez Pond">
+                    </td>
+                    <td class="gallery-dest">
+                        <img id="gallery-img-2" class="dest-img" src="Sunrise.jpg" alt="Sunriset Mountain">
+                    </td>
+                    <td class="gallery-dest">
+                        <img id="gallery-img-3" class="dest-img" src="UncasWaterfall.jpg" alt="UncasWaterfall">
+                    </td> -->
+                </tr>
+                <tr id="gallery-name1-row">
+                    <!-- <td>
+                        <span id="dest-name-0-1" class="dest-name dest-name-1">Inspiration Point</span>
+                        <button id="show-route-btn-0-1" class="show-route-btn show-route-btn-1">Show Route</button><br>
+                    </td> -->
+                </tr>
+                <tr id="gallery-data1-row">
+                    <!-- <td>
+                        <span id="dest-data-0-1" class="dest-data dest-data-1">Strenuous; Dist=1.4 miles</span>
+                        <button id="dest-desc-btn-0-1" class="dest-desc-btn dest-desc-btn-1">Description</button><br>
+                    </td> -->
+                </tr>
+                <tr id="gallery-name2-row">
+                    <!-- <td>
+                        <span id="dest-name-1-2" class="dest-name dest-name-1">Inspiration Point via Brookside</span>
+                        <button id="show-route-btn-1-2" class="show-route-btn show-route-btn-1">Show Route</button><br>
+                    </td> -->
+                </tr>
+                <tr id="gallery-data2-row">
+                    <!-- <td>
+                        <span id="dest-data-1-2" class="dest-data dest-data-1">Moderate; Dist=1.2 miles</span>
+                        <button id="dest-desc-btn-1-2" class="dest-desc-btn dest-desc-btn-1">Description</button><br>
+                    </td> -->
+                </tr>
+            </table>
         </div>
         <div id="zoom-loc-div" class="zoom-loc-btns">
             <!-- <div>
@@ -89,25 +133,6 @@
                 <a href="javascript:void(0);" class="zoomin-btn" onclick="zoomInClick()">
                     <i class="fas fa-minus  fa-1x"></i>
                 </a>
-            </div>
-        </div>
-        <div id="gallery" class="gallery">
-            <div id="pic-Left" class="pic-next">
-                <a href="javascript:void(0);" id="pic-left-btn" class="pic-next-btn" onclick="placeMarker('Admin')">&lt;</a>
-                <!-- <a href="javascript:void(0);" class="pic-next-btn" onclick="zoomInClickX()">
-                    <i class="fas fa-minus  fa-1x"></i>
-                </a> -->
-            </div>
-            <div id="pic-frame" class="pic-frame">
-                <div id="dest-pic" class="dest-pic">
-                    <img id="dist-img" class="dist-img" src="InspirationPt.jpg" alt="Inspiration Point">
-                </div>
-            </div>
-            <div id="pic-right" class="pic-next">
-                <a href="javascript:void(0);" id="pic-right-btn" class="pic-next-btn" onclick="placeMarker('Admin')">&gt;</a>
-                <!-- <a href="javascript:void(0);" class="pic-next-btn" onclick="zoomInClickX()">
-                    <i class="fas fa-plus  fa-1x"></i>
-                </a> -->
             </div>
         </div>
         <div id="tools" class="marker-tool">

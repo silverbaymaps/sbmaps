@@ -1,4 +1,4 @@
-/* 
+/*
     ========================================
      Nav Bar
     ========================================
@@ -69,57 +69,55 @@ a:link {
 }
 
 
-/* 
+/*
     ========================================
      Destination Gallery
     ========================================
 */
 
 .gallery {
-    padding: 10px 3px 5px 5px;
-    margin: 5px;
+    /* overflow-x: auto; */
+    margin: 72px 10px 10px 10px;
+    /* width: 2600px;
+    padding: 10px 10px 10px 10px; */
     display: block;
-    position: fixed;
-    margin: 0;
-    right: 50px;
-    bottom: 50px;
-    width: 325px;
-    height: 225px;
     background: white;
     border-radius: 10px;
     border: 2px solid rgba(200, 200, 200);
 }
 
-.pic-frame {
-    display: inline-block;
-    width: 80%;
-    height: 80%;
-}
-
-.pic-next {
-    display: inline-block;
-    position: relative;
-    bottom: 75px;
-    font-size: 32px;
-    font-weight: bold;
-    color: rgb(78, 78, 78);
-    padding: 4px;
+.gallery-dest {
+    background: white;
+    /* border-radius: 10px; */
+    border: 10px solid white;
 }
 
 .gallery a {
     color: rgba(100, 100, 100);
 }
 
+.dest-img {
+    width: 325px
+}
 
-/* .pic-next-btn {
-    display: inline-block;
-    width: 8%;
-    margin-bottom: 100px;
-} */
+.dest-name {
+    font-size: 14px;
+    color: red;
+}
 
-.dist-img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    margin: auto;
+.show-route-btn {
+    font-size: 14px;
+    float: right;
+    color: green;
+}
+
+.dest-data {
+    font-size: 16px;
+    color: blue;
+}
+
+.dest-desc-btn {
+    font-size: 16px;
+    float: right;
+    color: purple;
 }
