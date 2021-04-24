@@ -50,7 +50,7 @@ var dest1  = {
 };
 
 var dest2  = {
-    imgSrc: "JabezPond.jpg",
+    imgSrc: "JabezPond.JPG",
     imgAlt: "Jabez Pond",
     id1: "JabezPondViaAdams",
     name1: "Jabez Pond Via Adams Brook TH",
@@ -60,7 +60,7 @@ var dest2  = {
     data2: "Moderate; Dist=3 miles"
 };
 var dest3  = {
-    imgSrc: "Sunrise.jpg",
+    imgSrc: "Sunrise.JPG",
     imgAlt: "Sunrise Mountain",
     id1: "Sunrise",
     name1: "Sunrise Mountain",
@@ -68,7 +68,7 @@ var dest3  = {
     id2: "none"
 };
 var dest4  = {
-    imgSrc: "UncasWaterfall.jpg",
+    imgSrc: "UncasWaterfall.JPG",
     imgAlt: "Uncas Waterfall",
     id1: "UncasWaterfall",
     name1: "Uncas Waterfall",
