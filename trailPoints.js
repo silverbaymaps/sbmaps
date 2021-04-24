@@ -55,7 +55,7 @@ var dest2  = {
     id1: "JabezPondViaAdams",
     name1: "Jabez Pond Via Adams Brook TH",
     data1: "Moderate; Dist=2 miles",
-    id2: "JabezPondViaAdams",
+    id2: "JabezPondViaBrookside",
     name2: "Jabez Pond Via Brookside TH",
     data2: "Moderate; Dist=3 miles"
 };
