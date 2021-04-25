@@ -7,6 +7,8 @@ sbMapConst.startLeft = 800;
 sbMapConst.mapViewCenterT = 500;
 sbMapConst.mapViewCenterL = 500;
 sbMapConst.topMargin = 60;
+sbMapConst.destImgWidth = 325
+sbMapConst.destImgPadding = 10;
 
 
 var quadrant1  = //Whole Map
@@ -242,6 +244,18 @@ function buildTrailsGallery() {
         tr.appendChild(td);
     }
 
+    //Set the destination images' width and padding
+    var imgs = document.getElementsByClassName('dest-img');
+    for (var i = 0; i < imgs.length; i++) {
+        imgs[i].style.width = sbMapConst.destImgWidth + "px";
+        imgs[i].style.padding = sbMapConst.destImgPadding + "px";
+    }
+
+    //Compute the width of the destination gallery
+    var gallery = document.getElementById("gallery");
+    var galleryWidth = galleryDestArray.length * (sbMapConst.destImgWidth + (2 * sbMapConst.destImgPadding));
+    gallery.style.width = galleryWidth + "px";
+
     setupTrailsGallery();
 }
 
@@ -281,4 +295,8 @@ function setupTrailMap() {
     var x = document.getElementById("map-dest-toggle");
     x.innerHTML = "Destinations"
     sbMapVars.isMapMode = true;
+}
+
+function showInfo() {
+
 }

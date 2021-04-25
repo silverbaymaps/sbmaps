@@ -13,9 +13,10 @@ a:link {
     text-decoration: none;
     font-size: 24px;
     display: block;
-    background: rgb(115, 118, 125);
+    background: rgb(24, 100, 24);
+    /* rgb(115, 118, 125); */
     color: white;
-    width: 50%;
+    width: 40%;
     text-align: center;
 }
 
@@ -24,20 +25,21 @@ a:link {
     display: block;
 }
 
-.topnav a.hamburger-icon {
+
+/* .topnav a.hamburger-icon {
     display: block;
     position: absolute;
     right: 15px;
     top: 5px;
     margin-left: auto;
     margin-right: auto;
-}
+} */
 
 .topnav a.map-dest-toggle {
     display: block;
     position: absolute;
-    right: 150px;
-    top: 23px;
+    right: 138px;
+    top: 16px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -45,15 +47,27 @@ a:link {
 .topnav a.trailhead-btn {
     display: block;
     position: absolute;
-    right: 60px;
-    top: 23px;
+    right: 40px;
+    top: 16px;
     margin-left: auto;
     margin-right: auto;
 }
 
+.topnav a.info-btn {
+    display: block;
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Georgia, Helvetica, sans-serif;
+    font-style: italic;
+    font-size: 24px;
+}
+
 .topnav {
     overflow: hidden;
-    background: rgb(115, 118, 125);
+    background: rgb(24, 100, 24);
     position: fixed;
     width: 100%;
     top: 0;
@@ -68,6 +82,12 @@ a:link {
     display: block;
 }
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background-color: rgb(111, 138, 111);
+}
+
 
 /*
     ========================================
@@ -76,28 +96,17 @@ a:link {
 */
 
 .gallery {
-    /* overflow-x: auto; */
-    margin: 72px 10px 10px 10px;
-    /* width: 2600px;
-    padding: 10px 10px 10px 10px; */
+    margin: 100px 30px 30px 30px;
+    padding: 10px 10px 10px 10px;
     display: block;
     background: white;
-    border-radius: 10px;
-    border: 2px solid rgba(200, 200, 200);
-}
-
-.gallery-dest {
-    background: white;
-    /* border-radius: 10px; */
-    border: 10px solid white;
-}
-
-.gallery a {
-    color: rgba(100, 100, 100);
 }
 
 .dest-img {
-    width: 325px
+    /* width and padding is dynamically changed at page load 
+    width: 325px;
+    padding: 10px; */
+    background: white;
 }
 
 .dest-name {
