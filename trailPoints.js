@@ -293,7 +293,7 @@ function setupTrailMap() {
     var x = document.getElementById("gallery");
     x.style.display = "none";
     var x = document.getElementById("map-dest-toggle");
-    x.innerHTML = "Destinations"
+    x.innerHTML = "Routes"
     sbMapVars.isMapMode = true;
 }
 
