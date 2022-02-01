@@ -502,7 +502,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
             //Variables used during game play
             //The word to be discovered
-            var gameWordId = 0;
+            var gameWordId = -1;
             var gameWordChArray = [];
             var gameWordASCIIArray = [];
 
@@ -791,6 +791,9 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
             function onKeystrokeLetter(lcChar) {
               if (keyboardEnabled == 0 || keyboardLettersEnabled == 0) {
+                if (gameWordId == -1) {
+                  alert("Click Daily Game or Random Game to start play.")
+                }
                 return;
               }
               //convert lcCjar to ASCII code
