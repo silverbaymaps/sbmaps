@@ -627,6 +627,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //   and round the the nearest even integer
               var keyWidth = parseInt(((currContainerWidth * .085) / 2));
               keyWidth = (keyWidth * 2).toFixed();
+              var smallKeyWidth = keyWidth - 1;
               var keyHalfWidth = (keyWidth / 2).toFixed();
               var keyOneAndHalfWidth = (keyWidth * 1.5).toFixed();
 
@@ -638,9 +639,24 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               var elems = document.getElementsByClassName('keyboard-button');
               for(i = 0; i < elems.length; i++) {
+                var width = keyWidth;
+                switch (elems[i].innerText) {
+                  case "Q":
+                  case "W":
+                  case "E":
+                  case "R":
+                  case "T":
+                  case "Y":
+                  case "U":
+                  case "I":
+                  case "O":
+                  case "P":
+                    width -=2;
+                    break;
+                }
                 elems[i].style.fontSize = keyboardBtnFontWeight + 'px';
                 elems[i].style.height = keyboardBtnHeight + 'px';
-                elems[i].style.width = keyWidth + 'px';
+                elems[i].style.width = width + 'px';
                 elems[i].style.marginLeft = keyMargin + 'px';
               }
 
@@ -796,13 +812,13 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                 }
                 return;
               }
-              //convert lcCjar to ASCII code
+              //convert lcChar to ASCII code
               var ASCIIChar = lcChar.charCodeAt(0);
               //Put the char into the current rows array at the current column
               currASCIIChars[nCurrChar - 1] = ASCIIChar;
               var ucChar = lcChar.toUpperCase();
               // grid element for the current character with ID = 'answer-' + nCurrRow + '-' + nCurrChar
-              var elem = document.getElementById('answer-' + nCurrRow + '-' + nCurrChar)
+              var elem = document.getElementById('answer-' + nCurrRow + '-' + nCurrChar);
               elem.innerText = ucChar;
               //Position on the next char
               nCurrChar++;
