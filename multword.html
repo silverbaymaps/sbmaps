@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+  <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
         <!-- <link rel="stylesheet" href="stylesheets/multiword.css"> -->
         <title>MultiWord</title>
         <style>
@@ -110,18 +111,22 @@ body {
 .game-name {
   display: inline-block; 
   font-size: 36px;
-  width: 50%;
+  width: 60%;
 }
 
 .game-type-btn {
-  padding: 8px 8px;
+  padding: 5px 5px;
   text-decoration: none;
   font-size: 16px;
   display: inline-block; 
-  color: rgb(155, 155, 155);
+  color: white;
+  background-color: rgb(100, 100, 100);
   width: 15%;
   text-align: center;
   right: 1px;
+  border-width: 0px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 
@@ -209,7 +214,78 @@ body {
   background-color: rgb(54, 122, 54);
   border: none;
 }
-        </style>
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  text-align: center;
+  font-size: 16px;
+  background-color: #f1d886;
+  margin: auto;
+  padding: 10px;
+  border-width: 0px;
+  border-radius: 4px;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 1s;
+  animation-name: animatetop;
+  animation-duration: 1s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.modal-close {
+  text-align: center;
+  margin: auto;
+  width: 30%;
+  padding: 5px;
+  color: #000;
+  background-color: #ecc648;
+  font-size: 18px;
+  border-width: 0px;
+  border-radius: 4px;
+  /* font-weight: bold; */
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: rgb(110, 110, 110);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.modal-body {padding: 2px 10px;}
+
+
+
+
+      </style>
 
 
       </head>
@@ -217,13 +293,15 @@ body {
         <header class="container">
           <div id="pageheader" class="pageheader">
             <span class="game-name">MultiWORD</span>
-            <a href="javascript:void(0);" class="game-type-btn" onclick="dailyWordClick()">Daily Game</a>
-            <a href="javascript:void(0);" class="game-type-btn" onclick="randomWordClick()">Random Game</a>
+            <a href="javascript:void(0);" id="daily-game" class="game-type-btn" onclick="dailyWordClick()">Daily<BR>Game</a>
+            <a href="javascript:void(0);" id="random-game" class="game-type-btn" onclick="randomWordClick()">Random Game</a>
           </div>         
         </header>
 
         <div id="filler1" class="container filler"></div>
 
+       
+       <div> 
         <div id="result-grid" class="container answer-grid">
           <div id="answer-1-1" class="answer-item"></div>
           <div id="answer-1-2" class="answer-item"></div>
@@ -257,6 +335,18 @@ body {
           <div id="answer-6-5"  class="answer-item"></div>  
         </div>
 
+        <!-- The Modal -->
+         <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <div class="modal-body">
+              <p id="modal-msg">Some more very long text and some extra.</p>
+              <p>&nbsp;</p>
+              <p class="modal-close">OK</p>
+            </div>
+          </div>
+        </div>
+      </div>
         <div id="filler2" class="container filler"></div>
 
         <footer>
@@ -315,6 +405,10 @@ body {
             var origKeyboardBtnFontWeight = 14;
             var origKeyboardBtnHeight = 50;
             var origKeyboardWideBtnFontWeight = 14;
+            var origModalMsgFontSize = 16;
+            var origModalBtnFontSize = 18;
+            var origModalMsgPadding = 5;
+            var origModalBtnPadding = 5;
             
             
             var ratioH2W = 1.0;
@@ -323,6 +417,7 @@ body {
            
             var currContainerWidth = 565;
             var currContainerHeight = 620;
+            var currGridItemWidth;
             var charShiftFactor = 32;
             var lcA = 97;
        
@@ -499,6 +594,9 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             numDictWords = dictWordIdArray.length;
             //alert("dictWordIdArray: " + numDictWords);
 
+            //An array of the grid cells - for efficiency during keystroke
+            var gridCellElemArray = [];
+
 
             //Variables used during game play
             //The word to be discovered
@@ -519,6 +617,27 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                        
             window.addEventListener('load', windowResize);
             window.addEventListener('resize', windowResize);
+
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the modal message paragraph
+            var modalMsg = document.getElementById("modal-msg");
+
+            // Get the <p> element that closes the modal
+            var modalClose = document.getElementsByClassName("modal-close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+              modalClose.onclick = function() {
+              modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            }
 
             function windowResize() {
 
@@ -547,6 +666,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               resizeHeaderHeight();
               resizeKeyboard();
               resizeAnswerGrid();
+              resizeModal();
               adjustPageHeight();
             };
 
@@ -600,6 +720,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               }
               var answerItemFontSize = parseInt(origAnswerItemFontSize * widthResizeFactor);
               var answerGridwidth = answerItemWidthHeight * 5 + 32;
+              currGridItemWidth = answerItemWidthHeight;
 
               // alert("testVertSize: " + testVertSize);
               // alert("testHorzSize: " + testHorzSize);
@@ -616,6 +737,22 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                 elems[i].style.height = answerItemWidthHeight + 'px';
                 elems[i].style.width = answerItemWidthHeight + 'px';
               }
+
+              //To speed key stroke processing, create an array of answer grid items
+              for (iRow = 1; iRow < 7; iRow++) {
+                for (iCol = 1; iCol < 6; iCol++) {
+                  var iElem = ((iRow - 1) * 5) + (iCol - 1);
+                  gridCellElemArray[iElem] = document.getElementById('answer-' + iRow + '-' + iCol);
+                }
+              }
+              
+            }
+
+            function resizeModal() {
+              modalMsg.style.fontSize = parseInt(origModalMsgFontSize * heightResizeFactor) + "px";
+              modalMsg.style.padding = parseInt(origModalMsgPadding * heightResizeFactor) + "px";
+              modalClose.style.fontSize = parseInt(origModalBtnFontSize * heightResizeFactor) + "px";
+              modalClose.style.padding = parseInt(origModalBtnPadding * heightResizeFactor) + "px";
             }
 
             function resizeKeyboard() {
@@ -750,6 +887,11 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
 
             function randomWordClick() {
+              var elem = document.getElementById('daily-game');
+              elem.style.color = "white"; 
+              elem = document.getElementById('random-game');
+              elem.style.color = "#3eb5e4";
+
               //Pick a random word based on the number of seconds so far this day
               var numSecs = getSecsInDay();
               //alert("numSecs1: " + numSecs);
@@ -764,6 +906,10 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             }
 
             function dailyWordClick() {
+              var elem = document.getElementById('daily-game');
+              elem.style.color = "#3eb5e4";
+              elem = document.getElementById('random-game');
+              elem.style.color = "white"; 
               //Compute the number of days since 1/1/2020
               var numDays = getDaysSince2020();
               //alert("numDays1: " + numDays);
@@ -808,7 +954,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             function onKeystrokeLetter(lcChar) {
               if (keyboardEnabled == 0 || keyboardLettersEnabled == 0) {
                 if (gameWordId == -1) {
-                  alert("Click Daily Game or Random Game to start play.")
+                  popupModal("Click Daily Game or Random Game to start play.", 5);
                 }
                 return;
               }
@@ -817,8 +963,9 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //Put the char into the current rows array at the current column
               currASCIIChars[nCurrChar - 1] = ASCIIChar;
               var ucChar = lcChar.toUpperCase();
-              // grid element for the current character with ID = 'answer-' + nCurrRow + '-' + nCurrChar
-              var elem = document.getElementById('answer-' + nCurrRow + '-' + nCurrChar);
+              // grid element for the current character with the saved grid cell element array
+              var iElem = ((nCurrRow - 1) * 5) + (nCurrChar - 1);
+              elem = gridCellElemArray[iElem];
               elem.innerText = ucChar;
               //Position on the next char
               nCurrChar++;
@@ -833,8 +980,9 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               }
               nCurrChar--;
               currASCIIChars[nCurrChar - 1] = 0;
-              // grid element for the current character with ID = 'answer-' + nCurrRow + '-' + nCurrChar
-              var elem = document.getElementById('answer-' + nCurrRow + '-' + nCurrChar)
+              // grid element for the current character with the saved grid cell element array
+              var iElem = ((nCurrRow - 1) * 5) + (nCurrChar - 1);
+              elem = gridCellElemArray[iElem];
               elem.innerText = "";
               keyboardLettersEnabled = 1;
 
@@ -844,8 +992,8 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               if (keyboardEnabled == 0) {
                 return;
               }           
-              if (nCurrChar != 6) {
-                alert("Not enough letters");
+              if (nCurrChar != 6) {               
+                popupModal("Not enough letters", 3.5);
                 return;
               }
 
@@ -864,42 +1012,58 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               //Is it a word in either list
               if (! isWordIdInGameWords(wordId) && ! isWordIdInDict(wordId)) {
-                alert("Not in Word List");
+                popupModal("Word is not in List", 3.5);
                 return;
               }
 
               //Set character statuses and classes for curr word in the answer grid
+              var charClassArray = [0,0,0,0,0];
+              //Copy the gameCharArray
+              var copyGameCharArray = [gameWordASCIIArray[0], gameWordASCIIArray[1], gameWordASCIIArray[2], 
+                                       gameWordASCIIArray[3], gameWordASCIIArray[4]]
+              //alert("1");                        
+              //Look for matching letters in the correct position
               for (i=0;  i < 5; i++) {
-                var currASCIIChar = currASCIIChars[i];
-                //alert("currASCIIChar: " + currASCIIChar);
-                //get elem in answerGrid - ID = 'answer-' + nCurrRow + '-' + this char
-                var charClass = 0;
-                //for each letter in gameWordChArray
-                for (j=0;  j < 5; j++) {
-                  var currGameWordChar = gameWordASCIIArray[j];
-                  //alert("currGameWordChar: " + currGameWordChar);
-                  if (currASCIIChar == currGameWordChar) {
-                    //char is in the game word
-                    if (i == j) {
-                      //char is in the correct position
-                      charClass = 2;
-                      charStatus[currASCIIChar] = 2;
-                    }
-                    else {
-                      //Not in the same position
-                      if (charClass != 2) {
-                        charClass = 1;
+                if (currASCIIChars[i] == copyGameCharArray[i]) {
+                  //alert("2");  
+                  //Char in same position
+                  charClassArray[i] = 2;
+                  //alert("2.1");  
+                  charStatus[currASCIIChars[i]] = 2;
+                  //Change game char so it doesn't match again
+                  //alert("2.2");  
+                  copyGameCharArray[i] = '-';
+                }
+              }
+              //alert("3");  
+              //Look for matching chars in different positions
+              for (i=0;  i < 5; i++) {
+                if (charClassArray[i] != 2) {
+                  //alert("4");  
+                  //Not already matched
+                  for (j=0;  j < 5; j++) {
+                    //Is the letter in the remaining game chars
+                    if (currASCIIChars[i] == copyGameCharArray[j]) {
+                      //Char match in different position
+                      charClassArray[i] = 1;
+                      if (charStatus[currASCIIChars[i]] != 2) {
+                        charStatus[currASCIIChars[i]] = 1;
                       }
-                      if (charStatus[currASCIIChar] != 2) {
-                        charStatus[currASCIIChar] = 1;
-                      }
+                      //Change game char so it doesn't match again
+                      copyGameCharArray[j] = '-';
+                      break;
                     }
                   }
                 }
+              }
+              //alert("5");  
+
+              //Set character statuses and classes for curr word in the answer grid
+              for (i=0;  i < 5; i++) {
                 var elem = document.getElementById('answer-' + nCurrRow + '-' + (i + 1));
                 elem.classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct', 'letter-unused');
 
-                switch (charClass) {
+                switch (charClassArray[i]) {
                 case 0:
                   delayedCharClass[i] = 'letter-not-in-word';
                   break;
@@ -958,9 +1122,15 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                 msgGameWon = "Oops!";
                 setTimeout(alertGameOver, (delay * 5));
                 keyboardEnabled = 0;
-              }
-          
+              }          
             }
+
+            function  popupModal(msg, size) {
+                var elem =  document.getElementsByClassName('modal-content')[0]; 
+                elem.style.width = (currGridItemWidth * size) + "px";
+                modal.style.display = "block";
+                modalMsg.innerHTML = msg;
+            } 
 
             function delayedClassSet(iChar) {
               var elem = document.getElementById('answer-' + delayedCurrRow + '-' + (iChar + 1));
@@ -981,7 +1151,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                     break;
                   case 1:
                     elem.classList.add('letter-in-word');
-                  break;
+                    break;
                   case 2:
                     elem.classList.add('letter-correct');
                     break;
@@ -995,11 +1165,13 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             }
 
             function alertGameWon() {
-              alert("\nGame Won!\n\n" + msgGameWon);
+              popupModal("Game Won!<br><br>" + msgGameWon, 4);
+              //alert("\nGame Won!\n\n" + msgGameWon);
             }
 
             function alertGameOver() {
-              alert("\nOops!\n\nGame Lost");
+              popupModal("Oops!<br><br>Game Lost", 4);
+              //alert("\nOops!\n\nGame Lost");
             }
 
             function isWordIdInDict(wordId) {
