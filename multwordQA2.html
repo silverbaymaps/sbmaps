@@ -1381,7 +1381,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                 function getStatsCookie() {
                   var cookieVal = getCookie("multword-stats")
                   if (cookieVal == "") {
-                    alert("getStatsCookie: ''")
+                    //alert("getStatsCookie: ''")
                     gamesPlayed = 0;
                     gamesWon = 0;
                     currStreak = 0;
@@ -1394,7 +1394,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                     guessDistribution[5] = 0;
                   }
                   else {
-                    alert("getStatsCookie: " + cookieVal);
+                    //alert("getStatsCookie: " + cookieVal);
                     var va = cookieVal.split('|');
                     gamesPlayed = parseInt(va[0]);
                     gamesWon = parseInt(va[1]);
@@ -1407,7 +1407,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                     guessDistribution[4] = parseInt(va[8]);
                     guessDistribution[5] = parseInt(va[9]);
                   }
-                  alertStatsVals();
+                  //alertStatsVals();
                 }
 
                 function alertStatsVals() {
@@ -1427,7 +1427,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
                 //Cookie Functions
                 function getCookie(cname) {
-                  alert("cookie: " + document.cookie);
+                  //alert("cookie: " + document.cookie);
                   var name = cname + "=";
                   var ca = document.cookie.split(';');
                   for (i = 0; i < ca.length; i++) {
@@ -1453,16 +1453,17 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                         guessDistribution[3]  + "|" +
                         guessDistribution[4]  + "|" +
                         guessDistribution[5];
-                        alert("cval: " + cval)
-                  setCookie("multword-stats", cval, 1);
+                        //alert("cval: " + cval)
+                  setCookie("multword-stats", cval, 365);
                 }
 
                 function setCookie(cname,cvalue,exdays) {
                   var d = new Date();
-                  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                  //d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                  d.setTime(d.getTime() + (60*60*1000));
                   var expires = "expires=" + d.toUTCString();
                   var s = cname + "=" + cvalue + ";" + expires + ";path=/";
-                  alert("setCookie: " + s);
+                  //alert("setCookie: " + s);
                   document.cookie = s;
                 }
       </script>
