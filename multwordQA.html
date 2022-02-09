@@ -181,6 +181,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   padding: 0px 0px;
+  touch-action: none;
 }
 
 .keyboard-button-wide {
@@ -330,7 +331,7 @@ body {
             <span class="game-name">MultiWORD</span>
             <a href="javascript:void(0);" id="daily-game" class="game-type-btn" onclick="dailyWordClick()">Daily<BR>Game</a>
             <a href="javascript:void(0);" id="random-game" class="game-type-btn" onclick="randomWordClick()">Random Game</a>
-            <a href="javascript:void(0);" id="stats" class="game-type-btn" onclick="popupChartModal(5)">Game<br>Stats</a>
+            <a href="javascript:void(0);" id="stats" class="game-type-btn" onclick="popupChartModal(0)">Game<br>Stats</a>
           </div>         
         </header>
 
@@ -375,9 +376,10 @@ body {
          <div id="alert-modal" class="modal">
            <div id="alert-modal-content" class="modal-content">
              <div class="modal-body">
+               <p>&nbsp;</p>
                <p id="alert-modal-msg">Some more very long text and some extra.</p>
                <p>&nbsp;</p>
-               <p id="alert-modal-close" class="modal-close">OK</p>
+               <!-- <p id="alert-modal-close" class="modal-close">OK</p> -->
              </div>
            </div>
          </div>
@@ -688,6 +690,8 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             var currStreak = 3;
             var maxStreak = 10;
             var guessDistribution = [0,0,2,10,4,2];
+
+            getStatsCookie();
                        
             window.addEventListener('load', windowResize);
             window.addEventListener('resize', windowResize);
@@ -697,11 +701,11 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             // Get the modal message paragraph
             var alertModalMsg = document.getElementById("alert-modal-msg");
             // Get the <p> element that closes the modal
-            var alertModalClose = document.getElementById("alert-modal-close");
-            // When the user clicks on close button, close the alertModal
-            alertModalClose.onclick = function() {
-              alertModal.style.display = "none";
-            }
+            // var alertModalClose = document.getElementById("alert-modal-close");
+            // // When the user clicks on close button, close the alertModal
+            // alertModalClose.onclick = function() {
+            //   alertModal.style.display = "none";
+            // }
 
             // Get the chart modal
             var chartModal = document.getElementById("chart-modal");
@@ -1034,7 +1038,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             function onKeystrokeLetter(lcChar) {
               if (keyboardEnabled == 0 || keyboardLettersEnabled == 0) {
                 if (gameWordId == -1) {
-                  popupMsgModal("Click Daily Game or Random Game to start play.", 5);
+                  popupMsgModal("Click Daily Game or Random Game to start play.", 5, 6);
                 }
                 return;
               }
@@ -1073,7 +1077,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                 return;
               }           
               if (nCurrChar != 6) {               
-                popupMsgModal("Not enough letters", 3.5);
+                popupMsgModal("Not enough letters", 3.5, 4);
                 return;
               }
 
@@ -1092,7 +1096,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               //Is it a word in either list
               if (! isWordIdInGameWords(wordId) && ! isWordIdInDict(wordId)) {
-                popupMsgModal("Word is not in List", 3.5);
+                popupMsgModal("Word is not in List", 3.5, 4);
                 return;
               }
 
@@ -1196,20 +1200,35 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                   msgGameWon = "Phew!";
                   break;
                 }
-                setTimeout(alertGameWon, (delay * 5));
+                gamesPlayed += 1;
+                gamesWon += 1;
+                currStreak += 1;
+                guessDistribution[nCurrRow - 1] += 1;
+                if (currStreak > maxStreak) {
+                  maxStreak = currStreak;
+                }
+                setStatsCookie();
+                setTimeout(function() {alertGameWon(); }, delay * 5);
                 keyboardEnabled = 0;
               } else if (nCurrRow == 6) {
                 msgGameWon = "Oops!";
-                setTimeout(alertGameOver, (delay * 5));
-                keyboardEnabled = 0;
+                gamesPlayed += 1;
+                currStreak = 0;
+                setStatsCookie();
+                setTimeout(function() {alertGameOver(); }, delay * 5);
+               keyboardEnabled = 0;
               }          
             }
 
-            function  popupMsgModal(msg, size) {
+            function  popupMsgModal(msg, size, removeDelay) {
                 var elem =  document.getElementById('alert-modal-content'); 
                 elem.style.width = (currGridItemWidth * size) + "px";
                 alertModal.style.display = "block";
                 alertModalMsg.innerHTML = msg;
+                setTimeout(function() {removeMsgModal(); }, delay * removeDelay);
+            } 
+            function  removeMsgModal(msg, size) {
+                alertModal.style.display = "none";
             } 
 
             function  popupChartModal(numGuesses) {
@@ -1226,12 +1245,15 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               elem.innerHTML = currStreak;
               elem =  document.getElementById('max-streak'); 
               elem.innerHTML = maxStreak;
-              var guessCount = 0;
-              for (i=0;  i < 6; i++) {
-                guessCount += guessDistribution[i] * (i+1);
-              } 
-              guessCount += (gamesPlayed - gamesWon) * 7;
-              var guessAvg = (guessCount / gamesPlayed).toFixed(2);
+              var guessAvg = 0;
+              if (gamesPlayed > 0) {
+                var guessCount = 0;
+                for (i=0;  i < 6; i++) {
+                  guessCount += guessDistribution[i] * (i+1);
+                } 
+                guessCount += (gamesPlayed - gamesWon) * 7;
+                guessAvg = (guessCount / gamesPlayed).toFixed(2);
+              }
               elem =  document.getElementById('guess-avg'); 
               elem.innerHTML = guessAvg;
 
@@ -1315,12 +1337,14 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             }
 
             function alertGameWon() {
-              popupMsgModal("Game Won!<br><br>" + msgGameWon, 4);
+              popupMsgModal("Game Won!<br><br>" + msgGameWon, 4, 3);
+              setTimeout(function() {popupChartModal(nCurrRow-1); }, delay * 4);
               //alert("\nGame Won!\n\n" + msgGameWon);
             }
 
             function alertGameOver() {
-              popupMsgModal("Oops!<br><br>Game Lost", 4);
+              popupMsgModal("Oops!<br><br>Game Lost", 4, 3);
+              setTimeout(function() {popupChartModal(); }, delay * 4);
               //alert("\nOops!\n\nGame Lost");
             }
 
@@ -1352,6 +1376,95 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                    // If element at mid is smaller than x,
                    // search in the right half of mid
                    return binarySearch(arr, x, mid+1, end);
+                }
+
+
+                function getStatsCookie() {
+                  var cookieVal = getCookie("multword-stats")
+                  if (cookieVal == "") {
+                    //alert("getStatsCookie: ''")
+                    gamesPlayed = 0;
+                    gamesWon = 0;
+                    currStreak = 0;
+                    maxStreak = 0;
+                    guessDistribution[0] = 0;
+                    guessDistribution[1] = 0;
+                    guessDistribution[2] = 0;
+                    guessDistribution[3] = 0;
+                    guessDistribution[4] = 0;
+                    guessDistribution[5] = 0;
+                  }
+                  else {
+                    //alert("getStatsCookie: " + cookieVal);
+                    var va = cookieVal.split('|');
+                    gamesPlayed = parseInt(va[0]);
+                    gamesWon = parseInt(va[1]);
+                    currStreak = parseInt(va[2]);
+                    maxStreak = parseInt(va[3]);
+                    guessDistribution[0] = parseInt(va[4]);
+                    guessDistribution[1] = parseInt(va[5]);
+                    guessDistribution[2] = parseInt(va[6]);
+                    guessDistribution[3] = parseInt(va[7]);
+                    guessDistribution[4] = parseInt(va[8]);
+                    guessDistribution[5] = parseInt(va[9]);
+                  }
+                  //alertStatsVals();
+                }
+
+                function alertStatsVals() {
+                  alert("gamesPlayed: " + gamesPlayed + "\n" +
+                        "gamesWon: " + gamesWon  + "\n" +
+                        "currStreak: " + currStreak  + "\n" +
+                        "maxStreak: " + maxStreak  + "\n" +
+                        "guessDist[0]: " + guessDistribution[0]  + "\n" +
+                        "guessDist[1]: " + guessDistribution[1]  + "\n" +
+                        "guessDist[2]: " + guessDistribution[2]  + "\n" +
+                        "guessDist[3]: " + guessDistribution[3]  + "\n" +
+                        "guessDist[4]: " + guessDistribution[4]  + "\n" +
+                        "guessDist[5]: " + guessDistribution[5]);
+                }
+
+
+
+                //Cookie Functions
+                function getCookie(cname) {
+                  //alert("cookie: " + document.cookie);
+                  var name = cname + "=";
+                  var ca = document.cookie.split(';');
+                  for (i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                      c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                      return c.substring(name.length, c.length);
+                    }
+                  }
+                  return "";
+                }
+
+                function setStatsCookie() {
+                  var cval = gamesPlayed + "|" +
+                        gamesWon  + "|" +
+                        currStreak  + "|" +
+                        maxStreak  + "|" +
+                        guessDistribution[0]  + "|" +
+                        guessDistribution[1]  + "|" +
+                        guessDistribution[2]  + "|" +
+                        guessDistribution[3]  + "|" +
+                        guessDistribution[4]  + "|" +
+                        guessDistribution[5];
+                        //alert("cval: " + cval)
+                  setCookie("multword-stats", cval, 366);
+                }
+
+                function setCookie(cname,cvalue,exdays) {
+                  var d = new Date();
+                  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                  var expires = "expires=" + d.toUTCString();
+                  var s = cname + "=" + cvalue + ";" + expires + ";path=/";
+                  //alert("setCookie: " + s);
+                  document.cookie = s;
                 }
       </script>
       </body>
