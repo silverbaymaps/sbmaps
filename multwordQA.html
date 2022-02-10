@@ -684,6 +684,12 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             var msgGameWon;
             var delay = 500; //milliseconds
 
+            //variables to save game state
+            var saveGameChars = [];
+            var saveGameWordId = 0;
+            var isDailyGame = 0;
+            var isSavedCharReplay = 0;
+
             //variables used to show statistics
             var gamesPlayed = 20;
             var gamesWon = 18;
@@ -987,6 +993,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //alert("iWord: " + iWord);
               setCurrentWord(iWord);
               resetGame();
+              isDailyGame = 0;
             }
 
             function dailyWordClick() {
@@ -1005,6 +1012,14 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //alert("iWord: " + iWord);
               setCurrentWord(iWord);
               resetGame();
+              isDailyGame = 1;
+              getGameStateCookie();
+              if (gameWordId == saveGameWordId) {
+                //play the game with the saved chars
+                isSavedCharReplay = 1;
+                alert("play the game with the saved chars")
+                isSavedCharReplay = 0;
+              }
             }
 
 
@@ -1051,11 +1066,15 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               var iElem = ((nCurrRow - 1) * 5) + (nCurrChar - 1);
               elem = gridCellElemArray[iElem];
               elem.innerText = ucChar;
+              //If daily game, Save the char for game state
+              if (isDailyGame == 1 && isSavedCharReplay == 0) {
+                saveGameChars[iElem] = lcChar;
+              }
               //Position on the next char
               nCurrChar++;
               if (nCurrChar > 5) {
                 keyboardLettersEnabled = 0;
-              }
+              }             
             }
 
             function onBackspace() {
@@ -1098,6 +1117,10 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               if (! isWordIdInGameWords(wordId) && ! isWordIdInDict(wordId)) {
                 popupMsgModal("Word is not in List", 3.5, 4);
                 return;
+              }
+
+              if (isDailyGame == 1 && isSavedCharReplay == 0) {
+                setGameStateCookie(nCurrRow);
               }
 
               //Set character statuses and classes for curr word in the answer grid
@@ -1424,7 +1447,25 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                         "guessDist[5]: " + guessDistribution[5]);
                 }
 
-
+                function getGameStateCookie() {
+                  //Init the saveGameChars array
+                  for (i=0; i < 30; i++) {
+                    saveGameChars[i] = "";
+                  }
+                  var cookieVal = getCookie("multword-state")
+                  alert("getGameStateCookie: " + cookieVal);
+                  if (cookieVal == "") {
+                    saveGameWordId = 0;
+                  }
+                  else {
+                    var va = cookieVal.split('|');
+                    saveGameWordId = parseInt(va[0]);
+                    for (i=1; i < va.length; i++) {
+                      saveGameChars[i-1] = va[i];
+                    }
+                    numSavedRows = Math.round((va.length - 1) / 5);
+                  }
+                }
 
                 //Cookie Functions
                 function getCookie(cname) {
@@ -1456,6 +1497,15 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                         guessDistribution[5];
                         //alert("cval: " + cval)
                   setCookie("multword-stats", cval, 366);
+                }
+
+                function setGameStateCookie(nCurrRow) {
+                  var cval= gameWordId;
+                  for (i=0; i < (nCurrRow*5); i++) {
+                    cval = cval + "|" + saveGameChars[i];
+                  }
+                  alert("cval: " + cval);
+                  setCookie("multword-state", cval, 1);
                 }
 
                 function setCookie(cname,cvalue,exdays) {
