@@ -111,7 +111,7 @@ body {
 .game-name {
   display: inline-block; 
   font-size: 36px;
-  width: 60%;
+  width: 50%;
 }
 
 .game-type-btn {
@@ -147,7 +147,7 @@ body {
 .answer-item {
   color: white;
   background-color: black;
-  border: 2px solid  rgb(85, 85, 85);
+  border: 2px solid  rgb(77, 93, 114);
   padding: 5px;
   font-size: 32px;
   font-weight: bold;
@@ -181,6 +181,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   padding: 0px 0px;
+  touch-action: none;
 }
 
 .keyboard-button-wide {
@@ -223,6 +224,8 @@ body {
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
+  border-width: 0px;
+  border-radius: 4px;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
@@ -230,17 +233,47 @@ body {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+.stats-table {
+  margin: auto;
+  width:50%; 
+  /* border: 1px solid rgb(175, 175, 175, 0.4); */
+  color:black;
+  font-family: arial;
+}
+
+.stats-table-hdr {
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.stats-table-values {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7px;
+  padding-bottom: 3px; 
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.stats-table-labels {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 0px;
+  padding-bottom: 20px; 
+  font-size: 14px;
+  font-weight: bold;
+}
+
 /* Modal Content */
+.chart-modal-content,
 .modal-content {
   text-align: center;
   font-size: 16px;
   background-color: #f1d886;
   margin: auto;
   padding: 10px;
-  border-width: 0px;
-  border-radius: 4px;
   width: 80%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 1s;
   animation-name: animatetop;
@@ -279,6 +312,10 @@ body {
   cursor: pointer;
 }
 
+.modal-chart {
+  font-size: 28px;
+}
+
 
 .modal-body {padding: 2px 10px;}
 
@@ -286,15 +323,15 @@ body {
 
 
       </style>
-
-
       </head>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
       <body id="fullpage">
         <header class="container">
           <div id="pageheader" class="pageheader">
             <span class="game-name">MultiWORD</span>
             <a href="javascript:void(0);" id="daily-game" class="game-type-btn" onclick="dailyWordClick()">Daily<BR>Game</a>
             <a href="javascript:void(0);" id="random-game" class="game-type-btn" onclick="randomWordClick()">Random Game</a>
+            <a href="javascript:void(0);" id="stats" class="game-type-btn" onclick="popupChartModal(0)">Game<br>Stats</a>
           </div>         
         </header>
 
@@ -335,17 +372,49 @@ body {
           <div id="answer-6-5"  class="answer-item"></div>  
         </div>
 
-        <!-- The Modal -->
-         <div id="myModal" class="modal">
-          <!-- Modal content -->
-          <div class="modal-content">
-            <div class="modal-body">
-              <p id="modal-msg">Some more very long text and some extra.</p>
-              <p>&nbsp;</p>
-              <p class="modal-close">OK</p>
-            </div>
-          </div>
-        </div>
+        <!-- The Alert Modal -->
+         <div id="alert-modal" class="modal">
+           <div id="alert-modal-content" class="modal-content">
+             <div class="modal-body">
+               <p>&nbsp;</p>
+               <p id="alert-modal-msg">Some more very long text and some extra.</p>
+               <p>&nbsp;</p>
+               <!-- <p id="alert-modal-close" class="modal-close">OK</p> -->
+             </div>
+           </div>
+         </div>
+         <div id="chart-modal" class="modal">
+           <div id="chart-stats" class="chart-modal-content">
+            <table id="list" class="stats-table">
+              <tr>
+                  <td class="stats-table-hdr" colspan="5">STATISTICS</td>
+              </tr>
+              <tr>
+                  <td id="games-played" class="stats-table-values">0</td>
+                  <td id="win-pct" class="stats-table-values">0</td>
+                  <td id="curr-streak" class="stats-table-values">0</td>
+                  <td id="max-streak" class="stats-table-values">0</td>
+                  <td id="guess-avg" class="stats-table-values">0</td>
+              </tr>
+              <tr class="stats-table-labels">
+                <td class="stats-table-labels">Played</td>
+                <td class="stats-table-labels">Win %</td>
+                <td class="stats-table-labels">Current Streak</td>
+                <td class="stats-table-labels">Max Streak</td>
+                <td class="stats-table-labels">Guess Average</td>
+            </tr>
+          </table>
+           </div>
+           <div class="chart-modal-content">
+             <div id="chart-modal-body" class="modal-body">
+               <canvas id="myChart" class="modal-chart"></canvas>
+             </div>
+           </div>
+           <!-- <p>&nbsp;</p> -->
+           <div class="chart-modal-content">
+              <p id="chart-modal-close" class="modal-close" >OK</p>
+           </div>          
+         </div>
       </div>
         <div id="filler2" class="container filler"></div>
 
@@ -614,28 +683,43 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             var delayedCurrRow;
             var msgGameWon;
             var delay = 500; //milliseconds
+
+            //variables used to show statistics
+            var gamesPlayed = 20;
+            var gamesWon = 18;
+            var currStreak = 3;
+            var maxStreak = 10;
+            var guessDistribution = [0,0,2,10,4,2];
+
+            getStatsCookie();
                        
             window.addEventListener('load', windowResize);
             window.addEventListener('resize', windowResize);
 
-            // Get the modal
-            var modal = document.getElementById("myModal");
-
+            // Get the alert modal
+            var alertModal = document.getElementById("alert-modal");
             // Get the modal message paragraph
-            var modalMsg = document.getElementById("modal-msg");
-
+            var alertModalMsg = document.getElementById("alert-modal-msg");
             // Get the <p> element that closes the modal
-            var modalClose = document.getElementsByClassName("modal-close")[0];
+            // var alertModalClose = document.getElementById("alert-modal-close");
+            // // When the user clicks on close button, close the alertModal
+            // alertModalClose.onclick = function() {
+            //   alertModal.style.display = "none";
+            // }
 
-            // When the user clicks on <span> (x), close the modal
-              modalClose.onclick = function() {
-              modal.style.display = "none";
+            // Get the chart modal
+            var chartModal = document.getElementById("chart-modal");
+            // Get the <p> element that closes the modal
+            var chartModalClose = document.getElementById("chart-modal-close");
+            // When the user clicks on close button, close the chartModal
+            chartModalClose.onclick = function() {
+              chartModal.style.display = "none";
             }
 
             // When the user clicks anywhere outside of the modal, close it
             window.onclick = function(event) {
-              if (event.target == modal) {
-                modal.style.display = "none";
+              if (event.target == alertModal) {
+                alertModal.style.display = "none";
               }
             }
 
@@ -749,10 +833,10 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             }
 
             function resizeModal() {
-              modalMsg.style.fontSize = parseInt(origModalMsgFontSize * heightResizeFactor) + "px";
-              modalMsg.style.padding = parseInt(origModalMsgPadding * heightResizeFactor) + "px";
-              modalClose.style.fontSize = parseInt(origModalBtnFontSize * heightResizeFactor) + "px";
-              modalClose.style.padding = parseInt(origModalBtnPadding * heightResizeFactor) + "px";
+              alertModalMsg.style.fontSize = parseInt(origModalMsgFontSize * heightResizeFactor) + "px";
+              alertModalMsg.style.padding = parseInt(origModalMsgPadding * heightResizeFactor) + "px";
+              alertModalClose.style.fontSize = parseInt(origModalBtnFontSize * heightResizeFactor) + "px";
+              alertModalClose.style.padding = parseInt(origModalBtnPadding * heightResizeFactor) + "px";
             }
 
             function resizeKeyboard() {
@@ -954,7 +1038,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             function onKeystrokeLetter(lcChar) {
               if (keyboardEnabled == 0 || keyboardLettersEnabled == 0) {
                 if (gameWordId == -1) {
-                  popupModal("Click Daily Game or Random Game to start play.", 5);
+                  popupMsgModal("Click Daily Game or Random Game to start play.", 5, 6);
                 }
                 return;
               }
@@ -993,7 +1077,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                 return;
               }           
               if (nCurrChar != 6) {               
-                popupModal("Not enough letters", 3.5);
+                popupMsgModal("Not enough letters", 3.5, 4);
                 return;
               }
 
@@ -1012,7 +1096,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               //Is it a word in either list
               if (! isWordIdInGameWords(wordId) && ! isWordIdInDict(wordId)) {
-                popupModal("Word is not in List", 3.5);
+                popupMsgModal("Word is not in List", 3.5, 4);
                 return;
               }
 
@@ -1116,20 +1200,108 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                   msgGameWon = "Phew!";
                   break;
                 }
-                setTimeout(alertGameWon, (delay * 5));
+                gamesPlayed += 1;
+                gamesWon += 1;
+                currStreak += 1;
+                guessDistribution[nCurrRow - 1] += 1;
+                if (currStreak > maxStreak) {
+                  maxStreak = currStreak;
+                }
+                setStatsCookie();
+                setTimeout(function() {alertGameWon(); }, delay * 5);
                 keyboardEnabled = 0;
               } else if (nCurrRow == 6) {
                 msgGameWon = "Oops!";
-                setTimeout(alertGameOver, (delay * 5));
-                keyboardEnabled = 0;
+                gamesPlayed += 1;
+                currStreak = 0;
+                setStatsCookie();
+                setTimeout(function() {alertGameOver(); }, delay * 5);
+               keyboardEnabled = 0;
               }          
             }
 
-            function  popupModal(msg, size) {
-                var elem =  document.getElementsByClassName('modal-content')[0]; 
+            function  popupMsgModal(msg, size, removeDelay) {
+                var elem =  document.getElementById('alert-modal-content'); 
                 elem.style.width = (currGridItemWidth * size) + "px";
-                modal.style.display = "block";
-                modalMsg.innerHTML = msg;
+                alertModal.style.display = "block";
+                alertModalMsg.innerHTML = msg;
+                setTimeout(function() {removeMsgModal(); }, delay * removeDelay);
+            } 
+            function  removeMsgModal(msg, size) {
+                alertModal.style.display = "none";
+            } 
+
+            function  popupChartModal(numGuesses) {
+              //Set the stats
+              var elem =  document.getElementById('games-played'); 
+              elem.innerHTML = gamesPlayed;
+              var winPct = 0;
+              if (gamesPlayed > 0) {          
+                winPct = parseInt((gamesWon / gamesPlayed) * 100);
+              }  
+              elem =  document.getElementById('win-pct'); 
+              elem.innerHTML = winPct;
+              elem =  document.getElementById('curr-streak'); 
+              elem.innerHTML = currStreak;
+              elem =  document.getElementById('max-streak'); 
+              elem.innerHTML = maxStreak;
+              var guessAvg = 0;
+              if (gamesPlayed > 0) {
+                var guessCount = 0;
+                for (i=0;  i < 6; i++) {
+                  guessCount += guessDistribution[i] * (i+1);
+                } 
+                guessCount += (gamesPlayed - gamesWon) * 7;
+                guessAvg = (guessCount / gamesPlayed).toFixed(2);
+              }
+              elem =  document.getElementById('guess-avg'); 
+              elem.innerHTML = guessAvg;
+
+              var xValues = ["1 Guess - ", "2 Guesses - ", "3 Guesses - ", "4 Guesses - ", "5 Guesses - ", "6 Guesses - "];
+              for (i=0;  i < 6; i++) {
+                xValues[i] = xValues[i] + "(" + guessDistribution[i] + ")";
+              }
+
+              var barColors = ["rgb(100, 100, 100)", "rgb(100, 100, 100)","rgb(100, 100, 100)",
+                               "rgb(100, 100, 100)", "rgb(100, 100, 100)","rgb(100, 100, 100)"];
+              if (numGuesses > 0) {
+                barColors[numGuesses - 1] = "rgb(67, 120, 189)";
+              }           
+
+              Chart.defaults.global.defaultFontColor = 'black';
+              new Chart("myChart", {
+                  type: "horizontalBar",
+                  data: {
+                          defaultFontColor: 'black',
+                          labels: xValues,
+                          fontColor: 'black',
+                          datasets: [{
+                               backgroundColor: barColors,
+                               data: guessDistribution
+                          }]
+                  },
+                  options: {                   
+                    legend: {display: false},
+                    title: {
+                     display: true,
+                     text: "Guess Distribution",
+                     fontColor: 'black',
+                     fontSize: 24
+                  }
+                }
+              });
+
+              var keyboardElem =  document.getElementById('keyboard'); 
+              var elems = document.getElementsByClassName('chart-modal-content');
+              for(i = 0; i < elems.length; i++) {
+                elems[i].style.width = parseInt(keyboardElem.clientWidth * .90) + "px";
+              }
+              var chartElem = document.getElementById('myChart'); 
+              chartElem.style.width = "90%"
+              chartElem.style.height = "90%"
+
+              chartModal.style.display = "block";
+              //alert("11");
             } 
 
             function delayedClassSet(iChar) {
@@ -1165,12 +1337,14 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             }
 
             function alertGameWon() {
-              popupModal("Game Won!<br><br>" + msgGameWon, 4);
+              popupMsgModal("Game Won!<br><br>" + msgGameWon, 4, 3);
+              setTimeout(function() {popupChartModal(nCurrRow-1); }, delay * 4);
               //alert("\nGame Won!\n\n" + msgGameWon);
             }
 
             function alertGameOver() {
-              popupModal("Oops!<br><br>Game Lost", 4);
+              popupMsgModal("Oops!<br><br>Game Lost", 4, 3);
+              setTimeout(function() {popupChartModal(); }, delay * 4);
               //alert("\nOops!\n\nGame Lost");
             }
 
@@ -1202,6 +1376,95 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                    // If element at mid is smaller than x,
                    // search in the right half of mid
                    return binarySearch(arr, x, mid+1, end);
+                }
+
+
+                function getStatsCookie() {
+                  var cookieVal = getCookie("multword-stats")
+                  if (cookieVal == "") {
+                    //alert("getStatsCookie: ''")
+                    gamesPlayed = 0;
+                    gamesWon = 0;
+                    currStreak = 0;
+                    maxStreak = 0;
+                    guessDistribution[0] = 0;
+                    guessDistribution[1] = 0;
+                    guessDistribution[2] = 0;
+                    guessDistribution[3] = 0;
+                    guessDistribution[4] = 0;
+                    guessDistribution[5] = 0;
+                  }
+                  else {
+                    //alert("getStatsCookie: " + cookieVal);
+                    var va = cookieVal.split('|');
+                    gamesPlayed = parseInt(va[0]);
+                    gamesWon = parseInt(va[1]);
+                    currStreak = parseInt(va[2]);
+                    maxStreak = parseInt(va[3]);
+                    guessDistribution[0] = parseInt(va[4]);
+                    guessDistribution[1] = parseInt(va[5]);
+                    guessDistribution[2] = parseInt(va[6]);
+                    guessDistribution[3] = parseInt(va[7]);
+                    guessDistribution[4] = parseInt(va[8]);
+                    guessDistribution[5] = parseInt(va[9]);
+                  }
+                  //alertStatsVals();
+                }
+
+                function alertStatsVals() {
+                  alert("gamesPlayed: " + gamesPlayed + "\n" +
+                        "gamesWon: " + gamesWon  + "\n" +
+                        "currStreak: " + currStreak  + "\n" +
+                        "maxStreak: " + maxStreak  + "\n" +
+                        "guessDist[0]: " + guessDistribution[0]  + "\n" +
+                        "guessDist[1]: " + guessDistribution[1]  + "\n" +
+                        "guessDist[2]: " + guessDistribution[2]  + "\n" +
+                        "guessDist[3]: " + guessDistribution[3]  + "\n" +
+                        "guessDist[4]: " + guessDistribution[4]  + "\n" +
+                        "guessDist[5]: " + guessDistribution[5]);
+                }
+
+
+
+                //Cookie Functions
+                function getCookie(cname) {
+                  //alert("cookie: " + document.cookie);
+                  var name = cname + "=";
+                  var ca = document.cookie.split(';');
+                  for (i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                      c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                      return c.substring(name.length, c.length);
+                    }
+                  }
+                  return "";
+                }
+
+                function setStatsCookie() {
+                  var cval = gamesPlayed + "|" +
+                        gamesWon  + "|" +
+                        currStreak  + "|" +
+                        maxStreak  + "|" +
+                        guessDistribution[0]  + "|" +
+                        guessDistribution[1]  + "|" +
+                        guessDistribution[2]  + "|" +
+                        guessDistribution[3]  + "|" +
+                        guessDistribution[4]  + "|" +
+                        guessDistribution[5];
+                        //alert("cval: " + cval)
+                  setCookie("multword-stats", cval, 366);
+                }
+
+                function setCookie(cname,cvalue,exdays) {
+                  var d = new Date();
+                  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                  var expires = "expires=" + d.toUTCString();
+                  var s = cname + "=" + cvalue + ";" + expires + ";path=/";
+                  //alert("setCookie: " + s);
+                  document.cookie = s;
                 }
       </script>
       </body>
