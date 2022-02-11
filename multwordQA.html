@@ -686,6 +686,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
             //variables to save game state
             var saveGameChars = [];
+            var numSavedRows = 0;
             var saveGameWordId = 0;
             var isDailyGame = 0;
             var isSavedCharReplay = 0;
@@ -1017,7 +1018,13 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               if (gameWordId == saveGameWordId) {
                 //play the game with the saved chars
                 isSavedCharReplay = 1;
-                alert("play the game with the saved chars")
+                alert("play the game with the saved chars");
+                for (i=0; i < numSavedRows; i++) {
+                  for (j = 0; j < 5; j++) {
+                    onKeystrokeLetter(saveGameChars[(i * 5) + j]);
+                  }
+                  onEnter();
+                }
                 isSavedCharReplay = 0;
               }
             }
@@ -1185,61 +1192,90 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
                 switch (i) {
                 case 0:
-                  setTimeout(function() {delayedClassSet(0); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(0); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(0);
+                  }                 
                   break;
                 case 1:
-                  setTimeout(function() {delayedClassSet(1); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(1); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(1);
+                  }
                   break;
                 case 2:
-                  setTimeout(function() {delayedClassSet(2); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(2); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(2);
+                  }
                   break;
                 case 3:
-                  setTimeout(function() {delayedClassSet(3); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(3); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(3);
+                  }
                  break;
                 case 4:
-                  setTimeout(function() {delayedClassSet(4); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(4); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(4);
+                  }
                   break;
                 }
               }
 
               if (wordId == gameWordId) {
-                switch(nCurrRow) {
-                case 1:
-                  msgGameWon = "Lucky guess!";
-                  break;
-                case 2:
-                  msgGameWon = "Awesome!";
-                  break;
-                case 3:
-                  msgGameWon = "Exceptional!";
-                  break;
-                case 4:
-                  msgGameWon = "Very Good!";
-                  break;
-                case 5:
-                  msgGameWon = "Good!";
-                  break;
-                case 6:
-                  msgGameWon = "Phew!";
-                  break;
+                if (isSavedCharReplay == 0) {
+                  switch(nCurrRow) {
+                  case 1:
+                    msgGameWon = "Lucky guess!";
+                    break;
+                  case 2:
+                    msgGameWon = "Awesome!";
+                    break;
+                  case 3:
+                    msgGameWon = "Exceptional!";
+                    break;
+                  case 4:
+                    msgGameWon = "Very Good!";
+                    break;
+                  case 5:
+                    msgGameWon = "Good!";
+                    break;
+                  case 6:
+                    msgGameWon = "Phew!";
+                    break;
+                  }
+                  gamesPlayed += 1;
+                  gamesWon += 1;
+                  currStreak += 1;
+                  guessDistribution[nCurrRow - 1] += 1;
+                  if (currStreak > maxStreak) {
+                    maxStreak = currStreak;
+                  }
+                  setStatsCookie();
+                  setTimeout(function() {alertGameWon(); }, delay * 5);
                 }
-                gamesPlayed += 1;
-                gamesWon += 1;
-                currStreak += 1;
-                guessDistribution[nCurrRow - 1] += 1;
-                if (currStreak > maxStreak) {
-                  maxStreak = currStreak;
-                }
-                setStatsCookie();
-                setTimeout(function() {alertGameWon(); }, delay * 5);
                 keyboardEnabled = 0;
               } else if (nCurrRow == 6) {
-                msgGameWon = "Oops!";
-                gamesPlayed += 1;
-                currStreak = 0;
-                setStatsCookie();
-                setTimeout(function() {alertGameOver(); }, delay * 5);
-               keyboardEnabled = 0;
+                if (isSavedCharReplay == 0) {
+                  msgGameWon = "Oops!";
+                  gamesPlayed += 1;
+                  currStreak = 0;
+                  setStatsCookie();
+                  setTimeout(function() {alertGameOver(); }, delay * 5);
+                }
+                keyboardEnabled = 0;
               }          
             }
 
