@@ -1018,14 +1018,14 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               if (gameWordId == saveGameWordId) {
                 //play the game with the saved chars
                 isSavedCharReplay = 1;
-                //alert("play the game with the saved chars! " + numSavedRows);
+                alert("play the game with the saved chars! " + numSavedRows);
                 for (var i=0; i < numSavedRows; i++) {
                   for (var j = 0; j < 5; j++) {
-                    //alert("Char: " + saveGameChars[(i * 5) + j]);
+                    alert("Char: " + saveGameChars[(i * 5) + j]);
                     onKeystrokeLetter(saveGameChars[(i * 5) + j]);
                   }
                   onEnter();
-                  //alert("i: " + i + "numSavedRows: " + numSavedRows);
+                  alert("i: " + i + "numSavedRows: " + numSavedRows);
                 }
                 isSavedCharReplay = 0;
               }
@@ -1509,7 +1509,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
                 //Cookie Functions
                 function getCookie(cname) {
-                  //alert("cookie: " + document.cookie);
+                  alert("cookie: " + document.cookie);
                   var name = cname + "=";
                   var ca = document.cookie.split(';');
                   for (i = 0; i < ca.length; i++) {
