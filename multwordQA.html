@@ -1060,6 +1060,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             }
 
             function onKeystrokeLetter(lcChar) {
+              alert("onKeystrokeLetter: " + lcChar);
               if (keyboardEnabled == 0 || keyboardLettersEnabled == 0) {
                 if (gameWordId == -1) {
                   popupMsgModal("Click Daily Game or Random Game to start play.", 5, 6);
@@ -1159,7 +1160,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                 if (charClassArray[i] != 2) {
                   //alert("4");  
                   //Not already matched
-                  for (j=0;  j < 5; j++) {
+                  for (var j=0;  j < 5; j++) {
                     //Is the letter in the remaining game chars
                     if (currASCIIChars[i] == copyGameCharArray[j]) {
                       //Char match in different position
