@@ -1018,9 +1018,10 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               if (gameWordId == saveGameWordId) {
                 //play the game with the saved chars
                 isSavedCharReplay = 1;
-                alert("play the game with the saved chars. " + numSavedRows);
+                alert("play the game with the saved chars: " + numSavedRows);
                 for (i=0; i < numSavedRows; i++) {
                   for (j = 0; j < 5; j++) {
+                    alert("Char: " + saveGameChars[(i * 5) + j]);
                     onKeystrokeLetter(saveGameChars[(i * 5) + j]);
                   }
                   onEnter();
