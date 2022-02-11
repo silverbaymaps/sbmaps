@@ -1042,7 +1042,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               //Reset the answer grid
               var elems = document.getElementsByClassName('answer-item');
-              for(i = 0; i < elems.length; i++) {
+              for (var i = 0; i < elems.length; i++) {
                 elems[i].classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct');
                 elems[i].innerText = "";
               }
@@ -1051,10 +1051,10 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               nCurrChar = 1;
               keyboardEnabled = 1;
               keyboardLettersEnabled = 1;
-              for (i=0; i < 6; i++) {
+              for (var i=0; i < 6; i++) {
                 currASCIIChars[i] = 0
               }
-              for (i=0; i < 256; i++) {
+              for (var i=0; i < 256; i++) {
                 charStatus[i] = 0
               }
             }
@@ -1111,7 +1111,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               //Compute the word's ID
               var wordId = 0;
-              for (i=0;  i < 5; i++) {
+              for (var i=0;  i < 5; i++) {
                 wordId += currASCIIChars[i] - lcA;
                 if (i < 4) {
                   wordId = wordId * charShiftFactor;
@@ -1141,7 +1141,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                                        gameWordASCIIArray[3], gameWordASCIIArray[4]]
               //alert("1");                        
               //Look for matching letters in the correct position
-              for (i=0;  i < 5; i++) {
+              for (var i=0;  i < 5; i++) {
                 if (currASCIIChars[i] == copyGameCharArray[i]) {
                   //alert("2");  
                   //Char in same position
@@ -1155,7 +1155,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               }
               //alert("3");  
               //Look for matching chars in different positions
-              for (i=0;  i < 5; i++) {
+              for (var i=0;  i < 5; i++) {
                 if (charClassArray[i] != 2) {
                   //alert("4");  
                   //Not already matched
@@ -1177,7 +1177,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //alert("5");  
 
               //Set character statuses and classes for curr word in the answer grid
-              for (i=0;  i < 5; i++) {
+              for (var i=0;  i < 5; i++) {
                 var elem = document.getElementById('answer-' + nCurrRow + '-' + (i + 1));
                 elem.classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct', 'letter-unused');
 
@@ -1311,7 +1311,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               var guessAvg = 0;
               if (gamesPlayed > 0) {
                 var guessCount = 0;
-                for (i=0;  i < 6; i++) {
+                for (var i=0;  i < 6; i++) {
                   guessCount += guessDistribution[i] * (i+1);
                 } 
                 guessCount += (gamesPlayed - gamesWon) * 7;
@@ -1321,7 +1321,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               elem.innerHTML = guessAvg;
 
               var xValues = ["1 Guess - ", "2 Guesses - ", "3 Guesses - ", "4 Guesses - ", "5 Guesses - ", "6 Guesses - "];
-              for (i=0;  i < 6; i++) {
+              for (var i=0;  i < 6; i++) {
                 xValues[i] = xValues[i] + "(" + guessDistribution[i] + ")";
               }
 
@@ -1373,7 +1373,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               if (iChar == 4) {
                 //Update the keyboard
-                for (i=0;  i < 5; i++) {
+                for (var i=0;  i < 5; i++) {
                   var currASCIIChar = currASCIIChars[i];
                   //Convert the ASCII to a character
                   var lcChar = String.fromCharCode(currASCIIChar);
@@ -1489,7 +1489,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
                 function getGameStateCookie() {
                   //Init the saveGameChars array
-                  for (i=0; i < 30; i++) {
+                  for (var i=0; i < 30; i++) {
                     saveGameChars[i] = "";
                   }
                   var cookieVal = getCookie("multword-state")
@@ -1500,7 +1500,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                   else {
                     var va = cookieVal.split('|');
                     saveGameWordId = parseInt(va[0]);
-                    for (i=1; i < va.length; i++) {
+                    for (var i=1; i < va.length; i++) {
                       saveGameChars[i-1] = va[i];
                     }
                     numSavedRows = Math.round((va.length - 1) / 5);
@@ -1512,7 +1512,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                   alert("cookie: " + document.cookie);
                   var name = cname + "=";
                   var ca = document.cookie.split(';');
-                  for (i = 0; i < ca.length; i++) {
+                  for (var i = 0; i < ca.length; i++) {
                     var c = ca[i];
                     while (c.charAt(0) == ' ') {
                       c = c.substring(1);
@@ -1541,7 +1541,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
                 function setGameStateCookie(nCurrRow) {
                   var cval= gameWordId;
-                  for (i=0; i < (nCurrRow*5); i++) {
+                  for (var i=0; i < (nCurrRow*5); i++) {
                     cval = cval + "|" + saveGameChars[i];
                   }
                   alert("cval: " + cval);
