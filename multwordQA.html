@@ -666,6 +666,9 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             //An array of the grid cells - for efficiency during keystroke
             var gridCellElemArray = [];
 
+            //Should keyboard highlighting be on
+            var showKeyboardHints = 1;
+
 
             //Variables used during game play
             //The word to be discovered
@@ -1377,23 +1380,25 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               if (iChar == 4) {
                 //Update the keyboard
-                for (var i=0;  i < 5; i++) {
-                  var currASCIIChar = currASCIIChars[i];
-                  //Convert the ASCII to a character
-                  var lcChar = String.fromCharCode(currASCIIChar);
-		              //get elem in keyboard ID = 'keyboard-' + lcChar
-                  elem = document.getElementById('keyboard-' + lcChar);
-                  elem.classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct', 'letter-unused');
-                  switch (charStatus[currASCIIChar]) {
-                  case 0:
-                    elem.classList.add('letter-not-in-word');
-                    break;
-                  case 1:
-                    elem.classList.add('letter-in-word');
-                    break;
-                  case 2:
-                    elem.classList.add('letter-correct');
-                    break;
+                if (showKeyboardHints == 1) {
+                  for (var i=0;  i < 5; i++) {
+                    var currASCIIChar = currASCIIChars[i];
+                    //Convert the ASCII to a character
+                    var lcChar = String.fromCharCode(currASCIIChar);
+		                //get elem in keyboard ID = 'keyboard-' + lcChar
+                    elem = document.getElementById('keyboard-' + lcChar);
+                    elem.classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct', 'letter-unused');
+                    switch (charStatus[currASCIIChar]) {
+                    case 0:
+                      elem.classList.add('letter-not-in-word');
+                      break;
+                    case 1:
+                      elem.classList.add('letter-in-word');
+                      break;
+                    case 2:
+                      elem.classList.add('letter-correct');
+                      break;
+                    }
                   }
                 }
                 //Advance to the next row
