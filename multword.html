@@ -666,6 +666,9 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             //An array of the grid cells - for efficiency during keystroke
             var gridCellElemArray = [];
 
+            //Should keyboard highlighting be on
+            var showKeyboardHints = 1;
+
 
             //Variables used during game play
             //The word to be discovered
@@ -683,6 +686,13 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             var delayedCurrRow;
             var msgGameWon;
             var delay = 500; //milliseconds
+
+            //variables to save game state
+            var saveGameChars = [];
+            var numSavedRows = 0;
+            var saveGameWordId = 0;
+            var isDailyGame = 0;
+            var isSavedCharReplay = 0;
 
             //variables used to show statistics
             var gamesPlayed = 20;
@@ -987,6 +997,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //alert("iWord: " + iWord);
               setCurrentWord(iWord);
               resetGame();
+              isDailyGame = 0;
             }
 
             function dailyWordClick() {
@@ -1005,6 +1016,22 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //alert("iWord: " + iWord);
               setCurrentWord(iWord);
               resetGame();
+              isDailyGame = 1;
+              getGameStateCookie();
+              if (gameWordId == saveGameWordId) {
+                //play the game with the saved chars
+                isSavedCharReplay = 1;
+                //alert("play the game with the saved chars! " + numSavedRows);
+                for (var i=0; i < numSavedRows; i++) {
+                  for (var j = 0; j < 5; j++) {
+                    //alert("Char: " + saveGameChars[(i * 5) + j]);
+                    onKeystrokeLetter(saveGameChars[(i * 5) + j]);
+                  }
+                  onEnter();
+                  //alert("i: " + i + "numSavedRows: " + numSavedRows);
+                }
+                isSavedCharReplay = 0;
+              }
             }
 
 
@@ -1018,7 +1045,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               //Reset the answer grid
               var elems = document.getElementsByClassName('answer-item');
-              for(i = 0; i < elems.length; i++) {
+              for (var i = 0; i < elems.length; i++) {
                 elems[i].classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct');
                 elems[i].innerText = "";
               }
@@ -1027,19 +1054,21 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               nCurrChar = 1;
               keyboardEnabled = 1;
               keyboardLettersEnabled = 1;
-              for (i=0; i < 6; i++) {
+              for (var i=0; i < 6; i++) {
                 currASCIIChars[i] = 0
               }
-              for (i=0; i < 256; i++) {
+              for (var i=0; i < 256; i++) {
                 charStatus[i] = 0
               }
             }
 
             function onKeystrokeLetter(lcChar) {
+              //alert("onKeystrokeLetter: " + lcChar);
               if (keyboardEnabled == 0 || keyboardLettersEnabled == 0) {
                 if (gameWordId == -1) {
                   popupMsgModal("Click Daily Game or Random Game to start play.", 5, 6);
                 }
+                //alert("return!!" + "keyboardEnabled: " + keyboardEnabled + "keyboardLettersEnabled: " + keyboardLettersEnabled);
                 return;
               }
               //convert lcChar to ASCII code
@@ -1051,11 +1080,15 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               var iElem = ((nCurrRow - 1) * 5) + (nCurrChar - 1);
               elem = gridCellElemArray[iElem];
               elem.innerText = ucChar;
+              //If daily game, Save the char for game state
+              if (isDailyGame == 1 && isSavedCharReplay == 0) {
+                saveGameChars[iElem] = lcChar;
+              }
               //Position on the next char
               nCurrChar++;
               if (nCurrChar > 5) {
                 keyboardLettersEnabled = 0;
-              }
+              }             
             }
 
             function onBackspace() {
@@ -1083,7 +1116,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               //Compute the word's ID
               var wordId = 0;
-              for (i=0;  i < 5; i++) {
+              for (var i=0;  i < 5; i++) {
                 wordId += currASCIIChars[i] - lcA;
                 if (i < 4) {
                   wordId = wordId * charShiftFactor;
@@ -1092,12 +1125,18 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               if (wordId == 0) {
                  alert("word: " + gameWordChArray[0] + gameWordChArray[1] + gameWordChArray[2] + 
                                   gameWordChArray[3] + gameWordChArray[4]);
+                //delete the Game State cookie
+                document.cookie = "multword-state=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
               }
 
               //Is it a word in either list
               if (! isWordIdInGameWords(wordId) && ! isWordIdInDict(wordId)) {
                 popupMsgModal("Word is not in List", 3.5, 4);
                 return;
+              }
+
+              if (isDailyGame == 1 && isSavedCharReplay == 0) {
+                setGameStateCookie(nCurrRow);
               }
 
               //Set character statuses and classes for curr word in the answer grid
@@ -1107,7 +1146,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                                        gameWordASCIIArray[3], gameWordASCIIArray[4]]
               //alert("1");                        
               //Look for matching letters in the correct position
-              for (i=0;  i < 5; i++) {
+              for (var i=0;  i < 5; i++) {
                 if (currASCIIChars[i] == copyGameCharArray[i]) {
                   //alert("2");  
                   //Char in same position
@@ -1121,11 +1160,11 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               }
               //alert("3");  
               //Look for matching chars in different positions
-              for (i=0;  i < 5; i++) {
+              for (var i=0;  i < 5; i++) {
                 if (charClassArray[i] != 2) {
                   //alert("4");  
                   //Not already matched
-                  for (j=0;  j < 5; j++) {
+                  for (var j=0;  j < 5; j++) {
                     //Is the letter in the remaining game chars
                     if (currASCIIChars[i] == copyGameCharArray[j]) {
                       //Char match in different position
@@ -1143,7 +1182,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //alert("5");  
 
               //Set character statuses and classes for curr word in the answer grid
-              for (i=0;  i < 5; i++) {
+              for (var i=0;  i < 5; i++) {
                 var elem = document.getElementById('answer-' + nCurrRow + '-' + (i + 1));
                 elem.classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct', 'letter-unused');
 
@@ -1162,61 +1201,92 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
                 switch (i) {
                 case 0:
-                  setTimeout(function() {delayedClassSet(0); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(0); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(0);
+                  }                 
                   break;
                 case 1:
-                  setTimeout(function() {delayedClassSet(1); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(1); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(1);
+                  }
                   break;
                 case 2:
-                  setTimeout(function() {delayedClassSet(2); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(2); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(2);
+                  }
                   break;
                 case 3:
-                  setTimeout(function() {delayedClassSet(3); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(3); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(3);
+                  }
                  break;
                 case 4:
-                  setTimeout(function() {delayedClassSet(4); }, delay * i);
+                  if (isSavedCharReplay == 0) {
+                    setTimeout(function() {delayedClassSet(4); }, delay * i);
+                  }
+                  else {
+                    delayedClassSet(4);
+                  }
                   break;
                 }
               }
 
               if (wordId == gameWordId) {
-                switch(nCurrRow) {
-                case 1:
-                  msgGameWon = "Lucky guess!";
-                  break;
-                case 2:
-                  msgGameWon = "Awesome!";
-                  break;
-                case 3:
-                  msgGameWon = "Exceptional!";
-                  break;
-                case 4:
-                  msgGameWon = "Very Good!";
-                  break;
-                case 5:
-                  msgGameWon = "Good!";
-                  break;
-                case 6:
-                  msgGameWon = "Phew!";
-                  break;
+                if (isSavedCharReplay == 0) {
+                  switch(nCurrRow) {
+                  case 1:
+                    msgGameWon = "Lucky guess!";
+                    break;
+                  case 2:
+                    msgGameWon = "Awesome!";
+                    break;
+                  case 3:
+                    msgGameWon = "Exceptional!";
+                    break;
+                  case 4:
+                    msgGameWon = "Very Good!";
+                    break;
+                  case 5:
+                    msgGameWon = "Good!";
+                    break;
+                  case 6:
+                    msgGameWon = "Phew!";
+                    break;
+                  }
+                  gamesPlayed += 1;
+                  gamesWon += 1;
+                  currStreak += 1;
+                  guessDistribution[nCurrRow - 1] += 1;
+                  if (currStreak > maxStreak) {
+                    maxStreak = currStreak;
+                  }
+                  setStatsCookie();
+                  setTimeout(function() {alertGameWon(); }, delay * 5);
                 }
-                gamesPlayed += 1;
-                gamesWon += 1;
-                currStreak += 1;
-                guessDistribution[nCurrRow - 1] += 1;
-                if (currStreak > maxStreak) {
-                  maxStreak = currStreak;
-                }
-                setStatsCookie();
-                setTimeout(function() {alertGameWon(); }, delay * 5);
+                //alert("1keyboardEnabled = 0")
                 keyboardEnabled = 0;
-              } else if (nCurrRow == 6) {
-                msgGameWon = "Oops!";
-                gamesPlayed += 1;
-                currStreak = 0;
-                setStatsCookie();
-                setTimeout(function() {alertGameOver(); }, delay * 5);
-               keyboardEnabled = 0;
+              } else if (delayedCurrRow == 6) {
+                if (isSavedCharReplay == 0) {
+                  msgGameWon = "Oops!";
+                  gamesPlayed += 1;
+                  currStreak = 0;
+                  setStatsCookie();
+                  setTimeout(function() {alertGameOver(); }, delay * 5);
+                }
+                //alert("2keyboardEnabled = 0")
+                keyboardEnabled = 0;
               }          
             }
 
@@ -1248,7 +1318,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               var guessAvg = 0;
               if (gamesPlayed > 0) {
                 var guessCount = 0;
-                for (i=0;  i < 6; i++) {
+                for (var i=0;  i < 6; i++) {
                   guessCount += guessDistribution[i] * (i+1);
                 } 
                 guessCount += (gamesPlayed - gamesWon) * 7;
@@ -1258,7 +1328,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               elem.innerHTML = guessAvg;
 
               var xValues = ["1 Guess - ", "2 Guesses - ", "3 Guesses - ", "4 Guesses - ", "5 Guesses - ", "6 Guesses - "];
-              for (i=0;  i < 6; i++) {
+              for (var i=0;  i < 6; i++) {
                 xValues[i] = xValues[i] + "(" + guessDistribution[i] + ")";
               }
 
@@ -1310,23 +1380,25 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
 
               if (iChar == 4) {
                 //Update the keyboard
-                for (i=0;  i < 5; i++) {
-                  var currASCIIChar = currASCIIChars[i];
-                  //Convert the ASCII to a character
-                  var lcChar = String.fromCharCode(currASCIIChar);
-		              //get elem in keyboard ID = 'keyboard-' + lcChar
-                  elem = document.getElementById('keyboard-' + lcChar);
-                  elem.classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct', 'letter-unused');
-                  switch (charStatus[currASCIIChar]) {
-                  case 0:
-                    elem.classList.add('letter-not-in-word');
-                    break;
-                  case 1:
-                    elem.classList.add('letter-in-word');
-                    break;
-                  case 2:
-                    elem.classList.add('letter-correct');
-                    break;
+                if (showKeyboardHints == 1) {
+                  for (var i=0;  i < 5; i++) {
+                    var currASCIIChar = currASCIIChars[i];
+                    //Convert the ASCII to a character
+                    var lcChar = String.fromCharCode(currASCIIChar);
+		                //get elem in keyboard ID = 'keyboard-' + lcChar
+                    elem = document.getElementById('keyboard-' + lcChar);
+                    elem.classList.remove('letter-in-word', 'letter-not-in-word', 'letter-correct', 'letter-unused');
+                    switch (charStatus[currASCIIChar]) {
+                    case 0:
+                      elem.classList.add('letter-not-in-word');
+                      break;
+                    case 1:
+                      elem.classList.add('letter-in-word');
+                      break;
+                    case 2:
+                      elem.classList.add('letter-correct');
+                      break;
+                    }
                   }
                 }
                 //Advance to the next row
@@ -1424,14 +1496,32 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                         "guessDist[5]: " + guessDistribution[5]);
                 }
 
-
+                function getGameStateCookie() {
+                  //Init the saveGameChars array
+                  for (var i=0; i < 30; i++) {
+                    saveGameChars[i] = "";
+                  }
+                  var cookieVal = getCookie("multword-state")
+                  //alert("getGameStateCookie: " + cookieVal);
+                  if (cookieVal == "") {
+                    saveGameWordId = 0;
+                  }
+                  else {
+                    var va = cookieVal.split('|');
+                    saveGameWordId = parseInt(va[0]);
+                    for (var i=1; i < va.length; i++) {
+                      saveGameChars[i-1] = va[i];
+                    }
+                    numSavedRows = Math.round((va.length - 1) / 5);
+                  }
+                }
 
                 //Cookie Functions
                 function getCookie(cname) {
                   //alert("cookie: " + document.cookie);
                   var name = cname + "=";
                   var ca = document.cookie.split(';');
-                  for (i = 0; i < ca.length; i++) {
+                  for (var i = 0; i < ca.length; i++) {
                     var c = ca[i];
                     while (c.charAt(0) == ' ') {
                       c = c.substring(1);
@@ -1456,6 +1546,15 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                         guessDistribution[5];
                         //alert("cval: " + cval)
                   setCookie("multword-stats", cval, 366);
+                }
+
+                function setGameStateCookie(nCurrRow) {
+                  var cval= gameWordId;
+                  for (var i=0; i < (nCurrRow*5); i++) {
+                    cval = cval + "|" + saveGameChars[i];
+                  }
+                  //alert("cval: " + cval);
+                  setCookie("multword-state", cval, 1);
                 }
 
                 function setCookie(cname,cvalue,exdays) {
