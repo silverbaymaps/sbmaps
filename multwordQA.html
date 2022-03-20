@@ -680,6 +680,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             var nCurrChar = 1;
             var keyboardEnabled = 0;
             var keyboardLettersEnabled = 0;
+            var inEnterKeyProcessing = 0;
             var currASCIIChars = [];
             var charStatus = [];
             var delayedCharClass = [];
@@ -1060,6 +1061,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               nCurrChar = 1;
               keyboardEnabled = 1;
               keyboardLettersEnabled = 1;
+              inEnterKeyProcessing = 0;
               for (var i=0; i < 6; i++) {
                 currASCIIChars[i] = 0
               }
@@ -1112,13 +1114,14 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
             }
 
             function onEnter() {
-              if (keyboardEnabled == 0) {
+              if (keyboardEnabled == 0 || inEnterKeyProcessing == 1) {
                 return;
               }           
               if (nCurrChar != 6) {               
                 popupMsgModal("Not enough letters", 3.5, 4);
                 return;
               }
+              inEnterKeyProcessing = 1;
 
               //Compute the word's ID
               var wordId = 0;
@@ -1138,6 +1141,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
               //Is it a word in either list
               if (! isWordIdInGameWords(wordId) && ! isWordIdInDict(wordId)) {
                 popupMsgModal("Word is not in List", 3.5, 4);
+                inEnterKeyProcessing = 0;
                 return;
               }
 
@@ -1412,6 +1416,7 @@ var dictWordIdArray = [7299,11528,17607,18024,32832,32840,32850,32947,33088,3316
                   }
                 }
                 //Advance to the next row
+                inEnterKeyProcessing = 0;
                 keyboardLettersEnabled = 1;
                 nCurrChar = 1;
                 nCurrRow++;
